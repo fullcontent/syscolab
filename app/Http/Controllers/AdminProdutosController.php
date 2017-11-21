@@ -4,6 +4,9 @@
 	use Request;
 	use DB;
 	use CRUDBooster;
+	use DNS1D;
+    use App\Models\Produtos;
+    use App;
 
 	class AdminProdutosController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -21,7 +24,7 @@
 			$this->button_edit = true;
 			$this->button_delete = true;
 			$this->button_detail = true;
-			$this->button_show = true;
+			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
@@ -30,54 +33,49 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
+			$this->col[] = ["label"=>"Codigo","name"=>"codigo"];
 			$this->col[] = ["label"=>"Nome","name"=>"nome"];
 			$this->col[] = ["label"=>"Valor","name"=>"valor"];
-			
 
 
-
-		
 			if(CRUDBooster::myPrivilegeName() != "Colabers"){
 
 				$this->col[] = ["label"=>"Colaber","name"=>"user_id","join"=>"cms_users,name"];
 			}
+			
 
 
-			
-			
+			$this->col[] = ["label"=>"Categoria Id","name"=>"categoria_id","join"=>"categorias,nome"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
+			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Category','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false];
+			$this->form[] = ['label'=>'Qtde','name'=>'qtde','type'=>'number','validation'=>'required','width'=>'col-sm-3'];
+			$this->form[] = ['label'=>'Descricao','name'=>'descricao','type'=>'textarea','width'=>'col-sm-9'];
+			$this->form[] = ['label'=>'Img','name'=>'img','type'=>'upload','width'=>'col-sm-9'];
+			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'select','width'=>'col-sm-9'];
 
+			$userId = CRUDBooster::myId();
 
 			function generateBarcodeNumber() {
    			 $number = mt_rand(00000000, 99999999); // better than rand()
 			return $number;
 			}
-
-			
-			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','decimals'=>'2','dec_point'=>',','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Barcode','name'=>'barcode','type'=>'hidden','value'=>generateBarcodeNumber()];
-
-
-
-			$userID=CRUDBooster::myId();
-			$this->form[] = ['label'=>'UserID','name'=>'user_id','type'=>'hidden','value'=>$userID];
-
-			
-
-
-			
+			$this->form[] = ['label'=>'Codigo','name'=>'codigo','type'=>'hidden','width'=>'col-sm-10','value'=>generateBarcodeNumber()];
+			$this->form[] = ['label'=>'UserID','name'=>'user_id','type'=>'hidden','width'=>'col-sm-10','value'=>$userId];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ["label"=>"Nome","name"=>"nome","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
-			//$this->form[] = ["label"=>"Valor","name"=>"valor","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
-			//$this->form[] = ["label"=>"Barcode","name"=>"barcode","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"User Id","name"=>"user_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"user,id"];
+			//$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Categoria','name'=>'categoria','type'=>'select2','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Q','validation'=>'required','width'=>'col-sm-9'];
+			//$this->form[] = ['label'=>'Barcode','name'=>'barcode','type'=>'hidden','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'UserID','name'=>'user_id','type'=>'hidden','width'=>'col-sm-10'];
 			# OLD END FORM
 
 			/* 
@@ -144,6 +142,8 @@
 	        | 
 	        */
 	        $this->index_button = array();
+
+	        $this->index_button[] = ['label'=>'Gerar Etiquetas','url'=>CRUDBooster::mainpath('etiquetas/'.$userId.''),'icon'=>'fa fa-check','color'=>'info'];
 
 
 
@@ -255,6 +255,47 @@
 	            
 	    }
 
+	     public function getEtiquetas($id) {
+  			 		
+
+  			 		
+ 			$produtos = Produtos::where('user_id',$id)->get();
+
+            $html = "";
+            $html .= "<table style='border: 1px solid #ccc' class='table'><tr align='center'>";
+            $logo = CRUDBooster::getSetting("logo");
+
+            $url = url("/");
+
+          
+
+
+
+            foreach ($produtos as $p) {
+
+            	$number = mt_rand(0000000, 9999999);
+
+                 $code = DNS1D::getBarcodeHTML("12346578", "EAN8");
+                
+                $html .= "<td style='padding: 20px; border: 1px solid #ccc;'>".$code."<span>".$p->nome."</span><h3>R$ ".$p->valor."</h3></td>";
+            }
+
+
+            $html .= "</tr></table>" ;
+
+            
+
+
+
+
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadHTML($html);
+            
+            return $pdf->stream('etiquetas.pdf');
+		
+
+		}
+
 
 	    /*
 	    | ---------------------------------------------------------------------- 
@@ -264,6 +305,8 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
+	        
+	    	
 	         $userID=CRUDBooster::myId();
 
 	        if (CRUDBooster::isSuperadmin()	){
@@ -278,6 +321,9 @@
             
 
 	        }
+	            
+	    	
+	    		
 	            
 	    }
 
@@ -366,7 +412,6 @@
 
 
 
-	    //By the way, you can still create your own method in here... :) 
-
+	   
 
 	}

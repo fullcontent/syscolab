@@ -15,15 +15,24 @@ Route::get('/', function () {
     return view('home');
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('vendas', 'HomeController@index');
 
 
-Route::get('barcode', function() {
-    
+Route::any('cadastra', function() {
+
+	
 
 
-
+	if (Request::ajax()) 
+   {
+      return Response::json($dados);
+   }		
 
 });
+
+
+
+Auth::routes();
+
+
+
