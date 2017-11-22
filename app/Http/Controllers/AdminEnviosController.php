@@ -66,7 +66,7 @@ if(CRUDBooster::myPrivilegeName() != "Colabers"){
 
 
 
-			$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor','datamodal_select_to'=>'id:produto_id','required'=>true,'width'=>'col-sm-3'];
+			$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,valor','datamodal_select_to'=>'id:produto_id','required'=>true,'width'=>'col-sm-3'];
 
 
 			$columns[] = ['label'=>'Quantidade','name'=>'qtde','type'=>'number','required'=>true,'value'=>'1'];			
@@ -116,7 +116,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        */
 	        $this->addaction = array();
 
-	        $this->addaction[] = ['label'=>'Gerar Etiquetas','icon'=>'fa fa-barcode','color'=>'warning','url'=>CRUDBooster::mainpath('etiquetas').'/[id]'];
+	        $this->addaction[] = ['label'=>'Etiquetas','icon'=>'fa fa-barcode','color'=>'warning','url'=>CRUDBooster::mainpath('etiquetas').'/[id]'];
 
 
 
@@ -189,11 +189,29 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        |
 	        */
 	        $this->script_js = "
+						
 
-					document.getElementById('detalhesqtde').defaultValue = 1;
 
-	        		
+						
 
+					$('#detalhesqtde').val(1);
+
+					$('#tipoEnvio').val('Loja');
+										
+
+					$('#btn-add-table-detalhes').click(function() {
+  					
+						$('#detalhesqtde').val(1);
+
+					});
+			
+				   
+				
+	         
+
+
+					
+					
 
 	        ";
 
