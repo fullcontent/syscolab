@@ -31,6 +31,7 @@
     27 => 'crocodicstudio\\crudbooster\\CRUDBoosterServiceProvider',
     28 => 'Milon\\Barcode\\BarcodeServiceProvider',
     29 => 'Collective\\Html\\HtmlServiceProvider',
+    30 => 'Barryvdh\\DomPDF\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -50,6 +51,7 @@
     13 => 'App\\Providers\\RouteServiceProvider',
     14 => 'crocodicstudio\\crudbooster\\CRUDBoosterServiceProvider',
     15 => 'Milon\\Barcode\\BarcodeServiceProvider',
+    16 => 'Barryvdh\\DomPDF\\ServiceProvider',
   ),
   'deferred' => 
   array (

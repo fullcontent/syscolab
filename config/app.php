@@ -180,6 +180,9 @@ return [
             Milon\Barcode\BarcodeServiceProvider::class,
             Collective\Html\HtmlServiceProvider::class,
 
+            Barryvdh\DomPDF\ServiceProvider::class,
+
+
 
 
     ],
@@ -238,6 +241,8 @@ return [
     'Html'      => Collective\Html\HtmlFacade::class,
     'Form'      => Collective\Html\FormFacade::class,
     'Input'     => 'Illuminate\Support\Facades\Input',
+    'PDF' => Barryvdh\DomPDF\Facade::class,
+
 
     
 

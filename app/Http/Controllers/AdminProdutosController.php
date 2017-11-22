@@ -27,7 +27,7 @@
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
-			$this->button_detail = true;
+			$this->button_detail = false;
 			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
@@ -155,7 +155,7 @@
 	        */
 	        $this->index_button = array();
 
-	        $this->index_button[] = ['label'=>'Gerar Etiquetas','url'=>CRUDBooster::mainpath('etiquetas/'.$userId.''),'icon'=>'fa fa-check','color'=>'info'];
+	       
 
 
 
@@ -191,19 +191,7 @@
 	        */
 	        $this->script_js = "
 
-				$(function() {
-
-
-      		
-	        		setInterval(function() {
-	        			
-
-
-	        			var testnr = document.getElementById('valor').value;
-  						document.getElementById('valor').value = testnr.replace(/,/g, '.');
-
-	        		},1000);
-	        	})
+				
 
 
 

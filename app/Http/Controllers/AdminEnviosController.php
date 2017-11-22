@@ -37,7 +37,7 @@ use App;
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Num Envio","name"=>"id"];
+			$this->col[] = ["label"=>"Num Envio","name"=>"id","width"=>"10%"];
 			$this->col[] = ["label"=>"Data","name"=>"created_at",'callback_php'=>'date("d/m/Y",strtotime($row->created_at))'];
 
 
@@ -66,7 +66,7 @@ if(CRUDBooster::myPrivilegeName() != "Colabers"){
 
 
 
-			$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,valor','datamodal_select_to'=>'id:produto_id','required'=>true,'width'=>'col-sm-3'];
+			$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,valor','datamodal_select_to'=>'id:produto_id','datamodal_where'=>'user_id='.$userID.'','required'=>true,'width'=>'col-sm-3'];
 
 
 			$columns[] = ['label'=>'Quantidade','name'=>'qtde','type'=>'number','required'=>true,'value'=>'1'];			
@@ -116,7 +116,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        */
 	        $this->addaction = array();
 
-	        $this->addaction[] = ['label'=>'Etiquetas','icon'=>'fa fa-barcode','color'=>'warning','url'=>CRUDBooster::mainpath('etiquetas').'/[id]'];
+	        $this->addaction[] = ['label'=>'Gerar Etiquetas','icon'=>'fa fa-barcode','color'=>'warning','url'=>CRUDBooster::mainpath('etiquetas').'/[id]'];
 
 
 
@@ -190,9 +190,27 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        */
 	        $this->script_js = "
 						
+					$('.button_action a').click(function() {
+    				$(this).attr('target', '_blank');
+					});
+					
+					$('.input-group-btn button').each(function() {
+    					var text = $(this).text();
+    					$(this).html(text.replace(' Browse Data', ' Buscar Produtos')); 
+						});
+					
+					$('#btn-add-table-detalhes').val('Adicionar a remessa');
+					$('#btn-reset-form-detalhes').val('Apagar');
 
-
-						
+					$('.panel-heading').each(function() {
+    					var text = $(this).text();
+    					$(this).html(text.replace('Table Detail', 'Detalhes da Remessa')); 
+						});
+					$('.modal-title').each(function() {
+    					var text = $(this).text();
+    					$(this).html(text.replace(' Browse Data Produto', 'Buscar dados de Produtos')); 
+						});
+					
 
 					$('#detalhesqtde').val(1);
 
@@ -204,13 +222,8 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 						$('#detalhesqtde').val(1);
 
 					});
-			
-				   
-				
-	         
 
 
-					
 					
 
 	        ";
@@ -293,46 +306,51 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 
   			 		
  			
-	    	$envios = Envio::whereHas('itens')->withCount('itens')->find($id);
+	    	
+            $envios = Envio::whereHas('itens')->withCount('itens')->with('user')->find($id);
 
             $envio_id = $envios->id;
 
 
+            $user = $envios->user;
+
+
+
+
+
+
             $itens = EnvioItem::with('produto')->where('envio_id', $envio_id)->get();
 
-            $html = "<body style='margin: 0; padding: 0;'>";
-            $html .= "<table style='border: 1px solid #ccc' class='table'><tr align='center'>";
+
+            $html = "<div class='row invoice-info'>";
+        
 
             foreach ($itens as $item) {
-
-
-
                 for ($i=0; $i < $item->qtde; $i++) { 
-
-
                 $codigo = $item->produto->codigo;
-
-
-
-                $code = DNS1D::getBarcodeHTML($codigo, "EAN8");
+                $code = DNS1D::getBarcodeSVG($codigo, "EAN8",2);
                     
+        $html .= "<div class='col-sm-2' align='center' style='border: 1px #ccc dotted;'>";
 
-                	
+        $html .= "<p>".$item->produto->nome."</p>".$code."<p>Código: ".$codigo."</p><h4>R$ ".$item->produto->valor."</h4>";
 
-                  $html .= "<td style='padding: 20px; border: 1px solid #ccc;'>".$code."<span>".$item->produto->nome."</span><h3>R$ ".$item->produto->valor."</h3></td>";
+                 $html .= "</div>";
+                  
                  }
 
                 
-
-
-                # code...
+                  
             }
-            $html .= "</tr></table></body>" ;
+            $html .= "</div>" ;
+
 
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadHTML($html);
-            
-            return $pdf->stream('etiquetas.pdf');
+
+
+            //return $pdf->stream('etiquetas.pdf');
+                        
+            return view('etiquetas')->with(['html'=>$html,'user'=>$user,'envios'=>$envios]);
 		
 
 		}
