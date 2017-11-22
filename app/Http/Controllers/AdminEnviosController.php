@@ -336,6 +336,14 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
+
+	         $userID=CRUDBooster::myId();
+
+	        if (CRUDBooster::myPrivilegeName()	== 'Colabers'){
+
+	        	$query->where('user_id',$userID);
+
+	        }
 	            
 	    }
 

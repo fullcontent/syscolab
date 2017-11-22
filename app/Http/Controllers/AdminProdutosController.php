@@ -38,7 +38,7 @@
 			$this->col = [];
 			$this->col[] = ["label"=>"Codigo","name"=>"codigo"];
 			$this->col[] = ["label"=>"Nome","name"=>"nome"];
-			$this->col[] = ["label"=>"Valor","name"=>"valor"];
+			$this->col[] = ["label"=>"Valor","name"=>"valor","callback_php"=>'"R$ ".$row->valor'];
 
 
 			if(CRUDBooster::myPrivilegeName() != "Colabers"){
@@ -183,7 +183,25 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
+	        $this->script_js = "
+
+				$(function() {
+
+
+      		
+	        		setInterval(function() {
+	        			
+
+
+	        			var testnr = document.getElementById('valor').value;
+  						document.getElementById('valor').value = testnr.replace(/,/g, '.');
+
+	        		},1000);
+	        	})
+
+
+
+	        ";
 
 
             /*
@@ -261,46 +279,7 @@
 	            
 	    }
 
-	     public function getEtiquetas($id) {
-  			 		
-
-  			 		
- 			$produtos = Produtos::where('user_id',$id)->get();
-
-            $html = "";
-            $html .= "<table style='border: 1px solid #ccc' class='table'><tr align='center'>";
-            $logo = CRUDBooster::getSetting("logo");
-
-            $url = url("/");
-
-          
-
-
-
-            foreach ($produtos as $p) {
-
-            	$number = mt_rand(0000000, 9999999);
-
-                 $code = DNS1D::getBarcodeHTML("12346578", "EAN8");
-                
-                $html .= "<td style='padding: 20px; border: 1px solid #ccc;'>".$code."<span>".$p->nome."</span><h3>R$ ".$p->valor."</h3></td>";
-            }
-
-
-            $html .= "</tr></table>" ;
-
-            
-
-
-
-
-            $pdf = App::make('dompdf.wrapper');
-            $pdf->loadHTML($html);
-            
-            return $pdf->stream('etiquetas.pdf');
-		
-
-		}
+	     
 
 
 	    /*
