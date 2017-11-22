@@ -194,6 +194,7 @@
 	        $this->script_js = "
 				
 
+
 				$( '#valor' ).keyup(function() {
 
  				 var testnr = document.getElementById('valor').value;
@@ -205,6 +206,7 @@
 				
 				
 					 
+
 
 
 
