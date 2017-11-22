@@ -17,18 +17,10 @@ Route::get('/', function () {
 
 Route::get('vendas', 'HomeController@index');
 
-
-Route::any('cadastra', function() {
-
-	
+Route::get('admin/estoque', 'HomeController@envios');
 
 
-	if (Request::ajax()) 
-   {
-      return Response::json($dados);
-   }		
 
-});
 
 
 

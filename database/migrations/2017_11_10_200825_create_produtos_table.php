@@ -27,7 +27,7 @@ class CreateProdutosTable extends Migration
 
 
             $table->longText('descricao')->nullable();
-            $table->integer('qtde')->nullable();
+            
             $table->integer('galeria_id')->nullable();
             $table->string('img')->nullable();
             $table->string('cor')->nullable();
@@ -43,7 +43,7 @@ class CreateProdutosTable extends Migration
             
 
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('cms_users');
+            $table->foreign('user_id')->references('id')->on('cms_users')->onDelete('restrict');
 
            
             $table->timestamps();

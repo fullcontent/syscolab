@@ -7,6 +7,9 @@
 	use DNS1D;
     use App\Models\Produtos;
     use App;
+   
+
+    
 
 	class AdminProdutosController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -45,23 +48,26 @@
 			
 
 
-			$this->col[] = ["label"=>"Categoria Id","name"=>"categoria_id","join"=>"categorias,nome"];
+			$this->col[] = ["label"=>"Categoria","name"=>"categoria_id","join"=>"categorias,nome"];
+
+			
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Category','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false];
-			$this->form[] = ['label'=>'Qtde','name'=>'qtde','type'=>'number','validation'=>'required','width'=>'col-sm-3'];
-			$this->form[] = ['label'=>'Descricao','name'=>'descricao','type'=>'textarea','width'=>'col-sm-9'];
-			$this->form[] = ['label'=>'Img','name'=>'img','type'=>'upload','width'=>'col-sm-9'];
-			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'select','width'=>'col-sm-9'];
+			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-5'];
+			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-5'];
+			$this->form[] = ['label'=>'Categoria','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false,'width'=>'col-sm-5'];
+			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'text','width'=>'col-sm-5'];
+			
+			$this->form[] = ['label'=>'Descricao','name'=>'descricao','type'=>'textarea','width'=>'col-sm-5'];
+			$this->form[] = ['label'=>'Img','name'=>'img','type'=>'upload','width'=>'col-sm-5'];
+			
 
 			$userId = CRUDBooster::myId();
 
 			function generateBarcodeNumber() {
-   			 $number = mt_rand(00000000, 99999999); // better than rand()
+   			 $number = mt_rand(0000, 9999); // better than rand()
 			return $number;
 			}
 			$this->form[] = ['label'=>'Codigo','name'=>'codigo','type'=>'hidden','width'=>'col-sm-10','value'=>generateBarcodeNumber()];
@@ -309,19 +315,13 @@
 	    	
 	         $userID=CRUDBooster::myId();
 
-	        if (CRUDBooster::isSuperadmin()	){
+	        if (CRUDBooster::myPrivilegeName()	== 'Colabers'){
 
-	        	
-
-	        }
-
-	        else {
-
-			$query->where('user_id',$userID);
-            
+	        	$query->where('user_id',$userID);
 
 	        }
-	            
+
+	        
 	    	
 	    		
 	            
@@ -345,8 +345,8 @@
 	    |
 	    */
 	    public function hook_before_add(&$postdata) {        
-	        //Your code here
-
+	        	
+	       		
 	    }
 
 	    /* 
@@ -359,7 +359,9 @@
 	    public function hook_after_add($id) {        
 	        //Your code here
 
-	    }
+
+
+	     }
 
 	    /* 
 	    | ---------------------------------------------------------------------- 
@@ -384,6 +386,9 @@
 	    public function hook_after_edit($id) {
 	        //Your code here 
 
+	       
+				
+
 	    }
 
 	    /* 
@@ -394,7 +399,10 @@
 	    | 
 	    */
 	    public function hook_before_delete($id) {
-	        //Your code here
+	        
+
+
+
 
 	    }
 

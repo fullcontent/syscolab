@@ -274,14 +274,35 @@ class Cms_privilegesSeeder extends Seeder {
     public function run()
     {        
         
-        if(DB::table('cms_privileges')->where('name','Super Administrator')->count() == 0) {
-            DB::table('cms_privileges')->insert([    
-            'id'            =>DB::table('cms_privileges_roles')->max('id')+1,        
+        $data = [
+
+
+            [    
+            'id'            =>'1',        
             'created_at'    =>date('Y-m-d H:i:s'),
             'name'          =>'Super Administrator',
             'is_superadmin' =>1,
             'theme_color'   =>'skin-red'
-            ]);    
+            ],
+            [
+            'id'            =>'2',        
+            'created_at'    =>date('Y-m-d H:i:s'),
+            'name'          =>'Colabers',
+            'is_superadmin' =>0,
+            'theme_color'   =>'skin-green',
+            ],
+
+            [
+            'id'            =>'3',        
+            'created_at'    =>date('Y-m-d H:i:s'),
+            'name'          =>'Gerencia',
+            'is_superadmin' =>0,
+            'theme_color'   =>'skin-yellow',
+            ]
+        ];
+
+        if(DB::table('cms_privileges')->where('name','Super Administrator')->count() == 0) {
+            DB::table('cms_privileges')->insert($data);    
         }        
     }
 }
@@ -411,7 +432,25 @@ class Cms_modulsSeeder extends Seeder {
             'controller'=>'LogsController',
             'is_protected'=>1,                                
             'is_active'=>1
-        ]       
+        ],[
+            'created_at'=>date('Y-m-d H:i:s'),
+            'name'=>'Produtos',
+            'icon'=>'fa fa-cog',
+            'path'=>'produtos',
+            'table_name'=>'produtos',
+            'controller'=>'AdminProdutosController',
+            'is_protected'=>0,                                
+            'is_active'=>1
+        ],[
+            'created_at'=>date('Y-m-d H:i:s'),
+            'name'=>'Categorias',
+            'icon'=>'fa fa-cog',
+            'path'=>'categorias',
+            'table_name'=>'categorias',
+            'controller'=>'AdminCategoriasController',
+            'is_protected'=>0,                                
+            'is_active'=>1
+        ]        
             ];
 
 
@@ -430,18 +469,50 @@ class Cms_usersSeeder extends Seeder {
 
     public function run()
     {        
-        
-        if(DB::table('cms_users')->count() == 0) {
-            $password = \Hash::make('123456');
-            $cms_users = DB::table('cms_users')->insert(array(
-                'id'                =>DB::table('cms_users')->max('id')+1,
+        $password = \Hash::make('123456');
+        $data = [
+
+            [   
+                'id'                =>1,
                 'created_at'        =>date('Y-m-d H:i:s'),
                 'name'              => 'Super Admin',                
                 'email'             => 'admin@crudbooster.com',
                 'password'          => $password,
                 'id_cms_privileges' => 1,                
                 'status'            =>'Active'
-            ));
+
+            ],
+
+            [   
+                'id'                =>2,
+                'created_at'        =>date('Y-m-d H:i:s'),
+                'name'              => 'Arte ao Vento',                
+                'email'             => 'aav@test.com',
+                'password'          => $password,
+                'id_cms_privileges' => 2,                
+                'status'            =>'Active'
+
+            ],
+
+            [   
+                'id'                =>3,
+                'created_at'        =>date('Y-m-d H:i:s'),
+                'name'              => 'Sara',                
+                'email'             => 'sara@admin.com',
+                'password'          => $password,
+                'id_cms_privileges' => 3,                
+                'status'            =>'Active'
+
+            ],
+
+
+
+        ];
+
+
+        if(DB::table('cms_users')->count() == 0) {
+           
+            $cms_users = DB::table('cms_users')->insert($data);
         }            
 
     }
