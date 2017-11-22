@@ -3,9 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Models\Colaber;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Session;
+use CRUDBooster;
+use DB;
+use Illuminate\Auth\Authenticatable;
+
+
 
 class RegisterController extends Controller
 {
@@ -27,7 +34,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/admin/colaber';
 
     /**
      * Create a new controller instance.
@@ -62,7 +69,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
@@ -70,7 +78,36 @@ class RegisterController extends Controller
             'id_cms_privileges' => "2"
         ]);
 
-         
+        $dadosColaber = new Colaber;
+        $dadosColaber->user_id = $user->id;
+        $dadosColaber->save();
+
+
+        $priv = DB::table("cms_privileges")->where("id",$user->id_cms_privileges)->first();
+        $roles = DB::table('cms_privileges_roles')
+        ->where('id_cms_privileges',$users->id_cms_privileges)
+        ->join('cms_moduls','cms_moduls.id','=','id_cms_moduls')
+        ->select('cms_moduls.name','cms_moduls.path','is_visible','is_create','is_read','is_edit','is_delete')
+        ->get();
+        $photo = ($user->photo)?asset($user->photo):asset('vendor/crudbooster/avatar.jpg');
+
+        Session::put('admin_id',$user->id);            
+        Session::put('admin_is_superadmin',$priv->is_superadmin);
+        Session::put('admin_name',$user->name);    
+        Session::put('admin_photo',$photo);
+        Session::put('admin_privileges_roles',$roles);
+        Session::put("admin_privileges",$user->id_cms_privileges);
+        Session::put('admin_privileges_name',$priv->name);          
+        Session::put('admin_lock',0);
+        Session::put('theme_color',$priv->theme_color);
+        Session::put("appname",CRUDBooster::getSetting('appname'));     
+
+       // CRUDBooster::insertLog(trans("crudbooster.log_login",['email'=>$users->email,'ip'=>Request::server('REMOTE_ADDR')]));       
+      
+
+        return $user;
+
+
 
     }
 

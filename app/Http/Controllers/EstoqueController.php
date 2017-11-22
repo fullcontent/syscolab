@@ -56,6 +56,7 @@ class EstoqueController extends Controller
         $userId = CRUDBooster::myId();
 
         $codigo = $request->only('codigo');
+        
         $itens = Estoque::orderBy('id','DESC')->take(5)->get();
 
          try

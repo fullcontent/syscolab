@@ -27,7 +27,7 @@
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
-			$this->button_detail = true;
+			$this->button_detail = false;
 			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
@@ -63,7 +63,7 @@
 			$this->form = [];
 			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-5'];
 			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-5'];
-			$this->form[] = ['label'=>'Categoria','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false,'width'=>'col-sm-5'];
+			$this->form[] = ['label'=>'Categoria','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false,'width'=>'col-sm-5','validation'=>'required'];
 			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'text','width'=>'col-sm-5'];
 			
 			$this->form[] = ['label'=>'Descricao','name'=>'descricao','type'=>'textarea','width'=>'col-sm-5'];
@@ -74,6 +74,8 @@
 
 			function generateBarcodeNumber() {
    			 $number = mt_rand(0000, 9999); // better than rand()
+
+   			 $number = str_pad($number, 7, "0", STR_PAD_LEFT);
 			return $number;
 			}
 			$this->form[] = ['label'=>'Codigo','name'=>'codigo','type'=>'hidden','width'=>'col-sm-10','value'=>generateBarcodeNumber()];
@@ -155,7 +157,7 @@
 	        */
 	        $this->index_button = array();
 
-	        $this->index_button[] = ['label'=>'Gerar Etiquetas','url'=>CRUDBooster::mainpath('etiquetas/'.$userId.''),'icon'=>'fa fa-check','color'=>'info'];
+	       
 
 
 
@@ -190,20 +192,19 @@
 	        |
 	        */
 	        $this->script_js = "
+				
 
-				$(function() {
+				$( '#valor' ).keyup(function() {
 
+ 				 var testnr = document.getElementById('valor').value;
 
-      		
-	        		setInterval(function() {
-	        			
+ 				 document.getElementById('valor').value = testnr.replace(/,/g, '.');
+ 				
 
-
-	        			var testnr = document.getElementById('valor').value;
-  						document.getElementById('valor').value = testnr.replace(/,/g, '.');
-
-	        		},1000);
-	        	})
+				});
+				
+				
+					 
 
 
 

@@ -1,7 +1,11 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-<script language="javascript"> 
+<script language="javascript">
+
+
+
+
     function DoCheckLength(aTextBox) { 
       if (aTextBox.maxLength - aTextBox.value.length==0) { 
          document.theForm.submit(); 
@@ -14,11 +18,7 @@
   </script>
 
 
-
-	<h4>{{ $message }}</h4>
-
-
-
+<h1>{{$message}}</h1>
 
 <div class="col-xs-12">
 
@@ -28,7 +28,7 @@
 
 		 {{ csrf_field() }}
 
-       <input class="form-control" type="text" autofocus="" maxlength="4" onkeyup="return(DoCheckLength(this));" id="codigo" name="codigo" placeholder="Digitalize o codigo de barras">
+       <input class="form-control" type="text" autofocus="" maxlength="7" onkeyup="return(DoCheckLength(this));" id="codigo" name="codigo" placeholder="Digitalize o codigo de barras">
                               
 </form>
 </div>
