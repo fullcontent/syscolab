@@ -7,6 +7,7 @@
 	use DNS1D;
     use App\Models\Produtos;
     use App;
+    use App\Models\Estoque;
    
 
     
@@ -47,6 +48,11 @@
 			}
 			
 
+
+			$this->col[] = ["label"=>"Qtd Estoque","name"=>"descricao","callback"=>function($row){
+				$count = Estoque::where('produto_id', $row->id)->count();
+				return $count;
+			}];
 
 			$this->col[] = ["label"=>"Categoria","name"=>"categoria_id","join"=>"categorias,nome"];
 

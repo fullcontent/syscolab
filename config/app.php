@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         crocodicstudio\crudbooster\CRUDBoosterServiceProvider::class,
             Milon\Barcode\BarcodeServiceProvider::class,
+            Collective\Html\HtmlServiceProvider::class,
 
 
 
@@ -233,6 +234,10 @@ return [
 
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
     'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+
+    'Html'      => Collective\Html\HtmlFacade::class,
+    'Form'      => Collective\Html\FormFacade::class,
+    'Input'     => 'Illuminate\Support\Facades\Input',
 
     
 

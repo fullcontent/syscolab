@@ -18,4 +18,11 @@ class Produtos extends Model
 
     	return $this->hasMany('App\Models\EnvioItem','produto_id');
     }
+
+    public function estoque()
+    
+    {
+
+    	return $this->hasMany('App\Models\Estoque')->orderBy('id','DESC');
+    }
 }

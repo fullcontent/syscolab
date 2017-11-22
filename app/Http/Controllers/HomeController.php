@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Produtos;
 use App\Models\Envio;
 use App\Models\EnvioItem;
+use App\Models\Estoque;
+use \Auth;
 
 
 
@@ -59,13 +61,25 @@ class HomeController extends Controller
 
                 # code...
             }
+    }
+
+    public function estoque($codigo)
+    {
+
+                      
+            $item = Produtos::where('codigo',$codigo)->get()->first();
 
 
-            
+            $estoque = new Estoque;
+            $estoque->produto_id = $item->id;
+            $estoque->user_id = Auth::user()->id;
+            $estoque->in_out_qty = 1;
+            $estoque->remarks = 'Entrada de '.$value->qtde.' iten(s) no estoque';
+            $estoque->save();
 
+            return $estoque;
 
-
-    
+          
 
     }
 

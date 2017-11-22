@@ -15,9 +15,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('vendas', 'HomeController@index');
 
-Route::get('admin/estoque', 'HomeController@envios');
+
+Route::resource('admin/estoque','EstoqueController');
 
 
 
