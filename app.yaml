@@ -1,0 +1,27 @@
+runtime: php
+env: flex
+
+runtime_config:
+  document_root: public
+
+# Ensure we skip ".env", which is only for local development
+skip_files:
+  - .env
+  - .git
+
+env_variables:
+  # Put production environment variables here.
+  APP_LOG: errorlog
+  APP_KEY: base64:EOC9iOFsL8e8VxLFrHNXPwbwr6nvT7X8tiaL4QDfPyU=
+  STORAGE_DIR: /tmp
+  DB_CONNECTION: mysql
+  DB_HOST: localhost
+  DB_PORT: 3306
+  DB_DATABASE: syscolab
+  DB_USERNAME: root
+  DB_PASSWORD: juc4b4l4
+  DB_SOCKET: "/cloudsql/syscolab-185616:southamerica-east1:syscolab"
+
+beta_settings:
+
+  cloud_sql_instances: "syscolab-185616:southamerica-east1:syscolab"

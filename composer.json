@@ -42,8 +42,11 @@
             "php artisan optimize"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            
+            "chmod -R 755 bootstrap\/cache",
+                "php artisan cache:clear"
+
+
         ]
     },
     "config": {
