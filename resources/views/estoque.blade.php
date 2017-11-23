@@ -16,9 +16,12 @@
 
 
   </script>
+<div class="container-fluid">
+	
 
 
-<h1>{{$message}}</h1>
+<h2>{{$message}}</h2>
+
 
 <div class="col-xs-12">
 
@@ -28,7 +31,7 @@
 
 		 {{ csrf_field() }}
 
-       <input class="form-control" type="text" autofocus="" maxlength="7" onkeyup="return(DoCheckLength(this));" id="codigo" name="codigo" placeholder="Digitalize o codigo de barras">
+       <input class="form-control" type="text" autofocus="" maxlength="7" onkeyup="return(DoCheckLength(this));" id="codigo" name="codigo" placeholder="código" style="height: 100px; font-size: 90px;">
                               
 </form>
 </div>
@@ -37,11 +40,11 @@
 </div>
 
 
-<div class="col-xs-12">
+<div class="col-xs-12 col-md-4">
 	
 	<div class="box">
 	<div class="box-header">
-		<h4>Ultimas entradas no estoque</h4>
+		<h3>Ultimas entradas no estoque</h3>
 
 	</div>
 	
@@ -49,10 +52,12 @@
 	
 	<thead>
 		<tr>
-      	<th scope="col">#</th>
-      	<th scope="col">Recebido por:</th>
+
+		<th scope="col">Data</th>
       	<th scope="col">Produto</th>
-      <th scope="col">Mensagem</th>
+      	<th scope="col">Checado</th>
+      	
+      
     </tr>
 	</thead>
 
@@ -61,10 +66,11 @@
 
 	@foreach($itens as $e)
 		<tr>
-			<th scope="row">{{$e->id}}</th>
-			<td>{{$e->user->name}}</td>
+			<td>{{date("d/m/Y",strtotime($e->produto->created_at))}}</td>
 			<td>{{$e->produto->nome}}</td>
-			<td>{{$e->remarks}}</td>
+			<td>{{$e->user->name}}</td>
+			
+			
 		</tr>
 
 	@endforeach
@@ -73,6 +79,7 @@
 
 </div>
 </div>
+
 
 
 

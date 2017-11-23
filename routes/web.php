@@ -21,7 +21,7 @@ Route::resource('admin/estoque','EstoqueController');
 
 Route::resource('admin/colaber','ColaberController');
 
-Route::get('admin/test','HomeController@users');
+Route::get('admin/test','HomeController@produtos');
 
 
 

@@ -135,5 +135,16 @@ class HomeController extends Controller
 
     }
 
+
+    public function produtos()
+    {       
+            $codigo = 6931;
+
+            $item = Produtos::where('codigo','like', $codigo)->orWhere('codigo','like', '%'.$codigo.'%')->firstOrFail();
+
+            dd($item); 
+
+    }
+
   
 }

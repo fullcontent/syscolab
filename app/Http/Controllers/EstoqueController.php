@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Estoque;
 use App\Models\Produtos;
-    use CRUDBooster;
+use CRUDBooster;
+use Input;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -50,19 +51,27 @@ class EstoqueController extends Controller
 
 
         $userId = CRUDBooster::myId();
+        $codigo = Input::get('codigo');
 
-        $codigo = $request->only('codigo');
         
+
         $itens = Estoque::orderBy('id','DESC')->take(5)->get();
+
+
+
 
          try
             {
-                $item = Produtos::where('codigo',$codigo)->firstOrFail();
+                $item = Produtos::where('codigo','like', $codigo)->orWhere('codigo','like', '%'.$codigo.'%')->firstOrFail();
+                
+
             }
             
             catch(ModelNotFoundException $e)
             {
                 
+
+
                 return view('estoque', compact('itens'))->with('message','Produto nao Encontrado');
 
             }
