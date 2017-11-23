@@ -8,6 +8,7 @@ use CRUDBooster;
 use App\Models\Produtos;
 use App\Models\Envio;
 use App\Models\EnvioItem;
+use App\User;
 
 use DNS1D;
 use App;
@@ -413,7 +414,21 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	    | 
 	    */
 	    public function hook_after_add($id) {        
-	        //Your code here
+	        
+	        
+	         $gerencia = User::where('id_cms_privileges',3)->get();
+
+	         $usuario = User::find(CRUDBooster::myId());
+
+            foreach($gerencia as $g){
+
+              	$user[]=$g->id;
+            }
+
+            CRUDBooster::sendNotification($config=[
+                'content'=>''.$usuario->name.' adicionou uma remessa',
+                 'to'=>CRUDBooster::adminPath('notifications'),
+                 'id_cms_users'=>$user]);
 
 	    }
 

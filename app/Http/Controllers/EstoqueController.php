@@ -23,11 +23,7 @@ class EstoqueController extends Controller
 
         $itens = Estoque::with('produto','user')->orderBy('id','DESC')->take(5)->get();
 
-
-        
-
-
-        return view('estoque', compact('itens'))->with('message','Adicionando Produto');
+      return view('estoque', compact('itens'))->with('message','Adicionando Produto');
     }
 
     /**
@@ -77,11 +73,14 @@ class EstoqueController extends Controller
             $estoque->produto_id = $item->id;
             $estoque->user_id = $userId;
             $estoque->in_out_qty = 1;
-            $estoque->remarks = 'Entrada de '.$estoque->in_out_qty.' iten(s) no estoque';
+            $estoque->remarks = ''.$item->nome.' está em nosso estoque!';
             $estoque->save();
 
 
-            
+            CRUDBooster::sendNotification($config=[
+                'content'=>$estoque->remarks,
+                 'to'=>CRUDBooster::adminPath('notifications'),
+                 'id_cms_users'=>[$item->user_id,$userId]]);
 
 
         return view('estoque', compact('itens'))->with('message','Cadastrado');

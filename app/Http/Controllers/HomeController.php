@@ -10,6 +10,7 @@ use App\Models\Estoque;
 use \Auth;
 use App;
 use PDF;
+use App\User;
 
 use DNS1D;
 
@@ -112,6 +113,25 @@ class HomeController extends Controller
             return $estoque;
 
           
+
+    }
+
+
+    public function users()
+    {
+
+
+        $gerencia = User::where('id_cms_privileges',2)->get();
+
+
+            foreach($gerencia as $g){
+
+                $user[]=$g->id;
+            }
+
+            dd($user);
+
+           
 
     }
 

@@ -21,20 +21,24 @@ class NotificationsController extends CBController {
         $this->table         = "cms_notifications";
         $this->primary_key   = "id";
         $this->title_field   = "content";
-        $this->limit         = 20;
+        $this->limit         = 10;
         $this->index_orderby = ["id"=>"desc"];
-        $this->button_show   = true;        
+        $this->button_bulk_action = false;
+        $this->button_show   = false;        
         $this->button_add    = false;
-        $this->button_delete = true;
-        $this->button_export = false;        
+        $this->button_delete = false;
+        $this->button_edit = false;
+        $this->button_detail = false;
+        $this->button_export = false;   
+        $this->button_filter = false;     
         $this->button_import = false;
         $this->global_privilege = TRUE;
 
         $read_notification_url = url(config('crudbooster.ADMIN_PATH')).'/notifications/read';
 
         $this->col = array();		        
-		$this->col[] = array("label"=>"Content","name"=>"content","callback_php"=>'"<a href=\"'.$read_notification_url.'/$row->id\">$row->content</a>"' );	
-        $this->col[] = array('label'=>'Read','name'=>'is_read','callback_php'=>'($row->is_read)?"<span class=\"label label-default\">Already Read</span>":"<span class=\"label label-danger\">NEW</span>"');	
+		$this->col[] = array("label"=>"Notificação","name"=>"content","callback_php"=>'"<a href=\"'.$read_notification_url.'/$row->id\">$row->content</a>"' );	
+        $this->col[] = array('label'=>'Lida','name'=>'is_read','callback_php'=>'($row->is_read)?"<span class=\"label label-default\">Lida</span>":"<span class=\"label label-danger\">Nova</span>"');	
 
 		$this->form = array();		
 		$this->form[] = array("label"=>"Content","name"=>"content","type"=>"text"   );
