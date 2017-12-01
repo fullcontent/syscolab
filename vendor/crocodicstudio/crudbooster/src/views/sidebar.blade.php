@@ -12,7 +12,7 @@
             <div class="pull-{{ trans('crudbooster.left') }} info">
                 <p>{{ CRUDBooster::myName() }}</p>
                 <!-- Status -->
-                <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('crudbooster.online') }}</a>
+               
             </div>
         </div>
 

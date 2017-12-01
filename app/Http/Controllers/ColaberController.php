@@ -21,7 +21,7 @@ class ColaberController extends Controller
 
         $colaber = Colaber::where('user_id',$id)->get()->first();
 
-        return view('home',compact('colaber'));
+        return view('colaber',compact('colaber'));
       
 
     }

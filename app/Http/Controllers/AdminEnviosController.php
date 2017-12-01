@@ -190,8 +190,18 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        |
 	        */
 	        $this->script_js = "
+
+
+	        		$(document).ready(function() {
+  					$(window).keydown(function(event){
+   						 if(event.keyCode == 13) {
+      					event.preventDefault();
+     					 return false;
+					    }
+					  });
+					});
 						
-					$('.button_action a').click(function() {
+					$('.button_action a.btn-warning').click(function() {
     				$(this).attr('target', '_blank');
 					});
 					

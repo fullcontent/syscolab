@@ -15,11 +15,11 @@
               <div class="box-body">
                 <div class="form-group">
                   <label>Marca</label>
-                  <input type="text" class="form-control" id="marca" name="marca" placeholder="Qual a sua marca?" value="{{$colaber->marca}}">
+                  <input type="text" class="form-control" id="marca" name="marca" placeholder="Qual a sua marca?" value="{{$colaber->marca}}" required>
                 </div>
                 <div class="form-group">
                   <label>Responsavel</label>
-                  <input type="text" class="form-control" id="responsavel" name="responsavel" placeholder="Qual a sua marca?" value="{{$colaber->responsavel}}">
+                  <input type="text" class="form-control" id="responsavel" name="responsavel" placeholder="Qual o nome da pessoa responsavel?" value="{{$colaber->responsavel}}" required>
                 </div>
                 
                 <div class="form-group">
@@ -28,12 +28,12 @@
                 </div>
                 <div class="form-group">
                   <label>CPF</label>
-                  <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Você possui cpf?" value="{{$colaber->cpf}}">
+                  <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Você possui cpf?" value="{{$colaber->cpf}}" required>
                 </div>
                 
                 <div class="form-group">
                   <label>Telefone</label>
-                  <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Você possui telefone?" value="{{$colaber->telefone}}">
+                  <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Você possui telefone?" value="{{$colaber->telefone}}" required>
                 </div>
                 <div class="form-group">
                   <label>Celular</label>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group">
                   <label>Dados Bancários</label>
-                  <input type="text" class="form-control" id="dadosBancarios" name="dadosBancarios" placeholder="Você possui dadosBancarios?" value="{{$colaber->dadosBancarios}}">
+                  <input type="text" class="form-control" id="dadosBancarios" name="dadosBancarios" placeholder="Informe os dados para depósito." value="{{$colaber->dadosBancarios}}">
                 </div>
 
 

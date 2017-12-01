@@ -17,10 +17,10 @@ class CreateEnvioItemsTable extends Migration
             $table->increments('id');
 
             $table->integer('envio_id')->unsigned();
-            $table->foreign('envio_id')->references('id')->on('envios')->onDelete('restrict');
+            $table->foreign('envio_id')->references('id')->on('envios')->onDelete('cascade');
 
             $table->integer('produto_id')->unsigned();
-            $table->foreign('produto_id')->references('id')->on('produtos')->onDelete('restrict');
+            $table->foreign('produto_id')->references('id')->on('produtos')->onDelete('cascade');
 
             
             $table->integer('qtde');

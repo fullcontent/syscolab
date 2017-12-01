@@ -41,14 +41,14 @@ window.setTimeout(function() {
 				<div class="alert alert-success alert-dismissible">
 	                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 	                <h4><i class="icon fa fa-check"></i> Legal!</h4>
-	                O produto foi adicionado ao estoque.
+	                O produto foi retirado do estoque.
               	</div>
 
 @elseif ($message == 'add')
 
 				<div class="alert alert-info alert-dismissible">
 	                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-	                <h4><i class="icon fa fa-plus"></i> Adicionando produto</h4>
+	                <h4><i class="icon fa fa-minus-circle"></i> Removendo produto</h4>
 	                Scaneie ou digite o código do produto.
               	</div>              	
 
@@ -88,7 +88,7 @@ window.setTimeout(function() {
 
 		<th scope="col">Data</th>
       	<th scope="col">Produto</th>
-      	<th scope="col">Checado</th>
+      	<th scope="col">Checado por</th>
       	
       
     </tr>

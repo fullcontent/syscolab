@@ -8,10 +8,7 @@ use App\Models\Produtos;
 use CRUDBooster;
 use Input;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-
-class EstoqueController extends Controller
+class EstoqueSaidaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,11 +17,10 @@ class EstoqueController extends Controller
      */
     public function index()
     {
+        //
+          $itens = Estoque::with('produto','user')->orderBy('id','DESC')->where('in_out_qty','-1')->take(5)->get();
 
-
-        $itens = Estoque::with('produto','user')->orderBy('id','DESC')->where('in_out_qty',1)->take(5)->get();
-
-        return view('estoque', compact('itens'))->with('message','add');
+        return view('saidaEstoque', compact('itens'))->with('message','add');
     }
 
     /**
@@ -46,16 +42,12 @@ class EstoqueController extends Controller
     public function store(Request $request)
     {
         //
-
-        //dd($request->only('codigo'));
-
-
-        $userId = CRUDBooster::myId();
+         $userId = CRUDBooster::myId();
         $codigo = Input::get('codigo');
 
         
 
-        $itens = Estoque::orderBy('id','DESC')->where('in_out_qty',1)->take(5)->get();
+        $itens = Estoque::orderBy('id','DESC')->where('in_out_qty','-1')->take(5)->get();
 
 
 
@@ -81,18 +73,15 @@ class EstoqueController extends Controller
             $estoque = new Estoque;
             $estoque->produto_id = $item->id;
             $estoque->user_id = $userId;
-            $estoque->in_out_qty = 1;
-            $estoque->remarks = ''.$item->nome.' está em nosso estoque!';
+            $estoque->in_out_qty = -1;
+            $estoque->remarks = ''.$item->nome.' foi retirado do estoque!';
             $estoque->save();
 
 
             
 
 
-        return view('estoque', compact('itens'))->with('message','ok');
-
-            
-
+        return view('saidaEstoque', compact('itens'))->with('message','ok');
     }
 
     /**
@@ -139,9 +128,4 @@ class EstoqueController extends Controller
     {
         //
     }
-
-
-   
-
-    
 }

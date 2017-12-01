@@ -50,7 +50,10 @@
 
 
 			$this->col[] = ["label"=>"Qtd Estoque","name"=>"descricao","callback"=>function($row){
-				$count = Estoque::where('produto_id', $row->id)->count();
+				
+				$entrada = Estoque::where([['produto_id', $row->id],['in_out_qty',1]])->count();
+				$saida = Estoque::where([['produto_id', $row->id],['in_out_qty','-1']])->count();
+				$count = $entrada - $saida;
 				return $count;
 			}];
 
@@ -61,13 +64,15 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-5'];
-			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-5'];
-			$this->form[] = ['label'=>'Categoria','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false,'width'=>'col-sm-5','validation'=>'required'];
-			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'text','width'=>'col-sm-5'];
+			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-5','placeholder'=>'Qual o nome do seu produto?'];
+			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-5','placeholder'=>'Qual o valor de venda?'];
+			$this->form[] = ['label'=>'Categoria','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false,'width'=>'col-sm-5','validation'=>'required','placeholder'=>'test'];
+			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'text','width'=>'col-sm-5','placeholder'=>'Qual é a cor principal do seu produto?'];
+			$this->form[] = ['label'=>'Acabamento','name'=>'acabamento','type'=>'text','width'=>'col-sm-5','placeholder'=>'Ele possui algum acabamento?'];
+			$this->form[] = ['label'=>'Tamanho','name'=>'tamanho','type'=>'text','width'=>'col-sm-5','placeholder'=>'Qual o tamanho do seu produto?'];
 			
-			$this->form[] = ['label'=>'Descricao','name'=>'descricao','type'=>'textarea','width'=>'col-sm-5'];
-			$this->form[] = ['label'=>'Img','name'=>'img','type'=>'upload','width'=>'col-sm-5'];
+			$this->form[] = ['label'=>'Descricao','name'=>'descricao','type'=>'textarea','width'=>'col-sm-5','validation'=>'required','placeholder'=>'Faça uma breve descrição do seu produto.'];
+			$this->form[] = ['label'=>'Foto','name'=>'img','type'=>'upload','width'=>'col-sm-5'];
 			
 
 			$userId = CRUDBooster::myId();

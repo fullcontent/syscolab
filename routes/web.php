@@ -15,9 +15,16 @@ Route::get('/', function () {
     return redirect('admin/login');
 });
 
+Route::get('/admin/painel', 'HomeController@index');
+
 
 
 Route::resource('admin/estoque','EstoqueController');
+
+Route::resource('admin/saidaEstoque','EstoqueSaidaController');
+
+
+
 
 Route::resource('admin/colaber','ColaberController');
 

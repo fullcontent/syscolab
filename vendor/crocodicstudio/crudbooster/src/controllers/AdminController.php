@@ -15,12 +15,12 @@ class AdminController extends CBController {
 		$data = array();			
 		$data['page_title']       = '<strong>Dashboard</strong>';
 
-
-		$numProdutos = DB::table('produtos')->count();
-		$numUsuarios = DB::table('cms_users')->where('id_cms_privileges',2)->count();
+		
 
 
-		return view('crudbooster::home',$data)->with(['numUsuarios'=>$numUsuarios,'numProdutos'=>$numProdutos]);
+		//return view('crudbooster::home',$data)
+
+		return redirect('admin/painel');
 	}
 
 	public function getLockscreen() {
