@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Estoque;
+use \Auth, \Redirect, \Validator, \Input, \Session, \Response;
+use App\Http\Controllers\Controller;
 use App\Models\Produtos;
-use CRUDBooster;
-use Input;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-
-class EstoqueController extends Controller
+class EstoqueApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,11 +16,10 @@ class EstoqueController extends Controller
      */
     public function index()
     {
+        //
 
+        return Response::json(Produtos::get());
 
-        $itens = Estoque::with('produto','user')->orderBy('id','DESC')->where('in_out_qty',1)->take(5)->get();
-
-        return view('estoque', compact('itens'))->with('message','add');
     }
 
     /**
@@ -46,51 +41,6 @@ class EstoqueController extends Controller
     public function store(Request $request)
     {
         //
-
-        //dd($request->only('codigo'));
-
-
-        $userId = CRUDBooster::myId();
-        $codigo = Input::get('codigo');
-
-        $itens = Estoque::orderBy('id','DESC')->where('in_out_qty',1)->take(5)->get();
-
-
-
-
-         try
-            {
-                $item = Produtos::where('codigo','like', $codigo)->orWhere('codigo','like', '%'.$codigo.'%')->firstOrFail();
-                
-
-            }
-            
-            catch(ModelNotFoundException $e)
-            {
-                
-
-
-                return view('estoque', compact('itens'))->with('message','notFound');
-
-            }
-
-
-
-            $estoque = new Estoque;
-            $estoque->produto_id = $item->id;
-            $estoque->user_id = $userId;
-            $estoque->in_out_qty = 1;
-            $estoque->remarks = ''.$item->nome.' está em nosso estoque!';
-            $estoque->save();
-
-
-            
-
-
-        return view('estoque', compact('itens'))->with('message','ok');
-
-            
-
     }
 
     /**
@@ -137,9 +87,4 @@ class EstoqueController extends Controller
     {
         //
     }
-
-
-   
-
-    
 }

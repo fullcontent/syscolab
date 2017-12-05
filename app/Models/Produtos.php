@@ -19,10 +19,22 @@ class Produtos extends Model
     	return $this->hasMany('App\Models\EnvioItem','produto_id');
     }
 
-    public function estoque()
+    public function entradaEstoque()
     
     {
 
-    	return $this->hasMany('App\Models\Estoque')->orderBy('id','DESC');
+    	return $this->hasMany('App\Models\Estoque','produto_id')->where('in_out_qty',1);
+    }
+
+    public function saidaEstoque()
+    
+    {
+
+        return $this->hasMany('App\Models\Estoque','produto_id')->where('in_out_qty','-1');
+    }
+
+    public function venda()
+    {
+        return $this->hasMany('App\Models\VendasItem','produto_id');
     }
 }

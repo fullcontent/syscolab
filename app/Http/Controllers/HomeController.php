@@ -10,8 +10,11 @@ use PDF;
 use App\User;
 use CRUDBooster;
 use DB;
+use Response;
 
 use DNS1D;
+use App\Models\Vendas;
+use App\Models\Produtos;
 
 use App\Models\Estoque;
 
@@ -52,27 +55,14 @@ class HomeController extends Controller
     }
 
 
-     public function remover(){
+    public function listaVendas()
+    {
 
+        $vendas = Produtos::whereHas('venda')->withCount('entradaEstoque','saidaEstoque')->get();
 
-            echo "cagou";
+        
 
-            $produto_id = 13;
-            $userID = 1;
-
-            $estoque = new Estoque;
-            $estoque->produto_id = $produto_id;
-            $estoque->user_id = $userID;
-            $estoque->in_out_qty = -1;
-            $estoque->remarks = 'Removido do estoque';
-            $estoque->save();
-
-
-            
-
-
-
-
+        return Response::json($vendas);
     }
 
    

@@ -12,7 +12,7 @@
             <div class="pull-<?php echo e(trans('crudbooster.left')); ?> info">
                 <p><?php echo e(CRUDBooster::myName()); ?></p>
                 <!-- Status -->
-                <a href="#"><i class="fa fa-circle text-success"></i> <?php echo e(trans('crudbooster.online')); ?></a>
+               
             </div>
         </div>
 

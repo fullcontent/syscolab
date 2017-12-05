@@ -62,7 +62,7 @@ window.setTimeout(function() {
 
 		 {{ csrf_field() }}
 
-       <input class="form-control" type="text" autofocus maxlength="7" onkeyup="return(DoCheckLength(this));" id="codigo" name="codigo" placeholder="código" style="height: 100px; font-size: 90px;">
+       <input class="form-control" type="text" autofocus maxlength="7" onkeyup="return(DoCheckLength(this));" id="codigo" name="codigo" placeholder="Inserir produto no estoque" style="height: 100px; font-size: 40px;">
                               
 </form>
 </div>
@@ -99,7 +99,7 @@ window.setTimeout(function() {
 
 	@foreach($itens as $e)
 		<tr>
-			<td>{{date("d/m/Y",strtotime($e->produto->created_at))}}</td>
+			<td>{{date("d/m/Y",strtotime($e->created_at))}}</td>
 			<td>{{$e->produto->nome}}</td>
 			<td>{{$e->user->name}}</td>
 			

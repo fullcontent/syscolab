@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+use App\Models\Vendas;
+use App\Models\VendasTemp;
+use App\Models\VendasItem;
 use App\Models\Estoque;
 use App\Models\Produtos;
-use CRUDBooster;
-use Input;
-use Response;
+use \Redirect, \Validator, \Input, \Session;
 
-class EstoqueSaidaController extends Controller
+use CRUDBooster;
+
+class VendaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,11 +24,9 @@ class EstoqueSaidaController extends Controller
     public function index()
     {
         //
-          $itens = Estoque::with('produto','user')->orderBy('id','DESC')->where('in_out_qty','-1')->take(5)->get();
 
-        //return Response::json($itens);
-
-        return view('saidaEstoque', compact('itens'))->with('message','add');
+       return view('vendas.index');
+            
     }
 
     /**
@@ -44,47 +47,46 @@ class EstoqueSaidaController extends Controller
      */
     public function store(Request $request)
     {
-        //
-         $userId = CRUDBooster::myId();
-        $codigo = Input::get('codigo');
-
         
 
-        $itens = Estoque::orderBy('id','DESC')->where('in_out_qty','-1')->take(5)->get();
+        $userID = 1;
+
+        $venda = new Vendas;
+        $venda->user_id = $userID; //Inserir id do usuario logado
+        $venda->tipoPagamento = Input::get('tipoPagamento');
+        $venda->valorVenda = Input::get('valorVenda');
+        $venda->valorRecebido = Input::get('valorRecebido');
+        $venda->comentarios = Input::get('comentarios');
+        $venda->save();
+
+        $vendaItens = VendasTemp::all();
+        foreach ($vendaItens as $v){
+
+            $vendaItemData = new VendasItem;
+
+            $vendaItemData->venda_id = $venda->id;
+            $vendaItemData->produto_id = $v->produto_id;
+            $vendaItemData->valor = $v->valor;
+            $vendaItemData->qtde = $v->qtde;
+            $vendaItemData->total_venda = $v->total;
+
+            $vendaItemData->save();
+
+            $produtos = Produtos::find($v->produto_id);
+
+                $estoque = new Estoque;
+                $estoque->produto_id = $v->produto_id;
+                $estoque->user_id = $userID;
+                $estoque->in_out_qty = -($v->qtde);
+                $estoque->remarks = 'Venda'.$venda->id;
+                $estoque->save();
+        }
+
+        VendasTemp::truncate();
 
 
+        return redirect('admin/vendas')->with('message', 'Venda efetuada com sucesso!');
 
-
-         try
-            {
-                $item = Produtos::where('codigo','like', $codigo)->orWhere('codigo','like', '%'.$codigo.'%')->firstOrFail();
-                
-
-            }
-            
-            catch(ModelNotFoundException $e)
-            {
-                
-
-
-                return view('estoque', compact('itens'))->with('message','notFound');
-
-            }
-
-
-
-            $estoque = new Estoque;
-            $estoque->produto_id = $item->id;
-            $estoque->user_id = $userId;
-            $estoque->in_out_qty = -1;
-            $estoque->remarks = ''.$item->nome.' foi retirado do estoque!';
-            $estoque->save();
-
-
-            
-
-
-        return view('saidaEstoque', compact('itens'))->with('message','ok');
     }
 
     /**

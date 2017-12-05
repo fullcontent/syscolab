@@ -56,7 +56,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:cms_users',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -102,7 +102,7 @@ class RegisterController extends Controller
         Session::put('theme_color',$priv->theme_color);
         Session::put("appname",CRUDBooster::getSetting('appname'));     
 
-       // CRUDBooster::insertLog(trans("crudbooster.log_login",['email'=>$users->email,'ip'=>Request::server('REMOTE_ADDR')]));       
+        CRUDBooster::insertLog(trans("crudbooster.log_login",['email'=>$users->email,'ip'=>Request::server('REMOTE_ADDR')]));       
       
 
         return $user;

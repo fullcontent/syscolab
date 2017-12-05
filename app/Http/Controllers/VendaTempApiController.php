@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Estoque;
+
+use App\Http\Controllers\Controller;
+use App\Models\VendasTemp;
 use App\Models\Produtos;
-use CRUDBooster;
-use Input;
+use \Redirect, \Validator, \Input, \Session, \Response;
+use Illuminate\Http\Request;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-
-class EstoqueController extends Controller
+class VendaTempApiController extends Controller
 {
+    
+   
+
+
     /**
      * Display a listing of the resource.
      *
@@ -20,11 +22,9 @@ class EstoqueController extends Controller
      */
     public function index()
     {
+        //
+       return Response::json(VendasTemp::with('item')->get());
 
-
-        $itens = Estoque::with('produto','user')->orderBy('id','DESC')->where('in_out_qty',1)->take(5)->get();
-
-        return view('estoque', compact('itens'))->with('message','add');
     }
 
     /**
@@ -35,6 +35,7 @@ class EstoqueController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -47,18 +48,11 @@ class EstoqueController extends Controller
     {
         //
 
-        //dd($request->only('codigo'));
-
-
-        $userId = CRUDBooster::myId();
-        $codigo = Input::get('codigo');
-
-        $itens = Estoque::orderBy('id','DESC')->where('in_out_qty',1)->take(5)->get();
+    $codigo = Input::get('codigo');
 
 
 
-
-         try
+        try
             {
                 $item = Produtos::where('codigo','like', $codigo)->orWhere('codigo','like', '%'.$codigo.'%')->firstOrFail();
                 
@@ -68,28 +62,22 @@ class EstoqueController extends Controller
             catch(ModelNotFoundException $e)
             {
                 
-
-
-                return view('estoque', compact('itens'))->with('message','notFound');
+                
 
             }
 
 
+        $VendasTemp = new VendasTemp;
+        $VendasTemp->produto_id = $item->id;
+        $VendasTemp->valor = $item->valor;
+        $VendasTemp->qtde = 1;
+        $VendasTemp->total = $item->valor;
 
-            $estoque = new Estoque;
-            $estoque->produto_id = $item->id;
-            $estoque->user_id = $userId;
-            $estoque->in_out_qty = 1;
-            $estoque->remarks = ''.$item->nome.' está em nosso estoque!';
-            $estoque->save();
-
-
-            
-
-
-        return view('estoque', compact('itens'))->with('message','ok');
-
-            
+        
+        $VendasTemp->save();
+              
+        
+        return $VendasTemp;
 
     }
 
@@ -122,9 +110,14 @@ class EstoqueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        $VendasTemp = VendasTemp::find($id);
+        $VendasTemp->qtde = Input::get('qtde');
+        $VendasTemp->total = Input::get('total');
+        
+        $VendasTemp->save();
+        return $VendasTemp;
     }
 
     /**
@@ -135,11 +128,6 @@ class EstoqueController extends Controller
      */
     public function destroy($id)
     {
-        //
+        VendasTemp::destroy($id);
     }
-
-
-   
-
-    
 }

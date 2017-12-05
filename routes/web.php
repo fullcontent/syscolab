@@ -23,12 +23,14 @@ Route::resource('admin/estoque','EstoqueController');
 
 Route::resource('admin/saidaEstoque','EstoqueSaidaController');
 
+Route::resource('admin/vendas','VendaController');
+
 
 
 
 Route::resource('admin/colaber','ColaberController');
 
-Route::get('admin/test','HomeController@produtos');
+Route::get('admin/test','HomeController@listaVendas');
 
 
 
@@ -38,6 +40,7 @@ Route::get('admin/test','HomeController@produtos');
 
 
 Auth::routes();
-
+Route::resource('api/vendaTemp', 'VendaTempApiController');
+Route::resource('api/produtos', 'EstoqueApiController');
 
 
