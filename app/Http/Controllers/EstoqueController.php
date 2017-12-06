@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Estoque;
+use App\Models\EstoqueTemp;
 use App\Models\Produtos;
 use CRUDBooster;
 use Input;
@@ -21,10 +22,8 @@ class EstoqueController extends Controller
     public function index()
     {
 
-
-        $itens = Estoque::with('produto','user')->orderBy('id','DESC')->where('in_out_qty',1)->take(5)->get();
-
-        return view('estoque', compact('itens'))->with('message','add');
+         return view('estoque.index');
+        
     }
 
     /**
@@ -47,49 +46,29 @@ class EstoqueController extends Controller
     {
         //
 
-        //dd($request->only('codigo'));
+       $user_id = CRUDBooster::myId(); //Pegar usuario logado
 
+       $estoqueItens = EstoqueTemp::all();
 
-        $userId = CRUDBooster::myId();
-        $codigo = Input::get('codigo');
+       foreach ($estoqueItens as $e)
+       {
 
-        $itens = Estoque::orderBy('id','DESC')->where('in_out_qty',1)->take(5)->get();
+            $estoqueData = new Estoque;
+            $estoqueData->produto_id = $e->produto_id;
+            $estoqueData->user_id = $user_id;
+            $estoqueData->operacao = $e->operacao;
+            $estoqueData->qty = $e->qty;
 
+            $estoqueData->comentarios = $e->comentarios;
 
+            $estoqueData->save();
 
+       }
 
-         try
-            {
-                $item = Produtos::where('codigo','like', $codigo)->orWhere('codigo','like', '%'.$codigo.'%')->firstOrFail();
-                
+       EstoqueTemp::truncate();
 
-            }
-            
-            catch(ModelNotFoundException $e)
-            {
-                
-
-
-                return view('estoque', compact('itens'))->with('message','notFound');
-
-            }
-
-
-
-            $estoque = new Estoque;
-            $estoque->produto_id = $item->id;
-            $estoque->user_id = $userId;
-            $estoque->in_out_qty = 1;
-            $estoque->remarks = ''.$item->nome.' está em nosso estoque!';
-            $estoque->save();
-
-
-            
-
-
-        return view('estoque', compact('itens'))->with('message','ok');
-
-            
+       return redirect('admin/estoque')->with('message', 'Produtos inseridos no estoque');
+      
 
     }
 

@@ -40,7 +40,11 @@ Route::get('admin/test','HomeController@listaVendas');
 
 
 Auth::routes();
-Route::resource('api/vendaTemp', 'VendaTempApiController');
-Route::resource('api/produtos', 'EstoqueApiController');
+
+
+Route::resource('admin/api/vendaTemp', 'VendaTempApiController');
+Route::get('admin/api/vendaTemp/cancelar' , 'VendaTempApiController@cancelar');
+
+Route::resource('admin/api/estoqueTemp', 'EstoqueApiTempController');
 
 

@@ -9,10 +9,15 @@
         $scope.codigo = [ ];
         
 
-        $http.get('http://localhost/syscolab/public/api/vendaTemp').success(function(data, status, headers, config) {
+        $http.get('api/vendaTemp').success(function(data, status, headers, config) {
             $scope.vendaTemp = data;
 
         });
+
+        $scope.$watch('add_payment',function(newVal){
+          $scope.add_payment = newVal.replace(/,/g,'.');
+        });
+
 
         
         $scope.sum = function(list) {
@@ -24,10 +29,10 @@
         }
 
         $scope.removeVendaTemp = function(id) {
-            $http.delete('http://localhost/syscolab/public/api/vendaTemp/' + id).
+            $http.delete('api/vendaTemp/' + id).
             success(function(data, status, headers, config) {
             	
-                $http.get('http://localhost/syscolab/public/api/vendaTemp').success(function(data) {
+                $http.get('api/vendaTemp').success(function(data) {
                         $scope.vendaTemp = data;
                         });
                 });
@@ -35,12 +40,12 @@
 
        $scope.adicionarVendaTemp = function(codigo){
 
-       		$http.post('http://localhost/syscolab/public/api/vendaTemp',{codigo}).
+       		$http.post('api/vendaTemp',{codigo}).
        		success(function(data, status, headers, config) {
        			$scope.vendaTemp.push(data);
        			
        			reset();
-       			$http.get('http://localhost/syscolab/public/api/vendaTemp').success(function(data){
+       			$http.get('api/vendaTemp').success(function(data){
        				$scope.vendaTemp = data;
        				
        			});
@@ -49,7 +54,7 @@
 
        $scope.atualizaVendaTemp = function(novaVendaTemp) {
             
-            $http.put('http://localhost/syscolab/public/api/vendaTemp/' + novaVendaTemp.id, {qtde: novaVendaTemp.qtde, total: novaVendaTemp.qtde * novaVendaTemp.valor}).
+            $http.put('api/vendaTemp/' + novaVendaTemp.id, {qtde: novaVendaTemp.qtde, total: novaVendaTemp.qtde * novaVendaTemp.valor}).
             success(function(data, status, headers, config){
       	
             	         		
@@ -58,9 +63,11 @@
             
         }
 
+      
+
        var reset = function(){
-		$scope.codigo = [];
-	};
+		      $scope.codigo = [];
+	     };
 
 		
 

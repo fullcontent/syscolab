@@ -23,14 +23,14 @@ class Produtos extends Model
     
     {
 
-    	return $this->hasMany('App\Models\Estoque','produto_id')->where('in_out_qty',1);
+    	return $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',1);
     }
 
     public function saidaEstoque()
     
     {
 
-        return $this->hasMany('App\Models\Estoque','produto_id')->where('in_out_qty','-1');
+        return $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',0);
     }
 
     public function venda()

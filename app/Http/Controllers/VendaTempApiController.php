@@ -15,7 +15,7 @@ class VendaTempApiController extends Controller
    
 
 
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -62,7 +62,7 @@ class VendaTempApiController extends Controller
             catch(ModelNotFoundException $e)
             {
                 
-                
+                return "erro";
 
             }
 
@@ -129,5 +129,10 @@ class VendaTempApiController extends Controller
     public function destroy($id)
     {
         VendasTemp::destroy($id);
+    }
+
+    public function cancelar()
+    {
+        VendasTemp::truncate();
     }
 }

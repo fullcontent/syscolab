@@ -13,7 +13,7 @@ class CreateEstoquesTable extends Migration
      */
     public function up()
     {
-        Schema::create('estoques', function (Blueprint $table) {
+            Schema::create('estoques', function (Blueprint $table) {
             $table->increments('id');
 
             $table->integer('produto_id')->unsigned();
@@ -22,8 +22,10 @@ class CreateEstoquesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('cms_users')->onDelete('restrict');
 
-            $table->integer('in_out_qty');
-            $table->string('remarks', 255);
+            $table->integer('operacao');
+            $table->integer('qty');
+
+            $table->string('comentarios', 255);
 
 
             $table->timestamps();

@@ -51,8 +51,8 @@
 
 			$this->col[] = ["label"=>"Qtd Estoque","name"=>"descricao","callback"=>function($row){
 				
-				$entrada = Estoque::where([['produto_id', $row->id],['in_out_qty',1]])->count();
-				$saida = Estoque::where([['produto_id', $row->id],['in_out_qty','-1']])->count();
+				$entrada = Estoque::where([['produto_id', $row->id],['qty',1]])->count();
+				$saida = Estoque::where([['produto_id', $row->id],['qty','-1']])->count();
 				$count = $entrada - $saida;
 				return $count;
 			}];

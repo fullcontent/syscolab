@@ -18,12 +18,8 @@ class EstoqueSaidaController extends Controller
      */
     public function index()
     {
-        //
-          $itens = Estoque::with('produto','user')->orderBy('id','DESC')->where('in_out_qty','-1')->take(5)->get();
-
-        //return Response::json($itens);
-
-        return view('saidaEstoque', compact('itens'))->with('message','add');
+       
+       return view('estoque.saida');
     }
 
     /**
@@ -44,47 +40,31 @@ class EstoqueSaidaController extends Controller
      */
     public function store(Request $request)
     {
-        //
-         $userId = CRUDBooster::myId();
-        $codigo = Input::get('codigo');
-
         
 
-        $itens = Estoque::orderBy('id','DESC')->where('in_out_qty','-1')->take(5)->get();
 
+       
+       $user_id = CRUDBooster::myId(); //Pegar usuario logado
 
+       $estoqueItens = EstoqueTemp::all();
 
+       foreach ($estoqueItens as $e)
+       {
 
-         try
-            {
-                $item = Produtos::where('codigo','like', $codigo)->orWhere('codigo','like', '%'.$codigo.'%')->firstOrFail();
-                
+            $estoqueData = new Estoque;
+            $estoqueData->produto_id = $e->produto_id;
+            $estoqueData->user_id = $user_id;
+            $estoqueData->operacao = $e->operacao;
+            $estoqueData->qty = $e->qty;
+            $estoqueData->comentarios = $e->comentarios;
+            $estoqueData->save();
 
-            }
-            
-            catch(ModelNotFoundException $e)
-            {
-                
+       }
 
+       EstoqueTemp::truncate();
 
-                return view('estoque', compact('itens'))->with('message','notFound');
+       return redirect('admin/saidaEstoque')->with('message', 'Produtos retirados do estoque');
 
-            }
-
-
-
-            $estoque = new Estoque;
-            $estoque->produto_id = $item->id;
-            $estoque->user_id = $userId;
-            $estoque->in_out_qty = -1;
-            $estoque->remarks = ''.$item->nome.' foi retirado do estoque!';
-            $estoque->save();
-
-
-            
-
-
-        return view('saidaEstoque', compact('itens'))->with('message','ok');
     }
 
     /**

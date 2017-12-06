@@ -3,13 +3,10 @@
 
 
 
-
 {!! Html::script('js/angular.min.js', array('type' => 'text/javascript')) !!}
 {!! Html::script('js/venda.js', array('type' => 'text/javascript')) !!}
 
 <div class="container-fluid" ng-app="syscolab" ng-controller="vendaCtrl">
-	
-
 
 
 
@@ -22,12 +19,10 @@
 <form ng-submit="adicionarVendaTemp(codigo)" name="scanCode">
 
 
-	<input class="form-control" type="text" id="codigo" name="codigo" placeholder="código" style="height: 100px; font-size: 90px;" ng-model="codigo" autocomplete="off" ng-minlength="4" required>
+	<input class="form-control" type="text" id="codigo" name="codigo" placeholder="código" style="height: 100px; font-size: 90px;" ng-model="codigo" autocomplete="off" ng-minlength="7" required>
 </form>
 
-
-
-                              
+                            
 
 </div>
 	
@@ -37,7 +32,9 @@
 {!! Form::open(array('url' => 'admin/vendas', 'class' => 'form-horizontal')) !!}
 
 <table class="table table-bordered">
-                            <tr><th>Codigo</th>
+                            <tr>
+                            <th>#</th>
+                            <th>Codigo</th>
                             <th>Produto</th>
                             <th>Valor</th>
                             <th>Qtde.</th>
@@ -45,7 +42,8 @@
                             <th>&nbsp;</th>
                         	</tr>
 
-                            <tr ng-repeat="novaVendaTemp in vendaTemp">
+                            <tr ng-repeat="novaVendaTemp in vendaTemp | orderBy: '-id'">
+                            <td>@{{$index+1}}</td>
                             <td>@{{novaVendaTemp.item.codigo}}</td>
                             <td>@{{novaVendaTemp.item.nome}}</td>
                             <td>@{{novaVendaTemp.valor | currency}}</td>	
@@ -63,7 +61,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <div class="input-group-addon">$</div>
-                                                <input type="text" class="form-control" id="add_payment" ng-model="add_payment" name="valorRecebido" />
+                                                <input type="text" class="form-control" id="valorRecebido" ng-model="add_payment" name="valorRecebido" required />
                                             </div>
                                         </div>
                                     </div>
@@ -111,6 +109,7 @@
                                             <button type="submit" class="btn btn-success btn-block">Fechar Venda</button>
                                         </div>
                                     </div>
+                                    
 
                                 </div>
                             </div>

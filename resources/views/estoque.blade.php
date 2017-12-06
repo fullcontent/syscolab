@@ -60,7 +60,7 @@ window.setTimeout(function() {
 	
 	<form class="form-horizontal style-form" name="theForm" action="" method="post">
 
-		 {{ csrf_field() }}
+		 
 
        <input class="form-control" type="text" autofocus maxlength="7" onkeyup="return(DoCheckLength(this));" id="codigo" name="codigo" placeholder="Inserir produto no estoque" style="height: 100px; font-size: 40px;">
                               

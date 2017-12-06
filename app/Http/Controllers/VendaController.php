@@ -49,7 +49,7 @@ class VendaController extends Controller
     {
         
 
-        $userID = 1;
+        $userID = CRUDBooster::myId(); // Pegar id do usuario
 
         $venda = new Vendas;
         $venda->user_id = $userID; //Inserir id do usuario logado
@@ -77,8 +77,9 @@ class VendaController extends Controller
                 $estoque = new Estoque;
                 $estoque->produto_id = $v->produto_id;
                 $estoque->user_id = $userID;
-                $estoque->in_out_qty = -($v->qtde);
-                $estoque->remarks = 'Venda'.$venda->id;
+                $estoque->qty = -($v->qtde);
+                $estoque->operacao = 3;
+                $estoque->comentarios = 'Venda'.$venda->id;
                 $estoque->save();
         }
 
