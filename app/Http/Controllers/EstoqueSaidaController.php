@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Estoque;
 use App\Models\Produtos;
+use App\Models\EstoqueTemp;
 use CRUDBooster;
 use Input;
 use Response;

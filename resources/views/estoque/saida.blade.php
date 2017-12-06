@@ -35,7 +35,7 @@
 <div class="col-sm-12">
 	
 
-{!! Form::open(array('url' => 'admin/estoque', 'class' => 'form-horizontal')) !!}
+{!! Form::open(array('url' => 'admin/saidaEstoque', 'class' => 'form-horizontal')) !!}
 <table class="table table-bordered">
                             <tr>
                             <th>#</th>

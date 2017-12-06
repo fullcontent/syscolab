@@ -47,8 +47,8 @@ class EstoqueController extends Controller
         //
 
        $user_id = CRUDBooster::myId(); //Pegar usuario logado
-
        $estoqueItens = EstoqueTemp::all();
+       
 
        foreach ($estoqueItens as $e)
        {

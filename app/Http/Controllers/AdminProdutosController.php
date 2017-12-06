@@ -51,10 +51,31 @@
 
 			$this->col[] = ["label"=>"Qtd Estoque","name"=>"descricao","callback"=>function($row){
 				
-				$entrada = Estoque::where([['produto_id', $row->id],['qty',1]])->count();
-				$saida = Estoque::where([['produto_id', $row->id],['qty','-1']])->count();
+				$entrada = Estoque::where([['produto_id', $row->id],['operacao',1]])->count();
+				$saida = Estoque::where([['produto_id', $row->id],['operacao',0]])->count();
 				$count = $entrada - $saida;
-				return $count;
+
+				
+				switch ($count) {
+					case 0:
+						$estoque = "<span class='label label-primary'>Sem Estoque</span>";
+						break;
+					
+					case $count < 3:
+						$estoque = "<span class='label label-warning'>Estoque Baixo $count</span>";
+					break;
+
+					default:
+						$estoque = "<span class='label label-success'>$count</span>";
+					break;
+				}
+
+					
+				
+
+
+				
+				return $estoque;
 			}];
 
 			$this->col[] = ["label"=>"Categoria","name"=>"categoria_id","join"=>"categorias,nome"];

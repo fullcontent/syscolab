@@ -339,11 +339,11 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
             foreach ($itens as $item) {
                 for ($i=0; $i < $item->qtde; $i++) { 
                 $codigo = $item->produto->codigo;
-                $code = DNS1D::getBarcodeSVG($codigo, "EAN8",2);
+                $code = DNS1D::getBarcodeSVG($codigo, "EAN8",1,40);
                     
-        $html .= "<div class='col-sm-2' align='center' style='border: 1px #ccc dotted;'>";
+        $html .= "<div class='col-xs-2' align='center'>";
 
-        $html .= "<p>".$item->produto->nome."</p>".$code."<p>Código: ".$codigo."</p><h4>R$ ".$item->produto->valor."</h4>";
+        $html .= "<div class='etiqueta'><p>".$user->name."</p><p>".$item->produto->nome."</p>".$code."<p>".$codigo."</p><h5>  R$ ".$item->produto->valor."</h5></div>";
 
                  $html .= "</div>";
                   

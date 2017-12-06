@@ -11,13 +11,34 @@
     <style>
     	
     	@page {
-    size: 29.7cm 21cm;
-    margin: 5mm 10mm 30mm 10mm;
+    size: 21cm 29.7cm;
+    margin: 5mm 0mm 20mm 0mm;
     page-break-after : always; /* change the margins as you want them to be. */
+}
+
+p {
+    font-size: 10px;
+    line-height: 10px;
+    overflow-wrap: normal;
+
+}
+h5 {
+
+    font-size: 15px;
+
+}
+
+.etiqueta {
+    
+    padding: 15px 10px;
+    border: 1px #666 dotted;
+    width: 30mm;
+    
+
 }
     </style>
 	
-	<body onload="print()">
+	<body onload="">
 		
 		<section class="etiquetas">
 		
