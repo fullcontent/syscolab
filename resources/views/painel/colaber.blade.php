@@ -1,6 +1,9 @@
 @extends("crudbooster::admin_template")
 @section("content")
 
+{!! Html::script('js/angular.min.js', array('type' => 'text/javascript')) !!}
+{!! Html::script('js/ultimasNoticias.js', array('type' => 'text/javascript')) !!}
+
 <div class="container-fluid">
 	
 <div class="row">
@@ -30,7 +33,7 @@
         </div>
     </div>
 
-    <div class="box box-warning direct-chat direct-chat-primary">
+    <div class="box box-warning direct-chat direct-chat-primary" ng-app="syscolab" ng-controller="noticiasCtrl">
             <div class="box-header with-border">
               <h3 class="box-title">Ultimas noticias da praia!</h3>
 
@@ -42,23 +45,23 @@
               <div class="direct-chat-messages">
                 <!-- Message. Default to the left -->
                 
-				@for ($i = 0; $i < 10; $i++)
-
-                <div class="direct-chat-msg">
+				      
+              
+                <div class="direct-chat-msg" ng-repeat="novaNoticiaTemp in noticiasTemp" ng-model="noticias">
                   <div class="direct-chat-info clearfix">
                     
-                    <span class="direct-chat-timestamp pull-right">{data}</span>
+              <span class="direct-chat-timestamp pull-right">@{{novaNoticiaTemp.created_at}}</span>
                   </div>
                   <!-- /.direct-chat-info -->
                   <img class="direct-chat-img" src="http://localhost/syscolab/public/vendor/crudbooster/avatar.jpg" alt="img"><!-- /.direct-chat-img -->
                   <div class="direct-chat-text">
-                    Aqui vai todo o texto da mensagem sem limite
+                    @{{novaNoticiaTemp.mensagem}}
                   </div>
 
                   <!-- /.direct-chat-text -->
                 </div>
                 <!-- /.direct-chat-msg -->
-				@endfor
+			         
                 
 
               <!-- Contacts are loaded here -->

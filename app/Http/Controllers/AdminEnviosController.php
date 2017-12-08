@@ -66,8 +66,16 @@ if(CRUDBooster::myPrivilegeName() != "Colabers"){
 			
 
 
+			if(CRUDBooster::myPrivilegeName() == 'Colabers')
+				{
 
-			$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,valor','datamodal_select_to'=>'id:produto_id','datamodal_where'=>'user_id='.$userID.'','required'=>true,'width'=>'col-sm-3'];
+					$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,valor','datamodal_select_to'=>'id:produto_id','datamodal_where'=>'user_id='.$userID.'','required'=>true,'width'=>'col-sm-3'];
+				}else{
+
+					$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,valor','datamodal_select_to'=>'id:produto_id','required'=>true,'width'=>'col-sm-3'];
+				}
+
+			
 
 
 			$columns[] = ['label'=>'Quantidade','name'=>'qtde','type'=>'number','required'=>true,'value'=>'1'];			
@@ -315,9 +323,6 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	    public function getEtiquetas($id) {
   			 		
 
-  			 		
- 			
-	    	
             $envios = Envio::whereHas('itens')->withCount('itens')->with('user')->find($id);
 
             $envio_id = $envios->id;
@@ -386,7 +391,9 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 
 	         $userID=CRUDBooster::myId();
 
-	        if (CRUDBooster::myPrivilegeName()	== 'Colabers'){
+
+
+	        if(CRUDBooster::myPrivilegeName() == 'Colabers'){
 
 	        	$query->where('user_id',$userID);
 

@@ -24,6 +24,7 @@ class CreateVendasTempsTable extends Migration
 
            
             $table->decimal('total',9, 2);
+            $table->integer('localVenda')->default(1);
             
             $table->timestamps();
         });

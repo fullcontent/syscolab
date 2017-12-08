@@ -7,19 +7,36 @@
         $scope.vendaTemp = [ ];
         $scope.novaVendaTemp = { };
         $scope.codigo = [ ];
+        $scope.desconto = 0;
         
 
-        $http.get('api/vendaTemp').success(function(data, status, headers, config) {
+        var pageTitleWatch = $scope.$watch('localVenda', function () {
+    console.log($scope.localVenda);
+
+    $http.get('api/vendaTemp?localVenda='+$scope.localVenda+'').success(function(data, status, headers, config) {
             $scope.vendaTemp = data;
 
-        });
+               
+    }).error(function(e){
+      alert("erro da Api");
+    });
+
+    // Now just unbind it after doing your logic
+    pageTitleWatch();
+    
+    });
 
         $scope.$watch('add_payment',function(newVal){
           $scope.add_payment = newVal.replace(/,/g,'.');
+
         });
 
+        $scope.$watch('desconto',function(newVal){
+          $scope.desconto = newVal.replace(/,/g,'.');
 
-        
+        });
+
+      
         $scope.sum = function(list) {
             var total=0;
             angular.forEach(list , function(novaVendaTemp){
@@ -32,25 +49,74 @@
             $http.delete('api/vendaTemp/' + id).
             success(function(data, status, headers, config) {
             	
-                $http.get('api/vendaTemp').success(function(data) {
-                        $scope.vendaTemp = data;
-                        });
+                var pageTitleWatch = $scope.$watch('localVenda', function () {
+    console.log($scope.localVenda);
+
+    $http.get('api/vendaTemp?localVenda='+$scope.localVenda+'').success(function(data, status, headers, config) {
+            $scope.vendaTemp = data;
+
+               
+    }).error(function(e){
+      alert("erro da Api");
+    });
+
+    // Now just unbind it after doing your logic
+    pageTitleWatch();
+    
+    });
                 });
         }
 
-       $scope.adicionarVendaTemp = function(codigo){
+       $scope.adicionarVendaCasaTemp = function(codigo){
 
-       		$http.post('api/vendaTemp',{codigo}).
+       		$http.post('api/vendaTemp',{codigo,localVenda:1}).
        		success(function(data, status, headers, config) {
        			$scope.vendaTemp.push(data);
        			
        			reset();
-       			$http.get('api/vendaTemp').success(function(data){
-       				$scope.vendaTemp = data;
-       				
-       			});
+       			var pageTitleWatch = $scope.$watch('localVenda', function () {
+    console.log($scope.localVenda);
+
+    $http.get('api/vendaTemp?localVenda='+$scope.localVenda+'').success(function(data, status, headers, config) {
+            $scope.vendaTemp = data;
+
+               
+    }).error(function(e){
+      alert("erro da Api");
+    });
+
+    // Now just unbind it after doing your logic
+    pageTitleWatch();
+    
+    });
        		});
        }
+
+       $scope.adicionarVendaFeiraTemp = function(codigo){
+
+          $http.post('api/vendaTemp',{codigo,localVenda:2}).
+          success(function(data, status, headers, config) {
+            $scope.vendaTemp.push(data);
+            
+            reset();
+            var pageTitleWatch = $scope.$watch('localVenda', function () {
+    console.log($scope.localVenda);
+
+    $http.get('api/vendaTemp?localVenda='+$scope.localVenda+'').success(function(data, status, headers, config) {
+            $scope.vendaTemp = data;
+
+               
+    }).error(function(e){
+      alert("erro da Api");
+    });
+
+    // Now just unbind it after doing your logic
+    pageTitleWatch();
+    
+    });
+          });
+       }
+
 
        $scope.atualizaVendaTemp = function(novaVendaTemp) {
             

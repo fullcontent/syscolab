@@ -69,7 +69,7 @@
                 </div>
                 <div class="form-group">
                   <label>Dados Bancários</label>
-                  <input type="text" class="form-control" id="dadosBancarios" name="dadosBancarios" placeholder="Informe os dados para depósito." value="{{$colaber->dadosBancarios}}">
+                  <textarea name="dadosBancarios" class="form-control" rows="3" placeholder="Informe seus dados: Ex: Banco, Agencia, Conta, Operacao" required></textarea>
                 </div>
 
 

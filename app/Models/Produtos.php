@@ -59,4 +59,43 @@ class Produtos extends Model
 
         return $entradaEstoque - $vendas - $saidaEstoque;
     }
+
+    public function EntradaEstoqueCasa()
+    {
+        return $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',4);
+    }
+
+    public function EntradaEstoqueFeira()
+    {
+        return $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',1);
+    }
+
+    public function SaidaEstoqueCasa()
+    {
+        return $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',5);
+    }
+
+    public function SaidaEstoqueFeira()
+    {
+        return $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',2);
+    }
+
+    public function VendasCasa()
+    {       
+        return $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',1);
+    }
+
+    public function VendasFeira()
+    {
+        return $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',2);
+    }
+
+    public function estoqueCasa()
+    {
+        $vendas = $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',1)->count();
+        $saidaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',5)->count();
+        $entradaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',4)->count();
+
+        return $entradaEstoque - $vendas - $saidaEstoque;
+    }
 }

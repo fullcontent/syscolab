@@ -17,7 +17,7 @@ class CreateEstoquesTable extends Migration
             $table->increments('id');
 
             $table->integer('produto_id')->unsigned();
-            $table->foreign('produto_id')->references('id')->on('produtos')->onDelete('restrict');
+            $table->foreign('produto_id')->references('id')->on('produtos')->onDelete('cascade');
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('cms_users')->onDelete('restrict');

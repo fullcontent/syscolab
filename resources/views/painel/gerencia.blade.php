@@ -1,6 +1,9 @@
 @extends("crudbooster::admin_template")
 @section("content")
 
+{!! Html::script('js/angular.min.js', array('type' => 'text/javascript')) !!}
+{!! Html::script('js/ultimasNoticias.js', array('type' => 'text/javascript')) !!}
+
 <div class="row">
         
         <div class="col-md-4 col-sm-6 col-xs-12">
@@ -58,24 +61,24 @@
          <div class="box-body">
 
             <div class="btn-group-vertical btn-block">
-                <a href="colaber"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-list-alt"></i> Nova Venda</h4></button></a>
+                <a href="vendasFeira"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-list-alt"></i> Nova Venda</h4></button></a>
                 <a href="produtos/add"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-plus"></i> Entrada no estoque</h4></button></a>
             </div>
         </div>
     </div>
 
-  <div class="box box-warning">
+  <div class="box box-warning" ng-app="syscolab" ng-controller="noticiasCtrl">
       <div class="box-body">
         <div class="box-header">
           <h3 class="box-title">Enviar mensagem para todos</h3>
         </div>
-
+        <div class="box-body">@{{log}}</div>
         <div class="box-footer">
-                  <form action="#" method="post">
+                  <form ng-submit="adicionarNoticia(mensagem)">
                     <div class="input-group">
-                      <input type="text" name="message" placeholder="Digite a mensagem" class="form-control">
+                      <input type="text" name="mensagem" placeholder="Digite a mensagem" class="form-control" ng-model="mensagem" required>
                       <span class="input-group-btn">
-                            <button type="button" class="btn btn-success btn-flat">Enviar</button>
+                            <button type="submit" class="btn btn-success btn-flat">Enviar</button>
                           </span>
                     </div>
                   </form>

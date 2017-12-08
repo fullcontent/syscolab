@@ -17,6 +17,7 @@ use App\Models\VendasItem;
 use App\Models\Produtos;
 
 use App\Models\Estoque;
+use App\Models\UltimasNoticias;
 
 
 
@@ -58,6 +59,7 @@ class HomeController extends Controller
         $produtosBaixoEstoque = $this->produtosBaixoEstoque();
         $produtosMaisVendidos = $this->produtosMaisVendidos();
         $totalVendas = $this->totalVendas();
+        $ultimasNoticias = $this->ultimasNoticias();
 
         
 
@@ -69,6 +71,7 @@ class HomeController extends Controller
                         'produtosBaixoEstoque'  =>  $produtosBaixoEstoque,
                         'produtosMaisVendidos' =>   $produtosMaisVendidos,
                         'totalVendas'   =>  $totalVendas,
+                        'ultimasNoticias'   =>  $ultimasNoticias,
 
                     ]);
 
@@ -123,8 +126,8 @@ class HomeController extends Controller
     public function totalVendasSemanalGerencia()
     {
 
-        $fromDT = date("Y-m-d",strtotime("-1 week"));
-        $toDT = date("Y-m-d");
+        $fromDT = date("Y-m-d",strtotime("-5 days"));
+        $toDT = date("Y-m-d",strtotime("+1 day"));
 
         $vendas = Vendas::whereBetween('created_at',[$fromDT, $toDT])->sum('valorVenda');
 
@@ -174,6 +177,23 @@ class HomeController extends Controller
         return $produtos;
     }
 
+    public function estoqueCasa()
+    {
+        $produtos = Produtos::
+                    select('nome','colabers.marca','cms_users.name')
+                    ->join('cms_users','produtos.user_id','cms_users.id')
+                    ->join('colabers','produtos.user_id','colabers.id')
+                    ->withCount('EntradaEstoqueCasa','SaidaEstoqueCasa','vendasCasa')
+                    ->get();
+        $estoqueBaixo = $produtos->filter(function($item){
+            return $item->estoqueCasa() <= 3;
+        });
+
+
+
+        return $estoqueBaixo;
+    }
+
 
 
     //FIM dos Metodos para dados da Gerencia -------------------------------------------------------
@@ -210,20 +230,27 @@ class HomeController extends Controller
         return $estoqueBaixo;
     }
    
-    public function ultimasNoticias()
-    {
-
-    }
+    
 
     public function totalVendas()
     {
         $user_id = CRUDBooster::myId();
 
+        if($user_id==1){
+
+            $produtos = Produtos::whereHas('venda')
+            ->withCount('venda')
+            ->get();
+
+        }else{
+
         $produtos = Produtos::where('user_id',$user_id)
             ->whereHas('venda')
             ->withCount('venda')
             ->get();
+        }
 
+        $total[] = 1;
         foreach($produtos as $p)
         {
             $total[] = VendasItem::where('produto_id',$p->id)->sum('valor');
@@ -235,6 +262,12 @@ class HomeController extends Controller
         
         return $sub;
 
+    }
+
+    public function ultimasNoticias()
+    {
+        $noticias = UltimasNoticias::orderBy('created_at','desc')->get();
+        return $noticias;
     }
 
 

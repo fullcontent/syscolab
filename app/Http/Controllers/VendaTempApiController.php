@@ -8,6 +8,7 @@ use App\Models\VendasTemp;
 use App\Models\Produtos;
 use \Redirect, \Validator, \Input, \Session, \Response;
 use Illuminate\Http\Request;
+use CRUDBooster;
 
 class VendaTempApiController extends Controller
 {
@@ -23,8 +24,9 @@ class VendaTempApiController extends Controller
     public function index()
     {
         //
-       return Response::json(VendasTemp::with('item')->get());
-
+    $localVenda = Input::get('localVenda');
+       $user_id = CRUDBooster::myId();
+        return Response::json(VendasTemp::with('item')->where(['localVenda'=>$localVenda])->get());
     }
 
     /**
@@ -49,6 +51,7 @@ class VendaTempApiController extends Controller
         //
 
     $codigo = Input::get('codigo');
+    $localVenda = Input::get('localVenda');
 
 
 
@@ -72,6 +75,7 @@ class VendaTempApiController extends Controller
         $VendasTemp->valor = $item->valor;
         $VendasTemp->qtde = 1;
         $VendasTemp->total = $item->valor;
+        $VendasTemp->localVenda = $localVenda;
 
         
         $VendasTemp->save();

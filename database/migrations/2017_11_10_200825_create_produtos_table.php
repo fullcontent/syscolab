@@ -35,15 +35,6 @@ class CreateProdutosTable extends Migration
             $table->string('cor')->nullable();
 
 
-
-
-
-
-
-
-            
-            
-
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('cms_users')->onDelete('restrict');
 

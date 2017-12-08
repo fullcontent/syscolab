@@ -17,17 +17,26 @@ Route::get('/', function () {
 
 Route::get('/admin/painel', 'HomeController@index');
 
-Route::get('/admin/test','HomeController@numTotalVendas');
+Route::resource('/admin/test','UltimasNoticiasController');
 
 
 
-Route::resource('admin/estoque','EstoqueController');
-
-Route::resource('admin/saidaEstoque','EstoqueSaidaController');
-
-Route::resource('admin/vendas','VendaController');
+Route::resource('admin/estoqueCasa','EstoqueEntradaCasaController');
+Route::resource('admin/estoqueSaidaCasa','EstoqueSaidaCasaController');
 
 
+Route::resource('admin/estoqueFeira','EstoqueEntradaFeiraController');
+Route::resource('admin/estoqueSaidaFeira','EstoqueSaidaFeiraController');
+
+
+
+
+
+Route::resource('admin/vendasCasa','VendaCasaController');
+Route::resource('admin/vendasFeira','VendaFeiraController');
+
+
+Route::resource('admin/noticias','UltimasNoticiasController');
 
 
 Route::resource('admin/colaber','ColaberController');
@@ -44,6 +53,7 @@ Auth::routes();
 
 
 Route::resource('admin/api/vendaTemp', 'VendaTempApiController');
+
 Route::get('admin/api/vendaTemp/cancelar' , 'VendaTempApiController@cancelar');
 
 Route::resource('admin/api/estoqueTemp', 'EstoqueApiTempController');

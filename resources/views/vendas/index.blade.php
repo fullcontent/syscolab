@@ -19,7 +19,7 @@
 <form ng-submit="adicionarVendaTemp(codigo)" name="scanCode">
 
 
-	<input class="form-control" type="text" id="codigo" name="codigo" placeholder="código" style="height: 100px; font-size: 90px;" ng-model="codigo" autocomplete="off" ng-minlength="7" required>
+	<input class="form-control" type="text" id="codigo" name="codigo" placeholder="código" style="height: 100px; font-size: 90px;" ng-model="codigo" autocomplete="off" required>
 </form>
 
                             
@@ -65,6 +65,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="total" class="col-sm-4 control-label">Desconto</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                <input type="text" class="form-control" id="desconto" ng-model="desconto" name="desconto" value="0" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     
                                     <div>&nbsp;</div>
                                     <div class="form-group">
@@ -78,6 +90,8 @@
                                         </select>
                                         </div>
                                     </div>
+
+                                    
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -91,17 +105,19 @@
                                     <div class="form-group">
                                             <label for="amount_due" class="col-sm-4 control-label">Troco</label>
                                             <div class="col-sm-8">
-                                            <p class="form-control-static">@{{add_payment - sum(vendaTemp) | currency}}</p>
+                                            <p class="form-control-static">@{{add_payment - (sum(vendaTemp)-desconto) | currency}}</p>
                                             </div>
                                     </div>
 
-                                    <div>&nbsp;</div>
                                     <div class="form-group">
                                         <label for="employee" class="col-sm-4 control-label">Observacoes</label>
                                         <div class="col-sm-8">
                                         <input type="text" class="form-control" name="comentarios" id="comments" />
                                         </div>
                                     </div>
+
+                                    <div>&nbsp;</div>
+                                    
                                     <div>&nbsp;</div>
 
                                     <div class="form-group">

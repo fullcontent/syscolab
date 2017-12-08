@@ -19,8 +19,6 @@
 p {
     font-size: 10px;
     line-height: 10px;
-    
-
 }
 h5 {
 
@@ -39,9 +37,8 @@ h5 {
 
 .produto {
 
-    height: 30px;
-    width: 25mm;
-    overflow:hidden;
+    height: 35px;
+    overflow: hidden;
     
 }
     </style>

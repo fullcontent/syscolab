@@ -23,9 +23,12 @@ class EstoqueApiTempController extends Controller
     public function index()
     {
         //
+        $operacao = Input::get('operacao');
+
+
 
         $user_id = CRUDBooster::myId();
-        return Response::json(EstoqueTemp::with('produto')->where('user_id', $user_id)->get());
+        return Response::json(EstoqueTemp::with('produto')->where(['user_id'=>$user_id,'operacao'=>$operacao])->get());
     }
 
     /**
@@ -51,13 +54,34 @@ class EstoqueApiTempController extends Controller
         $operacao = Input::get('operacao');
 
         switch ($operacao) {
-            case 1:
-                $comentarios = "Entrada";
-            break;
+
             
-            case 0:
-                $comentarios = "Saida";
+
+            case 1:
+                $comentarios = "Entrada no estoque da Feira";
             break;
+
+            case 2:
+                $comentarios = "Saida do estoque da Feira";
+            break;
+
+            case 3:
+                $comentarios = "Venda na Feira";
+            break;
+
+            case 4:
+                $comentarios = "Entrada no estoque da Casa";
+            break;
+
+            case 5:
+                $comentarios = "Saida do estoque da Casa";
+            break;
+
+            case 6:
+                $comentarios = "Venda na Casa";
+            break;
+
+            
         }
 
         try
@@ -81,6 +105,8 @@ class EstoqueApiTempController extends Controller
         $EstoqueTemp->user_id = $user_id;
 
         $EstoqueTemp->qty = 1;
+
+
         $EstoqueTemp->comentarios = $comentarios;
         
      
@@ -88,9 +114,6 @@ class EstoqueApiTempController extends Controller
               
         
         return $EstoqueTemp;
-
-
-
 
     }
 

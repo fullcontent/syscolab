@@ -22,8 +22,9 @@ class CreateVendasTable extends Migration
 
             $table->decimal('valorVenda',9, 2);
             $table->decimal('valorRecebido',9, 2);
+            $table->decimal('desconto',9,2);
 
-
+            $table->integer('localVenda')->default(1);
 
 
             $table->string('comentarios', 255)->nullable();

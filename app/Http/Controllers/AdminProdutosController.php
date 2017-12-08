@@ -59,12 +59,18 @@
 				
 				switch ($count) {
 					case 0:
-						$estoque = "<span class='label label-primary'>Sem Estoque</span>";
+						$estoque = "<span class='label label-warning'>Sem Estoque</span>";
 						break;
 					
-					case $count < 3:
+					case $count < 0:
+						$estoque = "<span class='label bg-purple color-palette'>Ops algo errado $count</span>";
+					break;
+
+					case $count < 2:
 						$estoque = "<span class='label label-warning'>Estoque Baixo $count</span>";
 					break;
+
+
 
 					default:
 						$estoque = "<span class='label label-success'>$count</span>";
@@ -86,7 +92,7 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-5','placeholder'=>'Qual o nome do seu produto?'];
+			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:3|max:35','width'=>'col-sm-5','placeholder'=>'Qual o nome do seu produto?'];
 			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-5','placeholder'=>'Qual o valor de venda?'];
 			$this->form[] = ['label'=>'Categoria','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false,'width'=>'col-sm-5','validation'=>'required','placeholder'=>'test'];
 			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'text','width'=>'col-sm-5','placeholder'=>'Qual é a cor principal do seu produto?'];

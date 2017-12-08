@@ -16,14 +16,15 @@ class CreateVendasItemsTable extends Migration
         Schema::create('vendas_items', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('venda_id')->unsigned();
-            $table->foreign('venda_id')->references('id')->on('vendas')->onDelete('restrict');
+            $table->foreign('venda_id')->references('id')->on('vendas')->onDelete('cascade');
             $table->integer('produto_id')->unsigned();
-            $table->foreign('produto_id')->references('id')->on('produtos')->onDelete('restrict');
+            $table->foreign('produto_id')->references('id')->on('produtos')->onDelete('cascade');
             $table->decimal('valor',15, 2);
            
             $table->integer('qtde');
             
             $table->decimal('total_venda',15, 2);
+            $table->integer('localVenda')->default(1);
             $table->timestamps();
         });
     }
