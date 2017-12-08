@@ -11,6 +11,7 @@ use Session;
 use CRUDBooster;
 use DB;
 use Illuminate\Auth\Authenticatable;
+use Request;
 
 
 
@@ -80,12 +81,13 @@ class RegisterController extends Controller
 
         $dadosColaber = new Colaber;
         $dadosColaber->user_id = $user->id;
+        $dadosColaber->marca = $user->name;
         $dadosColaber->save();
 
 
         $priv = DB::table("cms_privileges")->where("id",$user->id_cms_privileges)->first();
         $roles = DB::table('cms_privileges_roles')
-        ->where('id_cms_privileges',$users->id_cms_privileges)
+        ->where('id_cms_privileges',$user->id_cms_privileges)
         ->join('cms_moduls','cms_moduls.id','=','id_cms_moduls')
         ->select('cms_moduls.name','cms_moduls.path','is_visible','is_create','is_read','is_edit','is_delete')
         ->get();
@@ -96,13 +98,13 @@ class RegisterController extends Controller
         Session::put('admin_name',$user->name);    
         Session::put('admin_photo',$photo);
         Session::put('admin_privileges_roles',$roles);
-        Session::put("admin_privileges",$user->id_cms_privileges);
+        Session::put("admin_privileges", $user->id_cms_privileges);
         Session::put('admin_privileges_name',$priv->name);          
         Session::put('admin_lock',0);
         Session::put('theme_color',$priv->theme_color);
         Session::put("appname",CRUDBooster::getSetting('appname'));     
 
-        CRUDBooster::insertLog(trans("crudbooster.log_login",['email'=>$users->email,'ip'=>Request::server('REMOTE_ADDR')]));       
+        CRUDBooster::insertLog(trans("crudbooster.log_login",['email'=>$user->email,'ip'=>Request::server('REMOTE_ADDR')]));       
       
 
         return $user;

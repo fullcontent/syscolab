@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::get('/admin/painel', 'HomeController@index');
 
+Route::get('/admin/test','HomeController@numTotalVendas');
+
 
 
 Route::resource('admin/estoque','EstoqueController');
@@ -30,7 +32,6 @@ Route::resource('admin/vendas','VendaController');
 
 Route::resource('admin/colaber','ColaberController');
 
-Route::get('admin/test','HomeController@listaVendas');
 
 
 

@@ -2,6 +2,34 @@
 @section("content")
 
 <div class="container">
+
+<div class="col-md-5">
+  
+<h1>Seja bem vindo!</h1>
+
+<p>Agora você faz parte da nossa casa! Fique a vontade para utilizar nosso sistema de gerenciamento.</p>
+
+<p>Aqui você vai ficar sabendo de tudo que acontecer com seus produtos!</p>
+
+
+<div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Primeiros Passos</h3>
+        </div>
+
+        <div class="box-body">
+
+            <div class="btn-group-vertical btn-block">
+                <a href="colaber"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-list-alt"></i> Completar seus dados</h4></button></a>
+                <a href="produtos/add"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-plus"></i> Cadastrar seus produtos</h4></button></a>
+                <a href="envios/add"><button type="button" class="btn btn-default btn-block"><h4><i class="fa  fa-th-large"></i> Nova Remessa de produtos</h4></button></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
 	<div class="col-md-6">
           <!-- general form elements -->
           <div class="box box-primary">

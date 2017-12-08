@@ -58,7 +58,15 @@
         <a href="<?php echo e(url('/')); ?>">
             <img title='<?php echo (Session::get('appname') == 'CRUDBooster')?"<b>CRUD</b>Booster":CRUDBooster::getSetting('appname'); ?>' src='<?php echo e(CRUDBooster::getSetting("logo")?asset(CRUDBooster::getSetting('logo')):asset('vendor/crudbooster/assets/logo_crudbooster.png')); ?>' style='max-width: 100%;max-height:170px'/>
         </a>
-      </div><!-- /.login-logo -->      
+      </div><!-- /.login-logo --> 
+
+      <div class="login-box ">
+        
+          <a href="<?php echo url('/'); ?>/register" class="btn btn-block btn-warning">Cadastre se Aqui!</a>
+
+      </div>
+        
+
       <div class="login-box-body">
 	  
     		<?php if( Session::get('message') != '' ): ?>

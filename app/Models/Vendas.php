@@ -11,10 +11,7 @@ class Vendas extends Model
     {
         return $this->belongsTo('App\User');
     }
-    public function cliente()
-    {
-        return $this->belongsTo('App\Models\Cliente');
-    }
+    
 
     public function itens()
     {

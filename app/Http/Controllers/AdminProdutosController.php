@@ -53,7 +53,8 @@
 				
 				$entrada = Estoque::where([['produto_id', $row->id],['operacao',1]])->count();
 				$saida = Estoque::where([['produto_id', $row->id],['operacao',0]])->count();
-				$count = $entrada - $saida;
+				$venda = Estoque::where([['produto_id', $row->id],['operacao',3]])->count();
+				$count = $entrada - $saida - $venda;
 
 				
 				switch ($count) {
@@ -182,6 +183,8 @@
 	        | 
 	        */
 	        $this->index_button = array();
+
+	        
 
 	       
 

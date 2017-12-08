@@ -343,7 +343,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
                     
         $html .= "<div class='col-xs-2' align='center'>";
 
-        $html .= "<div class='etiqueta'><p>".$user->name."</p><p>".$item->produto->nome."</p>".$code."<p>".$codigo."</p><h5>  R$ ".$item->produto->valor."</h5></div>";
+        $html .= "<div class='etiqueta'><p>".$user->name."</p><p class='produto'>".$item->produto->nome."</p>".$code."<p>".$codigo."</p><h5>  R$ ".$item->produto->valor."</h5></div>";
 
                  $html .= "</div>";
                   

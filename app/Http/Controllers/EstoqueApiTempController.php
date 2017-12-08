@@ -23,7 +23,9 @@ class EstoqueApiTempController extends Controller
     public function index()
     {
         //
-        return Response::json(EstoqueTemp::with('produto')->get());
+
+        $user_id = CRUDBooster::myId();
+        return Response::json(EstoqueTemp::with('produto')->where('user_id', $user_id)->get());
     }
 
     /**

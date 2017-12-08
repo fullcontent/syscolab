@@ -10,7 +10,7 @@
 
     <style>
     	
-    	@page {
+@page {
     size: 21cm 29.7cm;
     margin: 5mm 0mm 20mm 0mm;
     page-break-after : always; /* change the margins as you want them to be. */
@@ -19,7 +19,7 @@
 p {
     font-size: 10px;
     line-height: 10px;
-    overflow-wrap: normal;
+    
 
 }
 h5 {
@@ -30,11 +30,19 @@ h5 {
 
 .etiqueta {
     
-    padding: 15px 10px;
+    padding: 25px 25px;
     border: 1px #666 dotted;
     width: 30mm;
     
 
+}
+
+.produto {
+
+    height: 30px;
+    width: 25mm;
+    overflow:hidden;
+    
 }
     </style>
 	

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Input;
 use App\Models\Colaber;
 use CRUDBooster;
+use Session;
 
 class ColaberController extends Controller
 {
@@ -18,8 +19,12 @@ class ColaberController extends Controller
     {
 
         $id = CRUDBooster::myId();
-
         $colaber = Colaber::where('user_id',$id)->get()->first();
+
+        $session = Session::all();
+
+        //dd($session);
+
 
         return view('colaber',compact('colaber'));
       
