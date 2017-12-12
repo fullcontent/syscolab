@@ -42,7 +42,7 @@ h5 {
 
 .produto {
 
-    height: 35px;
+    height: 40px;
     overflow: hidden;
     
 }
