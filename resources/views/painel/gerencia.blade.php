@@ -73,6 +73,20 @@
           <h3 class="box-title">Enviar mensagem para todos</h3>
         </div>
         <div class="box-body">@{{log}}</div>
+        <div class="direct-chat-msg">
+                  <div class="direct-chat-info clearfix">
+                    
+              <span class="direct-chat-timestamp pull-right">{{$ultimaNoticiaGerencia->created_at}}</span>
+                  </div>
+                  <!-- /.direct-chat-info -->
+                  <img class="direct-chat-img" src="{{asset('/vendor/crudbooster/avatar.jpg')}}" alt="img"><!-- /.direct-chat-img -->
+                  <div class="direct-chat-text">
+                   {{$ultimaNoticiaGerencia->mensagem}}
+                  </div>
+
+                  <!-- /.direct-chat-text -->
+                </div>
+                <!-- /.direct-chat-msg -->
         <div class="box-footer">
                   <form ng-submit="adicionarNoticia(mensagem)">
                     <div class="input-group">

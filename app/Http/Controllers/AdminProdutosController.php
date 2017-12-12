@@ -27,7 +27,7 @@
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
-			$this->button_detail = false;
+			$this->button_detail = true;
 			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
@@ -49,11 +49,11 @@
 			
 
 
-			$this->col[] = ["label"=>"Qtd Estoque","name"=>"descricao","callback"=>function($row){
+			$this->col[] = ["label"=>"Estoque Casa","name"=>"descricao","callback"=>function($row){
 				
-				$entrada = Estoque::where([['produto_id', $row->id],['operacao',1]])->count();
-				$saida = Estoque::where([['produto_id', $row->id],['operacao',0]])->count();
-				$venda = Estoque::where([['produto_id', $row->id],['operacao',3]])->count();
+				$entrada = Estoque::where([['produto_id', $row->id],['operacao',4]])->count();
+				$saida = Estoque::where([['produto_id', $row->id],['operacao',5]])->count();
+				$venda = Estoque::where([['produto_id', $row->id],['operacao',6]])->count();
 				$count = $entrada - $saida - $venda;
 
 				
@@ -85,6 +85,45 @@
 				return $estoque;
 			}];
 
+			$this->col[] = ["label"=>"Estoque Feira","name"=>"descricao","callback"=>function($row){
+				
+				$entrada = Estoque::where([['produto_id', $row->id],['operacao',1]])->count();
+				$saida = Estoque::where([['produto_id', $row->id],['operacao',2]])->count();
+				$venda = Estoque::where([['produto_id', $row->id],['operacao',3]])->count();
+				$count = $entrada - $saida - $venda;
+
+				
+				switch ($count) {
+					case 0:
+						$estoque = "<span class='label label-warning'>Sem Estoque</span>";
+						break;
+					
+					case $count < 0:
+						$estoque = "<span class='label bg-purple color-palette'>$count</span>";
+					break;
+
+					case $count < 2:
+						$estoque = "<span class='label label-warning'>Estoque Baixo $count</span>";
+					break;
+
+
+
+					default:
+						$estoque = "<span class='label label-success'>$count</span>";
+					break;
+				}
+
+					
+				
+
+
+				
+				return $estoque;
+			}];
+
+
+
+
 			$this->col[] = ["label"=>"Categoria","name"=>"categoria_id","join"=>"categorias,nome"];
 
 			
@@ -92,12 +131,13 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:3|max:35','width'=>'col-sm-5','placeholder'=>'Qual o nome do seu produto?'];
-			$this->form[] = ['label'=>'Valor','name'=>'valor','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-5','placeholder'=>'Qual o valor de venda?'];
+			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:3|max:35','width'=>'col-sm-6','placeholder'=>'Utilize nomes distintos. Ex: Bolsa Jeans Reciclado P'];
+			$this->form[] = ['label'=>'Valor R$','name'=>'valor','type'=>'text','validation'=>'required','width'=>'col-sm-5','placeholder'=>'Digite somente números'];
+			
 			$this->form[] = ['label'=>'Categoria','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false,'width'=>'col-sm-5','validation'=>'required','placeholder'=>'test'];
-			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'text','width'=>'col-sm-5','placeholder'=>'Qual é a cor principal do seu produto?'];
-			$this->form[] = ['label'=>'Acabamento','name'=>'acabamento','type'=>'text','width'=>'col-sm-5','placeholder'=>'Ele possui algum acabamento?'];
-			$this->form[] = ['label'=>'Tamanho','name'=>'tamanho','type'=>'text','width'=>'col-sm-5','placeholder'=>'Qual o tamanho do seu produto?'];
+			$this->form[] = ['label'=>'Cor','name'=>'cor','type'=>'text','width'=>'col-sm-5','placeholder'=>'Qual é a cor predominante do seu produto?','validation'=>'required'];
+			$this->form[] = ['label'=>'Acabamento','name'=>'acabamento','type'=>'text','width'=>'col-sm-5','placeholder'=>'Ex: Tecido Digital com Couro.'];
+			$this->form[] = ['label'=>'Tamanho','name'=>'tamanho','type'=>'text','width'=>'col-sm-5','placeholder'=>'Qual o tamanho do seu produto?','validation'=>'required'];
 			
 			$this->form[] = ['label'=>'Descricao','name'=>'descricao','type'=>'textarea','width'=>'col-sm-5','validation'=>'required','placeholder'=>'Faça uma breve descrição do seu produto.'];
 			$this->form[] = ['label'=>'Foto','name'=>'img','type'=>'upload','width'=>'col-sm-5'];
@@ -106,11 +146,14 @@
 			$userId = CRUDBooster::myId();
 
 			function generateBarcodeNumber() {
+
+
    			 $number = mt_rand(0000, 9999); // better than rand()
 
    			 $number = str_pad($number, 7, "0", STR_PAD_LEFT);
 			return $number;
 			}
+
 			$this->form[] = ['label'=>'Codigo','name'=>'codigo','type'=>'hidden','width'=>'col-sm-10','value'=>generateBarcodeNumber()];
 			$this->form[] = ['label'=>'UserID','name'=>'user_id','type'=>'hidden','width'=>'col-sm-10','value'=>$userId];
 			# END FORM DO NOT REMOVE THIS LINE
@@ -232,12 +275,17 @@
 
 				$( '#valor' ).keyup(function() {
 
- 				 var testnr = document.getElementById('valor').value;
+ 				 var val = document.getElementById('valor').value;
 
- 				 document.getElementById('valor').value = testnr.replace(/,/g, '.');
- 				
+ 				 document.getElementById('valor').value = val.replace(/,/g, '.');
+
+ 				 
 
 				});
+
+				
+
+
 				
 				
 					 
@@ -369,7 +417,8 @@
 	    */
 	    public function hook_before_add(&$postdata) {        
 	        	
-	       		
+	        	
+
 	    }
 
 	    /* 

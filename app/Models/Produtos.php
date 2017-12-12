@@ -90,6 +90,7 @@ class Produtos extends Model
         return $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',2);
     }
 
+    
     public function estoqueCasa()
     {
         $vendas = $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',1)->count();

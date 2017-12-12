@@ -69,14 +69,20 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
+    {   
+
+        
+
+       
         
         $user = User::create([
             'name' => $data['name'],
+            'photo' => $photo,
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'status' => "Active",
-            'id_cms_privileges' => "2"
+            'id_cms_privileges' => "2",
+            
         ]);
 
         $dadosColaber = new Colaber;
@@ -91,6 +97,7 @@ class RegisterController extends Controller
         ->join('cms_moduls','cms_moduls.id','=','id_cms_moduls')
         ->select('cms_moduls.name','cms_moduls.path','is_visible','is_create','is_read','is_edit','is_delete')
         ->get();
+
         $photo = ($user->photo)?asset($user->photo):asset('vendor/crudbooster/avatar.jpg');
 
         Session::put('admin_id',$user->id);            

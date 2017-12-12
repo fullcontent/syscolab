@@ -60,7 +60,7 @@ class AdminCmsUsersController extends \crocodicstudio\crudbooster\controllers\CB
 
 	        if (CRUDBooster::myPrivilegeName()	== 'Gerencia'){
 
-	        	$query->where('id_cms_privileges',3);
+	        	$query->where('id_cms_privileges',[2,3]);
 
 	        }
 	    }

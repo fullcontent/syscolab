@@ -19,6 +19,8 @@ Route::get('/admin/painel', 'HomeController@index');
 
 Route::resource('/admin/test','UltimasNoticiasController');
 
+Route::get('/admin/ajuda','HomeController@ajuda');
+
 
 
 Route::resource('admin/estoqueCasa','EstoqueEntradaCasaController');

@@ -51,6 +51,7 @@ class HomeController extends Controller
         $totalVendasSemanalGerencia = $this->totalVendasSemanalGerencia();
         $numTotalVendas = $this->numTotalVendas();
         $ticketMedioGerencia = $this->ticketMedioGerencia();
+        $ultimaNoticiaGerencia = $this->ultimaNoticiaGerencia();
 
         //------------------------------------
 
@@ -89,6 +90,7 @@ class HomeController extends Controller
                         'totalVendasSemanalGerencia'    =>  $totalVendasSemanalGerencia,
                         'numTotalVendas'    =>  $numTotalVendas,
                         'ticketMedioGerencia'   =>  $ticketMedioGerencia,
+                        'ultimaNoticiaGerencia' => $ultimaNoticiaGerencia,
 
 
                     ]);
@@ -106,7 +108,7 @@ class HomeController extends Controller
     public function listaVendas()
     {
 
-        $vendas = Vendas::with('user')->orderBy('created_at','desc')->take(8)->get();
+        $vendas = Vendas::with('user')->orderBy('created_at','desc')->take(10)->get();
 
         return $vendas;
 
@@ -157,10 +159,10 @@ class HomeController extends Controller
         
         $user_id = CRUDBooster::myId();
 
-        $produtos = Produtos::with('colaber')->withCount('saidaEstoque','venda','entradaEstoque')->get();
+        $produtos = Produtos::with('colaber')->withCount('saidaEstoque','venda','entradaEstoque')->take(5)->get();
 
         $estoqueBaixo = $produtos->filter(function($item){
-            return $item->estoque() <= 3;
+            return $item->estoque() <= 2;
         });
 
         
@@ -173,6 +175,7 @@ class HomeController extends Controller
             ->with('colaber')
             ->withCount('venda')
             ->orderBy('venda_count','desc')
+            ->take(5)
             ->get();
         return $produtos;
     }
@@ -257,7 +260,7 @@ class HomeController extends Controller
 
         }
 
-        $sub = array_sum($total);
+        $sub = array_sum($total)-1;
         $sub = number_format($sub,2);   
         
         return $sub;
@@ -270,6 +273,18 @@ class HomeController extends Controller
         return $noticias;
     }
 
+    public function ultimaNoticiaGerencia()
+    {
+        $noticia = UltimasNoticias::orderBy('id','desc')->first();
+        return $noticia;
+    }
+
+
+    public function ajuda()
+    {
+
+        return view('ajuda');
+    }
 
   
 }
