@@ -12,5 +12,8 @@ class EnvioItem extends Model
 
    		return $this->belongsTo('App\Models\Produtos','produto_id');
 
-   }    
+   }
+
+   
+   
 }

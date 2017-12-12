@@ -326,8 +326,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
             $envios = Envio::whereHas('itens')->withCount('itens')->with('user')->find($id);
 
             $envio_id = $envios->id;
-            $user = $envios->user;
-
+           
 
 
 
@@ -343,6 +342,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
                 for ($i=0; $i < $item->qtde; $i++) { 
                 $codigo = $item->produto->codigo;
                 $code = DNS1D::getBarcodeSVG($codigo, "EAN8",1,35);
+                $user = User::where('id',$item->produto->user_id)->first();
                     
         $html .= "<div class='col-xs-2' align='center'>";
 

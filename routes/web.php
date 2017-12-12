@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::get('/admin/painel', 'HomeController@index');
 
-Route::resource('/admin/test','UltimasNoticiasController');
+Route::get('/admin/test','HomeController@test');
 
 Route::get('/admin/ajuda','HomeController@ajuda');
 

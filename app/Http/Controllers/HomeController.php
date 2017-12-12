@@ -22,6 +22,8 @@ use App\Models\UltimasNoticias;
 
 
 
+
+
 class HomeController extends Controller
 {
     /**
@@ -284,6 +286,17 @@ class HomeController extends Controller
     {
 
         return view('ajuda');
+    }
+
+
+    public function test()
+    {
+
+
+       return "test";
+
+     
+
     }
 
   
