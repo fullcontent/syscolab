@@ -326,8 +326,6 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
             $envios = Envio::whereHas('itens')->withCount('itens')->with('user')->find($id);
 
             $envio_id = $envios->id;
-
-
             $user = $envios->user;
 
 
@@ -364,9 +362,15 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
             $pdf->loadHTML($html);
 
 
+
+
+
+
+
+
             //return $pdf->stream('etiquetas.pdf');
                         
-            return view('etiquetas')->with(['html'=>$html,'user'=>$user,'envios'=>$envios]);
+            return view('etiquetas')->with(['html'=>$html,'user'=>$user,'envios'=>$envios,'itens'=>$itens]);
 		
 
 		}

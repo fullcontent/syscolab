@@ -16,6 +16,11 @@
     page-break-after : always; /* change the margins as you want them to be. */
 }
 
+@media print {
+
+    footer {page-break-after: always;}
+}
+
 p {
     font-size: 10px;
     line-height: 10px;
@@ -41,6 +46,9 @@ h5 {
     overflow: hidden;
     
 }
+.tabela{
+    padding: 20px 30px;
+}
     </style>
 	
 	<body onload="">
@@ -64,9 +72,64 @@ h5 {
 
 
 
-
+    
 
 		</section>
+        <footer></footer>
+
+        <section class="tabela">
+                
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">
+                        Relatório de entrega de produtos de {{$user->name}}
+                        <small class="pull-right">{{ date("d/m/Y",strtotime($envios->created_at)) }}</small>
+
+                    </h2>
+                </div>
+
+            </div>
+            <table class="table table-responsive table-bordered">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Código</th>
+                        <th>Qtde</th>
+                        <th>Nome</th>
+                        <th>Cor</th>
+                        <th>Valor</th>
+                        
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                     @foreach($itens as $i)
+                    <tr>
+                        <th scope="row">{{$i->id}}</th>
+                        <td>{{$i->produto->codigo}}</td>
+                        <td>{{$i->qtde}}</td>
+                        <td>{{$i->produto->nome}}</td>
+                        <td>{{$i->produto->cor}}</td>
+                        
+                        <td>R$ {{$i->produto->valor}}</td>
+                    </tr>
+                     @endforeach
+                </tbody>
+
+  
+            </table>
+
+           
+
+                
+
+           
+
+
+
+        </section>
 
 		
 
