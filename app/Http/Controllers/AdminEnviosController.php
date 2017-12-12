@@ -342,7 +342,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
             foreach ($itens as $item) {
                 for ($i=0; $i < $item->qtde; $i++) { 
                 $codigo = $item->produto->codigo;
-                $code = DNS1D::getBarcodeSVG($codigo, "EAN8",1,40);
+                $code = DNS1D::getBarcodeSVG($codigo, "EAN8",1,35);
                     
         $html .= "<div class='col-xs-2' align='center'>";
 
