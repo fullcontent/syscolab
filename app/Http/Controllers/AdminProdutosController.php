@@ -384,9 +384,9 @@
 	    public function hook_query_index(&$query) {
 	        
 	    	
-	         $userID=CRUDBooster::myId();
+	        $userID=CRUDBooster::myId();
 
-	        if (CRUDBooster::myPrivilegeName()	== 'Colabers'){
+	        if(CRUDBooster::myPrivilegeName()	== 'Colabers'){
 
 	        	$query->where('user_id',$userID);
 

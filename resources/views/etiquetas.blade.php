@@ -33,7 +33,7 @@ h5 {
 
 .etiqueta {
     
-    padding: 25px 25px;
+    padding: 45px 25px 0px;
     border: 1px #666 dotted;
     width: 30mm;
     
@@ -51,7 +51,7 @@ h5 {
 }
     </style>
 	
-	<body onload="">
+	<body onload="print()">
 		
 		<section class="etiquetas">
 		
