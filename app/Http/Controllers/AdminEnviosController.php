@@ -9,6 +9,7 @@ use App\Models\Produtos;
 use App\Models\Envio;
 use App\Models\EnvioItem;
 use App\User;
+use App\Models\Colaber;
 
 use DNS1D;
 use App;
@@ -342,7 +343,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
                 for ($i=0; $i < $item->qtde; $i++) { 
                 $codigo = $item->produto->codigo;
                 $code = DNS1D::getBarcodeSVG($codigo, "EAN8",1,35);
-                $user = User::where('id',$item->produto->user_id)->first();
+                $user = Colaber::where('user_id',$item->produto->user_id)->first();
                     
         $html .= "<div class='col-xs-2' align='center'>";
 
