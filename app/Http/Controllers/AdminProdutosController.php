@@ -131,6 +131,9 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
+
+
+
 			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:3|max:35','width'=>'col-sm-6','placeholder'=>'Utilize nomes distintos. Ex: Bolsa Jeans Reciclado P'];
 			$this->form[] = ['label'=>'Valor R$','name'=>'valor','type'=>'text','validation'=>'required','width'=>'col-sm-5','placeholder'=>'Digite somente números'];
 			
@@ -148,10 +151,27 @@
 			function generateBarcodeNumber() {
 
 
-   			 $number = mt_rand(0000, 9999); // better than rand()
+			 $unique_code = mt_rand(0000, 9999); // better than rand()
+   			 $unique_code = str_pad($unique_code, 7, "0", STR_PAD_LEFT);
 
-   			 $number = str_pad($number, 7, "0", STR_PAD_LEFT);
-			return $number;
+
+
+   			 $exists = Produtos::where('codigo', $unique_code)->count();
+
+   			 
+
+   			 
+   			 if ($exists >0){
+        		$results = generateBarcodeNumber();
+    			}
+     		else{
+            $results = $unique_code;
+        	return $results;
+     		}
+
+
+
+			//return $number;
 			}
 
 			$this->form[] = ['label'=>'Codigo','name'=>'codigo','type'=>'hidden','width'=>'col-sm-10','value'=>generateBarcodeNumber()];

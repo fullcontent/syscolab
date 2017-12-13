@@ -96,7 +96,7 @@ position: relative;
 
     </style>
 	
-	<body onload="">
+	<body onload="print()">
 		
 		<section class="etiquetas">
 		
@@ -122,63 +122,6 @@ position: relative;
 		</section>
         
         
-        <div class="tabela">
-                
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2 class="page-header">
-                        Relatório de entrega de produtos de {{$user->name}}
-                        <small class="pull-right">{{ date("d/m/Y",strtotime($envios->created_at)) }}</small>
-
-                    </h2>
-                </div>
-
-            </div>
-            <table class="table table-responsive table-bordered">
-
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Código</th>
-                        <th>Qtde</th>
-                        <th>Nome</th>
-                        <th>Cor</th>
-                        <th>Valor</th>
-                        
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                     @foreach($itens as $i)
-                    <tr>
-                        <th scope="row">{{$loop->index+1}}</th>
-                        <td>{{$i->produto->codigo}}</td>
-                        <td>{{$i->qtde}}</td>
-                        <td>{{$i->produto->nome}}</td>
-                        <td>{{$i->produto->cor}}</td>
-                        
-                        <td>R$ {{$i->produto->valor}}</td>
-                    </tr>
-                     @endforeach
-                </tbody>
-
-  
-            </table>
-
-           
-
-                
-
-           
-
-
-
-        </div>
-
-		
-
-
 
 
 	</body>

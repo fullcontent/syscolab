@@ -126,7 +126,11 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        */
 	        $this->addaction = array();
 
+	        
+
 	        $this->addaction[] = ['label'=>'Gerar Etiquetas','icon'=>'fa fa-barcode','color'=>'warning','url'=>CRUDBooster::mainpath('etiquetas').'/[id]'];
+
+	        $this->addaction[] = ['label'=>'Gerar Relatorio','icon'=>'fa fa-barcode','color'=>'primary','url'=>CRUDBooster::mainpath('relatorio').'/[id]'];
 
 
 
@@ -198,6 +202,10 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
+
+	        
+
+	        
 	        $this->script_js = "
 
 
@@ -212,6 +220,14 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 						
 					$('.button_action a.btn-warning').click(function() {
     				$(this).attr('target', '_blank');
+					});
+
+					$('.button_action a.btn-primary').click(function() {
+
+    				
+					window.open('".$relatorio."','page','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=600,height=600');
+
+
 					});
 					
 					$('.input-group-btn button').each(function() {
@@ -347,9 +363,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 
                  $html .= "</div>";
 
-
-				
-        }
+				        }
 
         	
 
@@ -372,6 +386,28 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
                         
             return view('etiquetas')->with(['html'=>$html,'user'=>$user,'envios'=>$envios,'itens'=>$itens]);
 		
+
+		}
+
+		public function getRelatorio($id)
+		{	
+
+			$envios = Envio::whereHas('itens')->withCount('itens')->with('user')->find($id);
+
+            $envio_id = $envios->id;
+				
+			$itens = EnvioItem::with('produto')->where('envio_id', $envio_id)->get();
+
+			foreach($itens as $item)
+			{
+
+
+				$user = Colaber::where('user_id',$item->produto->user_id)->first();
+			}
+
+
+			return view('relatorio')->with(['itens'=>$itens,'user'=>$user]);
+
 
 		}
 
