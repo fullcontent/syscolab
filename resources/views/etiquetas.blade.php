@@ -1,12 +1,7 @@
 <html>
 <link href="{{ asset("vendor/crudbooster/assets/adminlte/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
     <!-- Font Awesome Icons -->
-    <link href="{{asset("vendor/crudbooster/assets/adminlte/font-awesome/css")}}/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <!-- Ionicons -->
-    <link href="{{asset("vendor/crudbooster/ionic/css/ionicons.min.css")}}" rel="stylesheet" type="text/css" />
-    <!-- Theme style -->
-    <link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />    
-    <link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css" />
+ 
 
     <style>
     	
@@ -18,7 +13,17 @@
 
 @media print {
 
-    footer {page-break-after: always;}
+    .col {
+
+        page-break-inside: avoid;
+    }
+
+    .etiquetas{
+    page-break-after: always;
+}
+    
+
+
 }
 
 p {
@@ -30,15 +35,31 @@ h5 {
     font-size: 15px;
 
 }
+.page-center{
+    text-align: center;
+    margin: 0 auto;
+}
+
+
+
+.col {
+position: relative;
+  min-height: 1px;
+  padding-right: 0px;
+  padding-left: 0px;
+  float: left;
+
+}
 
 .etiqueta {
     
-    padding: 45px 25px 0px;
+    padding: 45px 10px 0px;
     border: 1px #666 dotted;
     width: 30mm;
-    
-
+    text-align: center;
+    display: block;
 }
+
 
 .produto {
 
@@ -46,12 +67,36 @@ h5 {
     overflow: hidden;
     
 }
+
+.marca {
+
+    height: 20px;
+    width: 25mm;
+    text-align: center;
+    overflow: hidden;
+}
+
+.atributos {
+
+    height: 10px;
+}
+
 .tabela{
     padding: 20px 30px;
+    page-break-before: always;
 }
+.etiquetas{
+    page-break-after: always;
+}
+
+
+
+
+
+
     </style>
 	
-	<body onload="print()">
+	<body onload="">
 		
 		<section class="etiquetas">
 		
@@ -59,7 +104,7 @@ h5 {
 			
 			<div class="col-xs-12">
         <h2 class="page-header">
-          Remessa #{{$envios->id}} de {{$user->name}}
+          Remessa #{{$envios->id}} de {{$user->marca}}
           <small class="pull-right">{{ date("d/m/Y",strtotime($envios->created_at)) }}</small>
         </h2>
       </div>
@@ -75,9 +120,9 @@ h5 {
     
 
 		</section>
-        <footer></footer>
-
-        <section class="tabela">
+        
+        
+        <div class="tabela">
                 
             <div class="row">
                 <div class="col-xs-12">
@@ -107,7 +152,7 @@ h5 {
 
                      @foreach($itens as $i)
                     <tr>
-                        <th scope="row">{{$i->id}}</th>
+                        <th scope="row">{{$loop->index+1}}</th>
                         <td>{{$i->produto->codigo}}</td>
                         <td>{{$i->qtde}}</td>
                         <td>{{$i->produto->nome}}</td>
@@ -129,7 +174,7 @@ h5 {
 
 
 
-        </section>
+        </div>
 
 		
 

@@ -329,34 +329,33 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
             $envio_id = $envios->id;
            
 
-
-
-
-
             $itens = EnvioItem::with('produto')->where('envio_id', $envio_id)->get();
 
 
-            $html = "<div class='row invoice-info'>";
+            $html = "<div class='page-center'>";
         
 
-            foreach ($itens as $item) {
+            foreach ($itens as $key => $item) {
                 for ($i=0; $i < $item->qtde; $i++) { 
                 $codigo = $item->produto->codigo;
                 $code = DNS1D::getBarcodeSVG($codigo, "EAN8",1,35);
                 $user = Colaber::where('user_id',$item->produto->user_id)->first();
                     
-        $html .= "<div class='col-xs-2' align='center'>";
+        		$html .= "<div class='col'>";
 
-        $html .= "<div class='etiqueta'><p>".$user->name."</p><p class='produto'>".$item->produto->nome."</p>".$code."<p>".$codigo."</p><h5>  R$ ".$item->produto->valor."</h5></div>";
+        $html .= "<div class='etiqueta'><p class='marca'>".mb_strtoupper($user->marca)."</p><p class='produto'>".mb_strtoupper($item->produto->nome)."</p><p class='atributos'><span>".mb_strtoupper($item->produto->cor)."</span> | <span>".mb_strtoupper($item->produto->tamanho)."</span></p>".$code."<p>".$codigo."</p><h5>  R$ ".$item->produto->valor."</h5></div>";
 
                  $html .= "</div>";
-                  
-                 }
 
-                
+
+				
+        }
+
+        	
+
                   
             }
-            $html .= "</div>" ;
+            
 
 
             $pdf = App::make('dompdf.wrapper');
