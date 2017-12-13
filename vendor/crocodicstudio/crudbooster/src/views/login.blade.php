@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111178989-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-111178989-1');
+</script>
+
     <meta charset="UTF-8">
     <title>{{trans("crudbooster.page_title_login")}} : {{Session::get('appname')}}</title>
     <meta name='generator' content='CRUDBooster'/>
