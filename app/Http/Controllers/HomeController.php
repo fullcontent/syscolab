@@ -8,6 +8,7 @@ use \Auth;
 use App;
 use App\User;
 use CRUDBooster;
+use DB;
 
 use Response;
 
@@ -54,6 +55,8 @@ class HomeController extends Controller
         $numTotalVendas = $this->numTotalVendas();
         $ticketMedioGerencia = $this->ticketMedioGerencia();
         $ultimaNoticiaGerencia = $this->ultimaNoticiaGerencia();
+        $estoqueFeira = $this->estoqueFeira();
+
 
         //------------------------------------
 
@@ -93,6 +96,7 @@ class HomeController extends Controller
                         'numTotalVendas'    =>  $numTotalVendas,
                         'ticketMedioGerencia'   =>  $ticketMedioGerencia,
                         'ultimaNoticiaGerencia' => $ultimaNoticiaGerencia,
+                        'estoqueFeira' => $estoqueFeira,
 
 
                     ]);
@@ -194,9 +198,15 @@ class HomeController extends Controller
             return $item->estoqueCasa() <= 3;
         });
 
-
-
         return $estoqueBaixo;
+    }
+
+    public function estoqueFeira()
+    {
+        $produtos = Produtos::with('colaber')->withCount('EntradaEstoqueFeira')->whereHas('EntradaEstoqueFeira')->paginate(5);
+       
+        return $produtos;
+
     }
 
 
@@ -289,15 +299,99 @@ class HomeController extends Controller
     }
 
 
-    public function test()
+    public function verificaCodigosDuplicados()
     {
 
 
-       return "test";
 
-     
+
+    
+
+    $produtos = Produtos::with('colaber')->withCount('EntradaEstoqueFeira')->whereHas('EntradaEstoqueFeira')->get();
+
+
+    foreach($produtos as $p)
+    {
+
+        $users[] = $p->user_id;
 
     }
 
+
+    
+
+    $duplicates = DB::table('produtos')
+    ->select('codigo')
+    
+    ->groupBy('codigo')
+   
+    ->havingRaw('COUNT(codigo) > 1')
+    ->get();
+
+
+
+
+
+        foreach($duplicates as $d)
+        {
+
+           $produto[] = Produtos::where(['codigo'=>$d->codigo])->whereNotIn('user_id', [39,41,46,50,54])->first();
+                       
+
+        }
+
+
+        foreach($produto as $p)
+
+        {
+
+
+            $codigo = $this->codigo();
+
+            $prod = Produtos::where('id',$p->id)
+                    ->update(['codigo'=>$this->codigo()]);
+
+            echo "<p>Velho ".$prod->codigo." <span>Novo: ".$codigo."</span></p>";
+
+        }
+
+     
+
+
+        return view('painel')->with('produto',$produto);
+    // // return $this->codigo();
+        
+
+
+    }
+
+
+
+    public function test()
+    {
+        return $this->codigo();
+    }
+
+    public function codigo()
+    {
+
+
+
+                            
+            $exists = 1;
+
+
+            while($exists > 0){
+
+                $unique_code = mt_rand(0000, 9999); // better than rand()
+                $unique_code = str_pad($unique_code, 7, "0", STR_PAD_LEFT);
+                $exists = Produtos::where('codigo', $unique_code)->count();
+
+                
+                return $unique_code;
+            }
+
+            
+    }
   
 }

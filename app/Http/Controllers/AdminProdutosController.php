@@ -148,33 +148,9 @@
 
 			$userId = CRUDBooster::myId();
 
-			function generateBarcodeNumber() {
+			
 
-
-			 $unique_code = mt_rand(0000, 9999); // better than rand()
-   			 $unique_code = str_pad($unique_code, 7, "0", STR_PAD_LEFT);
-
-
-
-   			 $exists = Produtos::where('codigo', $unique_code)->count();
-
-   			 
-
-   			 
-   			 if ($exists >0){
-        		$results = generateBarcodeNumber();
-    			}
-     		else{
-            $results = $unique_code;
-        	return $results;
-     		}
-
-
-
-			//return $number;
-			}
-
-			$this->form[] = ['label'=>'Codigo','name'=>'codigo','type'=>'hidden','width'=>'col-sm-10','value'=>generateBarcodeNumber()];
+			$this->form[] = ['label'=>'Codigo','name'=>'codigo','type'=>'hidden','width'=>'col-sm-10','value'=>'000000'];
 			$this->form[] = ['label'=>'UserID','name'=>'user_id','type'=>'hidden','width'=>'col-sm-10','value'=>$userId];
 			# END FORM DO NOT REMOVE THIS LINE
 
@@ -439,6 +415,7 @@
 	        	
 	        	
 
+
 	    }
 
 	    /* 
@@ -448,9 +425,43 @@
 	    | @id = last insert id
 	    | 
 	    */
+
+	    public function codigo()
+    	{
+
+            $exists = 1;
+
+
+            while($exists > 0){
+
+                $unique_code = mt_rand(0000, 9999); // better than rand()
+                $unique_code = str_pad($unique_code, 7, "0", STR_PAD_LEFT);
+                $exists = Produtos::where('codigo', $unique_code)->count();
+
+                if($exists > 0){
+
+                    $exists = 1;
+                }
+                else
+                {
+                    
+                    return $unique_code;
+                }
+
+                
+            }
+   		 }
+
+
 	    public function hook_after_add($id) {        
 	        //Your code here
 
+	    	
+
+	    	$produto = Produtos::where('id',$id)
+	    				->update(['codigo' => $this->codigo()]);
+
+	    	
 
 
 	     }
@@ -512,6 +523,8 @@
 
 
 
-	   
+	 	  
+
+	
 
 	}

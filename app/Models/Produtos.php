@@ -16,7 +16,7 @@ class Produtos extends Model
     public function colaber()
 
     {
-        return $this->belongsTo('App\User','user_id');
+        return $this->belongsTo('App\Models\Colaber','user_id','user_id');
     }
 
     public function envios()
@@ -53,8 +53,19 @@ class Produtos extends Model
     {   
 
         
-        $vendas = $this->hasMany('App\Models\VendasItem','produto_id')->count();
-        $saidaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',0)->count();
+       $vendas = $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',1)->count();
+        $saidaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',5)->count();
+        $entradaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',4)->count();
+
+        return $entradaEstoque - $vendas - $saidaEstoque;
+    }
+
+     public function estoqueFeira()
+    {   
+
+        
+        $vendas = $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',2)->count();
+        $saidaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',2)->count();
         $entradaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',1)->count();
 
         return $entradaEstoque - $vendas - $saidaEstoque;
