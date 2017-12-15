@@ -57,8 +57,14 @@ class VendaFeiraController extends Controller
         $venda = new Vendas;
         $venda->user_id = $userID; //Inserir id do usuario logado
         $venda->tipoPagamento = Input::get('tipoPagamento');
+
         $venda->valorVenda = Input::get('valorVenda');
-        $venda->valorRecebido = Input::get('valorRecebido');
+        $venda->valorRecebidoDinheiro = Input::get('valorRecebidoDinheiro');
+        $venda->valorRecebidoDebito = Input::get('valorRecebidoDebito');
+        $venda->valorRecebidoCredito = Input::get('valorRecebidoCredito');
+        $venda->parcelasCredito = Input::get('parcelasCredito');
+
+
         $venda->desconto = Input::get('desconto');
         $venda->localVenda = $localVenda;
         $venda->comentarios = Input::get('comentarios');

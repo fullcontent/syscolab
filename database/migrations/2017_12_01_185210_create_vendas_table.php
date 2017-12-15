@@ -20,9 +20,17 @@ class CreateVendasTable extends Migration
             $table->foreign('user_id')->references('id')->on('cms_users')->onDelete('restrict');
             $table->string('tipoPagamento')->nullable();
 
-            $table->decimal('valorVenda',9, 2);
-            $table->decimal('valorRecebido',9, 2);
-            $table->decimal('desconto',9,2);
+            $table->decimal('valorVenda',9, 2)->nullable();
+            $table->decimal('valorRecebidoDinheiro',9, 2)->nullable();
+            $table->decimal('valorRecebidoDebito',9, 2)->nullable();
+            $table->decimal('valorRecebidoCredito',9, 2)->nullable();
+            $table->integer('parcelasCredito')->nullable();
+
+
+            $table->decimal('desconto',9,2)->nullable();
+
+            
+
 
             $table->integer('localVenda')->default(1);
 

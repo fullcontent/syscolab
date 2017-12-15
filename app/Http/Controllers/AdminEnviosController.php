@@ -70,10 +70,10 @@ if(CRUDBooster::myPrivilegeName() != "Colabers"){
 			if(CRUDBooster::myPrivilegeName() == 'Colabers')
 				{
 
-					$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,valor','datamodal_select_to'=>'id:produto_id','datamodal_where'=>'user_id='.$userID.'','required'=>true,'width'=>'col-sm-3'];
+					$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,tamanho,valor','datamodal_select_to'=>'id:produto_id','datamodal_where'=>'user_id='.$userID.'','required'=>true,'width'=>'col-sm-3'];
 				}else{
 
-					$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,valor','datamodal_select_to'=>'id:produto_id','required'=>true,'width'=>'col-sm-3'];
+					$columns[] = ['label'=>'Produto','name'=>'produto_id','type'=>'datamodal','datamodal_table'=>'produtos','datamodal_columns'=>'nome,codigo,cor,tamanho,valor','datamodal_select_to'=>'id:produto_id','required'=>true,'width'=>'col-sm-3'];
 				}
 
 			
@@ -126,10 +126,7 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        */
 	        $this->addaction = array();
 
-	        
-
 	        $this->addaction[] = ['label'=>'Gerar Etiquetas','icon'=>'fa fa-barcode','color'=>'warning','url'=>CRUDBooster::mainpath('etiquetas').'/[id]'];
-
 	        $this->addaction[] = ['label'=>'Gerar Relatorio','icon'=>'fa fa-barcode','color'=>'primary','url'=>CRUDBooster::mainpath('relatorio').'/[id]'];
 
 
@@ -202,10 +199,6 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-
-	        
-
-	        
 	        $this->script_js = "
 
 
@@ -222,13 +215,9 @@ $this->form[] = ['label'=>'Observações','name'=>'comments','type'=>'textarea',
     				$(this).attr('target', '_blank');
 					});
 
-					$('.button_action a.btn-primary').click(function() {
-
-    				
-					window.open('".$relatorio."','page','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=600,height=600');
-
-
-					});
+				$('.button_action a.btn-primary').click(function() {
+                                $(this).attr('target', '_blank');
+                                        });
 					
 					$('.input-group-btn button').each(function() {
     					var text = $(this).text();

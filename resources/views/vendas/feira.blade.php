@@ -58,45 +58,86 @@
 
 
 							<div class="row">
+
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="total" class="col-sm-4 control-label">Recebimento</label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <div class="input-group-addon">$</div>
-                                                <input type="text" class="form-control" id="valorRecebido" ng-model="add_payment" name="valorRecebido" required />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="total" class="col-sm-4 control-label">Desconto</label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <div class="input-group-addon">$</div>
-                                                <input type="text" class="form-control" id="desconto" ng-model="desconto" name="desconto" value="0" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    
-                                    <div>&nbsp;</div>
-                                    <div class="form-group">
                                         <label for="employee" class="col-sm-4 control-label">Pagamento</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-3">
                                         <select name="tipoPagamento" class="form-control">
-                                        	<option value="Debito">Debito</option>
-                                        	<option value="Credito">Credito</option>
-                                        	<option value="Dinheiro">Dinheiro</option>
+                                            
+                                            <option value="debito">Debito</option>
+                                            <option value="credito">Credito</option>
+                                            <option value="dinheiro">Dinheiro</option>
+                                            <option value="debito+credito">Debito+Credito</option>
+                                            <option value="dinheiro+debito">Dinheiro+Debito</option>
+                                            <option value="dinheiro+credito">Dinheiro+Credito</option>
+                                            <option value="dinheiro+credito+debito">Dinheiro + Credito + Debito</option>
+
+
 
                                         </select>
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="total" class="col-sm-4 control-label">Dinheiro</label>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                <input type="text" class="form-control" id="valorRecebidoDinheiro" ng-model="valorRecebidoDinheiro" name="valorRecebidoDinheiro"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="total" class="col-sm-4 control-label">Debito</label>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                <input type="text" class="form-control" id="valorRecebidoDebito" ng-model="valorRecebidoDebito" name="valorRecebidoDebito" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="total" class="col-sm-4 control-label">Crédito</label>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                <input type="text" class="form-control" id="valorRecebidoCredito" ng-model="valorRecebidoCredito" name="valorRecebidoCredito"  />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">Parcelas</div>
+                                                <select name="parcelasCredito" class="form-control">
+                                                    <option value="0">Selecione</option>
+                                            <option value="1">1x</option>
+                                            <option value="2">2x</option>
+                                            <option value="3">3x</option>
+                                            <option value="4">4x</option>
+                                            <option value="5">5x</option>
+
+
+
+                                        </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                                     
                                 </div>
                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="total" class="col-sm-4 control-label">Desconto</label>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">$</div>
+                                                <input type="text" class="form-control" id="desconto" ng-model="desconto" name="desconto" />
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="supplier_id" class="col-sm-4 control-label">Total</label>
                                         <div class="col-sm-8">
@@ -108,7 +149,7 @@
                                     <div class="form-group">
                                             <label for="amount_due" class="col-sm-4 control-label">Troco</label>
                                             <div class="col-sm-8">
-                                            <p class="form-control-static">@{{add_payment - (sum(vendaTemp)-desconto) | currency}}</p>
+                                            <p class="form-control-static">@{{(valorRecebidoDinheiro -- valorRecebidoDebito -- valorRecebidoCredito) - (sum(vendaTemp)-desconto) | currency}}</p>
                                             </div>
                                     </div>
 

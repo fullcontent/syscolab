@@ -8,7 +8,7 @@
     use App\Models\Produtos;
     use App;
     use App\Models\Estoque;
-   
+   use App\Models\EnvioItem;
 
     
 
@@ -103,13 +103,50 @@
 					break;
 
 					case $count < 2:
-						$estoque = "<span class='label label-warning'>Estoque Baixo $count</span>";
+						$estoque = "<span class='label label-primary'>$count</span>";
 					break;
 
 
 
 					default:
 						$estoque = "<span class='label label-success'>$count</span>";
+					break;
+				}
+
+					
+				
+
+
+				
+				return $estoque;
+			}];
+
+			$this->col[] = ["label"=>"Remessa","name"=>"descricao","callback"=>function($row){
+				
+
+				$envios = EnvioItem::where('produto_id', $row->id)->first();
+
+
+
+
+								
+				switch ($envios->qtde) {
+					case 0:
+						$estoque = "<span class='label label-warning'>SEM REMESSA</span>";
+						break;
+					
+					case $envios->qtde < 0:
+						$estoque = "<span class='label bg-purple color-palette'>$envios->qtde</span>";
+					break;
+
+					case $envios->qtde < 2:
+						$estoque = "<span class='label label-primary'>$envios->qtde</span>";
+					break;
+
+
+
+					default:
+						$estoque = "<span class='label label-success'>$envios->qtde</span>";
 					break;
 				}
 
@@ -443,8 +480,8 @@
                     $exists = 1;
                 }
                 else
-                {
-                    
+                {	
+
                     return $unique_code;
                 }
 
@@ -460,10 +497,8 @@
 
 	    	$produto = Produtos::where('id',$id)
 	    				->update(['codigo' => $this->codigo()]);
-
+	    				
 	    	
-
-
 	     }
 
 	    /* 
@@ -528,3 +563,4 @@
 	
 
 	}
+

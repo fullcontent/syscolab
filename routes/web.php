@@ -19,6 +19,8 @@ Route::get('/admin/painel', 'HomeController@index');
 
 Route::get('/admin/test','HomeController@test');
 
+Route::get('/admin/codigos/{qtde}','HomeController@novosCodigos');
+
 Route::get('/admin/ajuda','HomeController@ajuda');
 
 

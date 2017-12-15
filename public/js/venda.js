@@ -8,7 +8,9 @@
         $scope.novaVendaTemp = { };
         $scope.codigo = [ ];
         $scope.desconto = 0;
-        
+        $scope.valorRecebidoDinheiro = 0;
+        $scope.valorRecebidoDebito = 0;
+        $scope.valorRecebidoCredito = 0;        
 
         var pageTitleWatch = $scope.$watch('localVenda', function () {
     console.log($scope.localVenda);
@@ -26,8 +28,17 @@
     
     });
 
-        $scope.$watch('add_payment',function(newVal){
-          $scope.add_payment = newVal.replace(/,/g,'.');
+        $scope.$watch('valorRecebidoDinheiro',function(newVal){
+          $scope.valorRecebidoDinheiro = newVal.replace(/,/g,'.');
+
+        });
+
+        $scope.$watch('valorRecebidoDebito',function(newVal){
+          $scope.valorRecebidoDebito = newVal.replace(/,/g,'.');
+
+        });
+         $scope.$watch('valorRecebidoCredito',function(newVal){
+          $scope.valorRecebidoCredito = newVal.replace(/,/g,'.');
 
         });
 

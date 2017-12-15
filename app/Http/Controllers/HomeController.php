@@ -369,7 +369,28 @@ class HomeController extends Controller
 
     public function test()
     {
-        return $this->codigo();
+        
+       
+       
+
+
+
+
+    }
+
+    public function novosCodigos($qtde)
+    {
+
+
+
+        
+        for($i=0; $i<$qtde;$i++)
+        {
+            echo "<h1>".$this->codigo()."</h1>";
+        }
+
+        
+
     }
 
     public function codigo()
