@@ -21,6 +21,10 @@ Route::get('/admin/test','HomeController@test');
 
 Route::get('/admin/codigos/{qtde}','HomeController@novosCodigos');
 
+
+Route::get('/admin/atualiza','UpdateController@index');
+
+
 Route::get('/admin/ajuda','HomeController@ajuda');
 
 

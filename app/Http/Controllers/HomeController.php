@@ -370,8 +370,61 @@ class HomeController extends Controller
     public function test()
     {
         
-       
-       
+      
+     $db_ext = DB::connection('mysql_gcloud');
+     $externo = $db_ext->table('produtos')->get();
+     
+     foreach($externo as $p)
+     {
+
+        $listaExterno[] = $p->id;
+
+     }
+
+
+     $interno = Produtos::all();
+
+        foreach ($interno as $i) {
+            
+            $listaInterno[] = $i->id;
+        }
+
+
+       $compares = array_diff($listaExterno, $listaInterno);
+
+       if(empty($compares))
+       {
+        echo "nenhum produto para atualizar";
+       }
+
+
+      $produtosFora = $db_ext->table('produtos')->whereIn('id',$compares)->get();
+
+      foreach ($produtosFora as $p) {
+          
+
+        $entrada = new Produtos;
+        $entrada->id = $p->id;
+        $entrada->nome = $p->nome;
+        $entrada->codigo = $p->codigo;
+        $entrada->valor = $p->valor;
+        $entrada->categoria_id = $p->categoria_id;
+        $entrada->tamanho = $p->tamanho;
+        $entrada->acabamento = $p->acabamento;
+        $entrada->descricao = $p->descricao;
+        $entrada->cor = $p->cor;
+        $entrada->user_id = $p->user_id;
+
+        $entrada->save();
+
+        echo "Inserindo produto id: ".$p->id."<br>";
+
+      }
+     
+
+        echo "<h1>Finalizado</h1>";
+
+
 
 
 
