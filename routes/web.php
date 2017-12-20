@@ -25,6 +25,15 @@ Route::get('/admin/codigos/{qtde}','HomeController@novosCodigos');
 Route::get('/admin/atualiza','UpdateController@index');
 
 
+
+Route::get('/admin/vendas','VendasController@index')->name('vendas');
+Route::get('/admin/vendas/{id}','VendasController@listaProdutos');
+Route::get('/admin/vendas/delete/{id}','VendasController@delete');
+
+
+
+
+
 Route::get('/admin/ajuda','HomeController@ajuda');
 
 

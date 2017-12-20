@@ -160,7 +160,7 @@
                 <tr>
                   
                   <td>{{$p->nome}}</td>
-                  <td>{{$p->colaber->name}}</td>
+                  <td>{{$p->colaber->marca}}</td>
                   
                   <td><span class="badge bg-red">{{$p->entrada_estoque_count - $p->saida_estoque_count - $p->venda_count}}</span></td>
                 </tr>
@@ -200,6 +200,7 @@
                   <th>Data</th>
                   <th>Pagamento</th>
                   <th>Total</th>
+                  <th></th>
                   
                 </tr>
 
@@ -210,6 +211,7 @@
                   <td>{{date('d/m/Y', strtotime($v->created_at))}}</td>
                   <td><span class="label label-success">{{$v->tipoPagamento}}</span></td>
                   <td>R$ {{number_format($v->valorVenda,2)}}</td>
+                  <td><a href="vendas/{{$p->id}}"><button class="btn btn-primary">Detalhar</button></a></td>
                   
                 </tr>
                @endforeach

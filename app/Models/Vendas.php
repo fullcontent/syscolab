@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Vendas extends Model
 {
     //
@@ -15,7 +16,17 @@ class Vendas extends Model
 
     public function itens()
     {
-    	return $this->hasMany('App\Models\VendasItem','venda_id');
+    	return $this->hasMany('App\Models\VendasItem','venda_id','id');
     }
+
+    
+    public function produtos()
+    {
+        return $this->hasMany('App\Models\Produtos','id');
+    }
+
+       
     
 }
+
+

@@ -168,7 +168,7 @@ class HomeController extends Controller
         $produtos = Produtos::with('colaber')->withCount('saidaEstoque','venda','entradaEstoque')->take(5)->get();
 
         $estoqueBaixo = $produtos->filter(function($item){
-            return $item->estoque() <= 2;
+            return $item->estoque() <= 1;
         });
 
         
