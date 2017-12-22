@@ -178,11 +178,12 @@ class HomeController extends Controller
     public function produtosMaisVendidosGerencia()
     {
        $produtos = Produtos::whereHas('venda')
-            ->with('colaber')
+            ->with('colaber','venda')
             ->withCount('venda')
             ->orderBy('venda_count','desc')
-            ->take(5)
-            ->get();
+            ->paginate(15);
+
+                       
         return $produtos;
     }
 

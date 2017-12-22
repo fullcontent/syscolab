@@ -4,6 +4,9 @@
 {!! Html::script('js/angular.min.js', array('type' => 'text/javascript')) !!}
 {!! Html::script('js/ultimasNoticias.js', array('type' => 'text/javascript')) !!}
 
+
+
+
 <div class="row">
         
         <div class="col-md-4 col-sm-6 col-xs-12">
@@ -184,45 +187,74 @@
 
 
 <div class="container-fluid">
+<div class="box">
+    <div class="box-header">
+      <h3>Produtos Vendidos</h3>
+    </div>
 
-<div class="row">
-        <div class="col-xs-12 col-md-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Últimas Vendas</h3>
-              </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
-                <tbody><tr>
-                  <th>#</th>
-                  <th>Vendedor</th>
-                  <th>Data</th>
-                  <th>Pagamento</th>
-                  <th>Total</th>
-                  <th></th>
-                  
-                </tr>
+    <div class="box-body">
 
-                @foreach($vendas as $v)
-                <tr>
-                  <td>{{$v->id}}</td>
-                  <td>{{$v->user->name}}</td>
-                  <td>{{date('d/m/Y', strtotime($v->created_at))}}</td>
-                  <td><span class="label label-success">{{$v->tipoPagamento}}</span></td>
-                  <td>R$ {{number_format($v->valorVenda,2)}}</td>
-                  <td><a href="vendas/{{$p->id}}"><button class="btn btn-primary">Detalhar</button></a></td>
-                  
-                </tr>
-               @endforeach
+      <div class="row"></div>
+          
+         
+            <table class="table table-striped table-bordered dataTable" role="grid" id="produtosMaisVendidos" cellspacing="0" width="100%">
+  <thead>
+            <tr>
+                <th>#</th>
+                <th>Marca</th>
+                <th>Nome</th>
+                <th>Codigo</th>
                 
-              </tbody></table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-      </div>
+                <th>Valor</th>
+                <th>Qtde</th>
+                
+            </tr>
+        </thead>
+
+
+        <tbody>
+          @foreach($produtosMaisVendidosGerencia as $p)
+          <tr>
+            <td>{{$p->venda[0]->id}}</td>
+          <td>{{$p->colaber->marca}}</td>
+          <td>{{$p->nome}}</td>
+          <td>{{$p->codigo}}</td>
+          <td>R$ {{$p->valor}}</td>
+          <td>{{$p->venda[0]->qtde}}</td>
+          
+          </tr>
+          @endforeach
+        </tbody>
+
+        
+
+          </table>
+          
+          
+
+      
+    </div>
+
 </div>
 
+
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#produtosMaisVendidos').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+</script>
 @endsection
