@@ -301,6 +301,10 @@ class HomeController extends Controller
 
         }
 
+        $test = VendasItem::sum('valor');
+
+        
+
         $sub = array_sum($total)-1;
         $sub = number_format($sub,2);   
         

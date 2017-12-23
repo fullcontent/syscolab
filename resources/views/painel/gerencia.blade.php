@@ -226,7 +226,7 @@
 
               
               
-              <td>{{$p[0]->valor}}</td>
+              <td>{{$p[0]->venda[0]->valor}}</td>
               
           
           
