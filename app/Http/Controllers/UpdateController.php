@@ -23,6 +23,7 @@ class UpdateController extends Controller
 	{
 		
 		$produtosRemotos = $this->getRemoteProdutos();
+    $atualizarProdutosRemotos = $this->atualizarProdutosRemotos();
 		$estoqueRemoto = $this->getRemoteEstoque();
 		$enviosRemoto = $this->getRemoteEnvios();
     $estoqueLocal = $this->getLocalEstoque();
@@ -31,10 +32,14 @@ class UpdateController extends Controller
     $vendasItens = $this->updateVendasItens();
 
 
+    
+
+
     $vars[] = [
 
       'enviosRemoto' => $enviosRemoto,
       'produtosRemotos' => $produtosRemotos,
+      'atualizarProdutosRemotos' => $atualizarProdutosRemotos,
       'estoqueRemoto' => $estoqueRemoto,
       'estoqueLocal'  => $estoqueLocal,
       'envioItensRemoto' => $envioItensRemoto,
@@ -593,6 +598,83 @@ class UpdateController extends Controller
      
       return "<p>atualizado ".$atualizaLocal->count()." Vendas Locais.</p><p>atualizado ".$atualizaRemoto->count()." Vendas Remotas.</p>";
     }
+
+
+public function atualizarProdutosRemotos()
+
+{
+     // echo "Verificando se há novos produtos...<br>"; 
+
+
+     $fromDT = date("Y-m-d",strtotime("-1 days"));
+     $toDT = date("Y-m-d",strtotime("+1 day"));
+
+     $db_ext = DB::connection('mysql_gcloud');
+     $externo = $db_ext->table('produtos')
+              
+                ->whereNotNull('updated_at')
+                ->where('updated_at','>',$fromDT)
+                ->get();
+
+      
+
+      $ext = $externo->pluck('id','updated_at');
+      
+      $interno = Produtos::whereIn('id',$ext)->get();
+      $int = $interno->pluck('id','updated_at');
+
+
+      $compares = $int->diffAssoc($ext);
+
+
+      
+
+      
+
+
+
+       if(empty($compares))
+       {
+        return "Nenhum Produto para atualizar!";
+       }
+
+
+      $produtosFora = $db_ext->table('produtos')->whereIn('id',$compares)->get();
+
+
+      // dd($produtosFora);
+
+      
+
+      foreach ($produtosFora as $p) {
+          
+
+
+        $entrada = Produtos::where('id',$p->id)
+                    ->update([
+                      'nome' => $p->nome,
+                      'tamanho'=>$p->tamanho,
+                      'acabamento'=>$p->acabamento,
+                      'descricao'=>$p->descricao,
+                      'cor'=>$p->cor,
+                      'img'=>$p->img,
+                      'updated_at'=>$p->updated_at,
+                      'valor'=>$p->valor
+                    ]);
+        
+
+       // echo "Atualizando produto id: ".$p->id."<br>";
+
+      }
+     
+        // echo "<h2>Finalizado</h2>";
+
+      return "atualizado ".$produtosFora->count()." itens";
+
+
+
+}
+
 
 
 
