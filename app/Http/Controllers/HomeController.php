@@ -183,9 +183,37 @@ class HomeController extends Controller
             ->orderBy('venda_count','desc')
             ->paginate(15);
 
-                       
-        return $produtos;
+
+        $ItensVenda = VendasItem::all();
+
+        foreach ($ItensVenda as $key => $p) {
+
+            $produto[] = Produtos::with('venda','colaber')->where('id',$p->produto_id)->get();
+
+
+           foreach ($produto as $p)
+           {
+
+                $venda_id = $p[0]['venda'][0]['venda_id'];
+
+           }
+            
+
+             $venda[] = Vendas::find($venda_id);
+
+             $produto[$key]['venda']=$venda;
+
+        }
+
+             
+        
+
+       return $produto;
     }
+
+
+
+
 
     public function estoqueCasa()
     {

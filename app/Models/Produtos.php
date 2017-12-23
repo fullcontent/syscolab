@@ -41,7 +41,7 @@ class Produtos extends Model
 
     public function venda()
     {
-        return $this->hasMany('App\Models\VendasItem','produto_id')->orderBy('created_at','desc');
+        return $this->hasMany('App\Models\VendasItem','produto_id');
     }
 
     public function qtdeVendas()

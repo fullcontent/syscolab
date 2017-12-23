@@ -122,12 +122,7 @@
                   
                 </tr>
         
-              @foreach($produtosMaisVendidosGerencia as $p)
-                <tr>
-                  <td>{{$p->nome}}</td>
-                  <td>{{$p->colaber->name}}</td>
-                </tr>
-              @endforeach
+              
                
               </tbody></table>
             </div>
@@ -200,29 +195,46 @@
             <table class="table table-striped table-bordered dataTable" role="grid" id="produtosMaisVendidos" cellspacing="0" width="100%">
   <thead>
             <tr>
-                <th>#</th>
-                <th>Marca</th>
-                <th>Nome</th>
+                <th>Data</th>
                 <th>Codigo</th>
+                <th>Nome</th>
+                <th>Marca</th>
+                
+                
+                
                 
                 <th>Valor</th>
-                <th>Qtde</th>
+                
                 
             </tr>
         </thead>
 
 
         <tbody>
-          @foreach($produtosMaisVendidosGerencia as $p)
-          <tr>
-            <td>{{$p->venda[0]->id}}</td>
-          <td>{{$p->colaber->marca}}</td>
-          <td>{{$p->nome}}</td>
-          <td>{{$p->codigo}}</td>
-          <td>R$ {{$p->valor}}</td>
-          <td>{{$p->venda[0]->qtde}}</td>
+          @foreach($produtosMaisVendidosGerencia as $key => $p)
+              
+          @foreach($p['venda'] as $v)
+              
+              <tr>
+               
+             <td>{{date('d/m/Y', strtotime($v->created_at))}}</td>
+             <td>{{$p[0]->codigo}}</td>
+             <td>{{$p[0]->nome}}</td>
+              <td>{{$p[0]->colaber->marca}}</td>
+
+              
+
+              
+              
+              <td>{{$p[0]->valor}}</td>
+              
+          
           
           </tr>
+
+
+          @endforeach
+          
           @endforeach
         </tbody>
 
@@ -253,7 +265,8 @@
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false
+      'autoWidth'   : false,
+      'order'       :[0,'desc']
     })
   })
 </script>
