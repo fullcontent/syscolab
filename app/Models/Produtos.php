@@ -44,6 +44,15 @@ class Produtos extends Model
         return $this->hasMany('App\Models\VendasItem','produto_id')->whereNull('estornado');
     }
 
+    public function vendasMes()
+    {
+        
+       
+
+        return $this->hasMany('App\Models\VendasItem','produto_id')->whereNull('estornado');
+
+    }
+
     public function qtdeVendas()
     {
         return $this->hasMany('App\Models\VendasItem','produto_id')->count();

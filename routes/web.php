@@ -33,6 +33,13 @@ Route::get('/admin/vendas/estornar/{id}/{venda_id}','VendasController@estornar')
 
 
 
+Route::post('/admin/relatorio','RelatoriosController@gerarRelatorio');
+Route::get('/admin/relatorios','RelatoriosController@index');
+
+
+
+
+
 
 
 Route::get('/admin/ajuda','HomeController@ajuda');

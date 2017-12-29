@@ -66,6 +66,8 @@
             <div class="btn-group-vertical btn-block">
                 <a href="vendasFeira"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-list-alt"></i> Nova Venda</h4></button></a>
                 <a href="estoqueFeira"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-plus"></i> Entrada no estoque</h4></button></a>
+                
+                
             </div>
         </div>
     </div>
@@ -218,10 +220,12 @@
 
 
         <tbody>
-          @foreach($produtosVendidosGerencia as $key => $p)
+
+          @if(!empty($produtosVendidosGerencia))
+
               
-          
-              
+            @foreach($produtosVendidosGerencia as $key => $p)
+               
             <tr>
                
              <td>@foreach($p['venda'] as $v)
@@ -243,10 +247,14 @@
           
           </tr>
 
-
-          
           
           @endforeach
+
+          
+
+          @endif
+
+          
         </tbody>
 
         

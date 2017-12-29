@@ -25,6 +25,7 @@ class CreateVendasItemsTable extends Migration
             
             $table->decimal('total_venda',15, 2);
             $table->integer('localVenda')->default(1);
+            $table->integer('estornado')->nullable($value = true);
             $table->timestamps();
         });
     }

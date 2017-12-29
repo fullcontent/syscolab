@@ -88,7 +88,7 @@
 
 
 
-			if(CRUDBooster::myPrivilegeName() == "Gerencia"){
+			if(CRUDBooster::myPrivilegeName() != "Colabers"){
 
 				
 				$this->col[] = ["label"=>"Ultima Remessa","name"=>"descricao","callback"=>function($row){
