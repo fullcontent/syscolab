@@ -27,8 +27,9 @@ Route::get('/admin/atualiza','UpdateController@index');
 
 
 Route::get('/admin/vendas','VendasController@index')->name('vendas');
-Route::get('/admin/vendas/{id}','VendasController@listaProdutos');
+Route::get('/admin/vendas/{id}','VendasController@listaProdutos')->name('venda');
 Route::get('/admin/vendas/delete/{id}','VendasController@delete');
+Route::get('/admin/vendas/estornar/{id}/{venda_id}','VendasController@estornar');
 
 
 

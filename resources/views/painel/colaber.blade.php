@@ -17,6 +17,13 @@
 
 
 <div class="col-md-6">
+  
+
+<div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-warning"></i> Importante!</h4>
+                Estamos enfrentando dificuldades com acesso a internet no local da feira e, por isso, a atualização do sistema não funcionará em tempo real. Faremos o possível para atualizar a cada 3 dias.
+</div>
 
     <div class="box">
         <div class="box-header">
@@ -33,49 +40,11 @@
         </div>
     </div>
 
-    <div class="box box-warning direct-chat direct-chat-primary" ng-app="syscolab" ng-controller="noticiasCtrl">
-            <div class="box-header with-border">
-              <h3 class="box-title">Ultimas noticias da praia!</h3>
-
-              
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <!-- Conversations are loaded here -->
-              <div class="direct-chat-messages">
-                <!-- Message. Default to the left -->
-                
-				      
-              
-                <div class="direct-chat-msg" ng-repeat="novaNoticiaTemp in noticiasTemp" ng-model="noticias">
-                  <div class="direct-chat-info clearfix">
-                    
-              <span class="direct-chat-timestamp pull-right">@{{novaNoticiaTemp.created_at}}</span>
-                  </div>
-                  <!-- /.direct-chat-info -->
-                  <img class="direct-chat-img" src="{{asset('/vendor/crudbooster/avatar.jpg')}}" alt="img"><!-- /.direct-chat-img -->                  <div class="direct-chat-text">
-                    @{{novaNoticiaTemp.mensagem}}
-                  </div>
-
-                  <!-- /.direct-chat-text -->
-                </div>
-                <!-- /.direct-chat-msg -->
-			         
-                
-
-              <!-- Contacts are loaded here -->
-              
-              <!-- /.direct-chat-pane -->
-            </div>
-            <!-- /.box-body -->
-           
-            <!-- /.box-footer-->
-          </div>
-      </div>
+    
 </div>
 
 <div class="col-md-6">
-
+        
           <div class="info-box">
             <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
 
@@ -84,8 +53,11 @@
               <span class="info-box-number">R$ {{$totalVendas}}</span>
             </div>
             <!-- /.info-box-content -->
+
           </div>
           <!-- /.info-box -->
+
+          
         
 
 <div class="box">

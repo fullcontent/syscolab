@@ -49,42 +49,7 @@
 			
 
 
-			$this->col[] = ["label"=>"Estoque Casa","name"=>"descricao","callback"=>function($row){
-				
-				$entrada = Estoque::where([['produto_id', $row->id],['operacao',4]])->count();
-				$saida = Estoque::where([['produto_id', $row->id],['operacao',5]])->count();
-				$venda = Estoque::where([['produto_id', $row->id],['operacao',6]])->count();
-				$count = $entrada - $saida - $venda;
-
-				
-				switch ($count) {
-					case 0:
-						$estoque = "<span class='label label-warning'>Sem Estoque</span>";
-						break;
-					
-					case $count < 0:
-						$estoque = "<span class='label bg-purple color-palette'>Ops algo errado $count</span>";
-					break;
-
-					case $count < 2:
-						$estoque = "<span class='label label-warning'>Estoque Baixo $count</span>";
-					break;
-
-
-
-					default:
-						$estoque = "<span class='label label-success'>$count</span>";
-					break;
-				}
-
-					
-				
-
-
-				
-				return $estoque;
-			}];
-
+			
 			$this->col[] = ["label"=>"Estoque Feira","name"=>"descricao","callback"=>function($row){
 				
 				$entrada = Estoque::where([['produto_id', $row->id],['operacao',1]])->count();
@@ -121,15 +86,17 @@
 				return $estoque;
 			}];
 
-			$this->col[] = ["label"=>"Remessa","name"=>"descricao","callback"=>function($row){
+
+
+			if(CRUDBooster::myPrivilegeName() == "Gerencia"){
+
+				
+				$this->col[] = ["label"=>"Ultima Remessa","name"=>"descricao","callback"=>function($row){
 				
 
-				$envios = EnvioItem::where('produto_id', $row->id)->first();
-
-
-
-
-								
+				$envios = EnvioItem::where('produto_id', $row->id)->orderBy('id','desc')->first();
+				
+	
 				switch ($envios->qtde) {
 					case 0:
 						$estoque = "<span class='label label-warning'>SEM REMESSA</span>";
@@ -158,6 +125,10 @@
 				return $estoque;
 			}];
 
+
+			}
+
+			
 
 
 

@@ -10,6 +10,8 @@ use App\Models\Estoque;
 use App\Models\Envio;
 use App\Models\EnvioItem;
 use App\Models\Vendas;
+use App\User;
+use App\Models\Colaber;
 
 use App\Models\VendasItem;
 
@@ -20,9 +22,13 @@ class UpdateController extends Controller
 
 
 	public function index()
-	{
+	{  
+
+
+		$getRemoteUsers = $this->getRemoteUsers();
+    $getRemoteColabers = $this->getRemoteColabers();
 		
-		$produtosRemotos = $this->getRemoteProdutos();
+    $produtosRemotos = $this->getRemoteProdutos();
     $atualizarProdutosRemotos = $this->atualizarProdutosRemotos();
 		$estoqueRemoto = $this->getRemoteEstoque();
 		$enviosRemoto = $this->getRemoteEnvios();
@@ -36,7 +42,8 @@ class UpdateController extends Controller
 
 
     $vars[] = [
-
+      'remoteUsers' => $getRemoteUsers,
+      'remoteColabers' => $getRemoteColabers,
       'enviosRemoto' => $enviosRemoto,
       'produtosRemotos' => $produtosRemotos,
       'atualizarProdutosRemotos' => $atualizarProdutosRemotos,
@@ -309,6 +316,142 @@ class UpdateController extends Controller
         return "atualizado ".$envioExt->count()." remessas.";
 
     }
+
+
+    public function getRemoteUsers()
+    {
+        
+      
+    // echo "Verificando se há novas Remessas..."; 
+
+     $db_ext = DB::connection('mysql_gcloud');
+     $externo = $db_ext->table('cms_users')->get();
+     
+     foreach($externo as $p)
+     {
+
+        $listaExterno[] = $p->id;
+
+     }
+
+
+     $interno = User::all();
+
+        foreach ($interno as $i) {
+            
+            $listaInterno[] = $i->id;
+        }
+
+
+       $compares = array_diff($listaExterno, $listaInterno);
+
+       if(empty($compares))
+       {
+        // echo "<p>Nenhuma atualizacao de envio!</p>";
+        return "Nenhuma atualizacao de envio";
+       }
+
+
+      $envioExt = $db_ext->table('cms_users')->whereIn('id',$compares)->get();
+
+      foreach ($envioExt as $p) {
+          
+
+        $entrada = new User;
+        $entrada->id = $p->id;
+        
+        $entrada->name = $p->name;
+        $entrada->photo = $p->photo;
+        $entrada->email = $p->email;
+        $entrada->password = $p->password;
+        $entrada->id_cms_privileges = $p->id_cms_privileges;
+        $entrada->created_at = $p->created_at;
+        $entrada->updated_at = $p->updated_at;
+        $entrada->status = $p->status;
+               
+
+        $entrada->save();
+
+        // echo "Inserindo envio id: ".$p->id."<br>";
+
+      }
+     
+        return "atualizado ".$envioExt->count()." usuarioss.";
+
+    }
+
+    public function getRemoteColabers()
+    {
+        
+      
+    // echo "Verificando se há novas Remessas..."; 
+
+     $db_ext = DB::connection('mysql_gcloud');
+     $externo = $db_ext->table('colabers')->get();
+     
+     foreach($externo as $p)
+     {
+
+        $listaExterno[] = $p->id;
+
+     }
+
+
+     $interno = Colaber::all();
+
+        foreach ($interno as $i) {
+            
+            $listaInterno[] = $i->id;
+        }
+
+
+       $compares = array_diff($listaExterno, $listaInterno);
+
+       if(empty($compares))
+       {
+        // echo "<p>Nenhuma atualizacao de envio!</p>";
+        return "Nenhuma atualizacao de envio";
+       }
+
+
+      $envioExt = $db_ext->table('colabers')->whereIn('id',$compares)->get();
+
+      foreach ($envioExt as $p) {
+          
+
+        $entrada = new Colaber;
+        $entrada->id = $p->id;
+        
+        $entrada->user_id = $p->user_id;
+        $entrada->marca = $p->marca;
+        $entrada->responsavel = $p->responsavel;
+        $entrada->cnpj = $p->cnpj;
+        $entrada->cpf = $p->cpf;
+        $entrada->cep = $p->cep;
+        $entrada->endereco = $p->endereco;
+        $entrada->cidade = $p->cidade;
+        $entrada->estado = $p->estado;
+        $entrada->numero = $p->numero;
+        $entrada->complemento = $p->complemento;
+        $entrada->telefone = $p->telefone;
+        $entrada->celular = $p->celular;
+        $entrada->dadosBancarios = $p->dadosBancarios;
+        $entrada->created_at = $p->created_at;
+        $entrada->updated_at = $p->updated_at;
+               
+
+        $entrada->save();
+
+        // echo "Inserindo envio id: ".$p->id."<br>";
+
+      }
+     
+        return "atualizado ".$envioExt->count()." colabers.";
+
+    }
+
+
+
 
     public function getRemoteEnvioItens()
     {

@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Vendas;
 use App\Models\VendasItem;
 use App\Models\Produtos;
+use App\Models\Estoque;
+use CRUDBooster;
 
 
 
@@ -40,6 +42,15 @@ class VendasController extends Controller
 
         $lista = VendasItem::with('produto')->where('venda_id',$id)->get();
 
+        // $est = VendasItem::whereHas('estorno')->get();
+
+        // $lista = VendasItem::with('produto')->withCount('estorno')->where()->get();
+
+        
+       
+
+         // return $lista;
+
         return view('vendas.detalheVenda')->with(['venda'=>$venda,'lista'=>$lista]);
 
     }
@@ -57,11 +68,73 @@ class VendasController extends Controller
 
         //Deleta todos os itens da venda
 
-        $itens = VendasItem::where('venda_id', $id)->delete();
+        $listaItens = VendasItem::where('venda_id',$id)->get();
 
-        $venda = Vendas::find($id)->delete();
+        $user_id = CRUDBooster::myId(); // Pegar id do usuario
+
+        foreach ($listaItens as $key => $v) {
+            
+            $est = Estoque::where([
+                ['produto_id',$v->produto_id],
+                ['operacao',3],
+                ['comentarios','like','%#'.$p->venda_id.'%']
+            ])
+            ->first();
+
+            $estoqueData = new Estoque;
+            $estoqueData->produto_id = $v->produto_id;
+            $estoqueData->user_id = $user_id;
+            $estoqueData->operacao = 7;
+            $estoqueData->qty = 1;
+
+            $estoqueData->comentarios = "Exclusão da Venda #".$v->venda_id."";
+
+            $estoqueData->save();
+        }
+
+
+         $itens = VendasItem::where('venda_id', $id)->delete();
         
-        return redirect()->route('vendas');       
+
+         $venda = Vendas::find($id)->delete();
+
+
+        
+        return redirect()->route('vendas')->with('message','Venda excluida com sucesso!');       
+    }
+
+
+    public function estornar($id='',$venda_id='')
+    {
+            
+
+
+            $user_id = CRUDBooster::myId(); // Pegar id do usuario
+            
+            $item = VendasItem::find($id);
+            
+
+            if(isset($item))
+            {
+               
+            $estoqueData = new Estoque;
+            $estoqueData->produto_id = $item->produto_id;
+            $estoqueData->user_id = $user_id;
+            $estoqueData->operacao = 7;
+            $estoqueData->qty = 1;
+
+            $estoqueData->comentarios = "Estorno do Produto #".$item->id." Venda #".$item->venda_id."";
+
+            $estoqueData->save();
+
+
+               
+            }
+
+            return redirect()->route('venda',['id'=>$item->venda_id])->with('message','Item estornado com sucesso!'); 
+            
+
+
     }
 
 

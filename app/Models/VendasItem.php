@@ -16,4 +16,9 @@ class VendasItem extends Model
     {
     	return $this->belongsTo('App\Models\Vendas','venda_id','id');
     }
+
+    public function estorno()
+    {
+    	return $this->hasMany('App\Models\Estoque','produto_id','produto_id')->where('operacao',7);
+    }
 }
