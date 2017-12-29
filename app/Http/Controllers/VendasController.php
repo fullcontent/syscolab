@@ -122,12 +122,11 @@ class VendasController extends Controller
             $estoqueData->user_id = $user_id;
             $estoqueData->operacao = 7;
             $estoqueData->qty = 1;
-
             $estoqueData->comentarios = "Estorno do Produto #".$item->id." Venda #".$item->venda_id."";
-
             $estoqueData->save();
 
 
+            $estorno = VendasItem::where('id',$id)->update(['estornado'=>1]);
                
             }
 

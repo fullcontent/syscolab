@@ -61,14 +61,19 @@
             @foreach($lista as $l)
 				
 				@foreach($l->produto as $p)
-           		<tr>
+           		<tr @if($l->estornado) 
+					class="danger"
+					@endif
+           		>
 					<td>{{$l->qtde}}</td>
 					<td>{{$p->codigo}}</td>
 					<td>{{$p->nome}}</td>
 					<td>{{$p->colaber->marca}}</td>
 					<td>R$ {{$l->valor}}</td>
-					
-					<td><a href="../vendas/estornar/{{$l->id}}/{{$venda->id}}" onclick="return confirm('Tem certeza que estornar o item?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove"></i></button></a></td>
+					<td>@unless($l->estornado) 
+							<a href="../vendas/estornar/{{$l->id}}/{{$venda->id}}" onclick="return confirm('Tem certeza que estornar o item?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove"></i></button></a>
+					@endunless					
+					</td>
 				</tr>
            		@endforeach
             
