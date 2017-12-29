@@ -73,7 +73,7 @@
 				      @foreach($produtosMaisVendidos as $p)
                 
                 <tr>
-                  <td>{{$p->id}}.</td>
+                  <td>{{$p->venda_count}}x</td>
                   <td>{{$p->nome}}</td>
                   
                   <td><span class="badge bg-green">R$ {{$p->valor}}</span></td>

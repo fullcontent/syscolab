@@ -41,7 +41,7 @@ class Produtos extends Model
 
     public function venda()
     {
-        return $this->hasMany('App\Models\VendasItem','produto_id');
+        return $this->hasMany('App\Models\VendasItem','produto_id')->whereNull('estornado');
     }
 
     public function qtdeVendas()
@@ -55,11 +55,11 @@ class Produtos extends Model
     {   
 
         
-       $vendas = $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',1)->count();
+        $vendasFeira = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',3)->count();
         $saidaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',5)->count();
         $entradaEstoque = $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',4)->count();
 
-        return $entradaEstoque - $vendas - $saidaEstoque;
+        return $entradaEstoque - $vendasFeira - $saidaEstoque;
     }
 
      public function estoqueFeira()

@@ -48,7 +48,7 @@ class HomeController extends Controller
         //Metodos de Gerencia
 
         $produtosBaixoEstoqueGerencia = $this->produtosBaixoEstoqueGerencia();
-        $produtosMaisVendidosGerencia = $this->produtosMaisVendidosGerencia();
+        $produtosVendidosGerencia = $this->produtosVendidosGerencia();
         $vendas = $this->listaVendas();
         $totalVendasDiarioGerencia = $this->totalVendasDiarioGerencia();
         $totalVendasSemanalGerencia = $this->totalVendasSemanalGerencia();
@@ -90,7 +90,7 @@ class HomeController extends Controller
                     [
                         'produtosBaixoEstoqueGerencia'=>$produtosBaixoEstoqueGerencia,
                         'vendas'    =>  $vendas,
-                        'produtosMaisVendidosGerencia'  =>  $produtosMaisVendidosGerencia,
+                        'produtosVendidosGerencia'  =>  $produtosVendidosGerencia,
                         'totalVendasDiarioGerencia' =>  $totalVendasDiarioGerencia,
                         'totalVendasSemanalGerencia'    =>  $totalVendasSemanalGerencia,
                         'numTotalVendas'    =>  $numTotalVendas,
@@ -165,17 +165,17 @@ class HomeController extends Controller
         
         $user_id = CRUDBooster::myId();
 
-        $produtos = Produtos::with('colaber')->withCount('saidaEstoque','venda','entradaEstoque')->take(5)->get();
+        $produtos = Produtos::with('colaber')->withCount('saidaEstoque','venda','entradaEstoque')->paginate(5);
 
         $estoqueBaixo = $produtos->filter(function($item){
-            return $item->estoque() <= 1;
+            return $item->estoqueFeira() <= 2;
         });
 
-        
+              
         return $estoqueBaixo;
     }
 
-    public function produtosMaisVendidosGerencia()
+    public function produtosVendidosGerencia()
     {
        $produtos = Produtos::whereHas('venda')
             ->with('colaber','venda')
@@ -184,12 +184,17 @@ class HomeController extends Controller
             ->paginate(15);
 
 
-        $ItensVenda = VendasItem::all();
+
+
+        // $ItensVenda = VendasItem::all();
+
+            $ItensVenda = VendasItem::with('produto')->get();
+
+            dd($ItensVenda);
 
         foreach ($ItensVenda as $key => $p) {
 
-            $produto[] = Produtos::with('venda','colaber')->where('id',$p->produto_id)->get();
-
+        $produto[] = Produtos::whereHas('venda')->with('venda','colaber')->where('id',$p->produto_id)->get();
 
            foreach ($produto as $p)
            {
@@ -204,9 +209,11 @@ class HomeController extends Controller
              $produto[$key]['venda']=$venda;
 
         }
-
              
-        
+       
+
+
+
 
        return $produto;
     }
@@ -265,10 +272,14 @@ class HomeController extends Controller
         
         $user_id = CRUDBooster::myId();
 
-        $produtos = Produtos::where('user_id',$user_id)->withCount('saidaEstoque','venda','entradaEstoque')->get();
+        $produtos = Produtos::where('user_id',$user_id)->withCount('saidaEstoque','venda','entradaEstoque')
+        ->get();
 
+        
+
+        
         $estoqueBaixo = $produtos->filter(function($item){
-            return $item->estoque() <= 2;
+            return $item->estoqueFeira() <= 2;
         });
      
         return $estoqueBaixo;

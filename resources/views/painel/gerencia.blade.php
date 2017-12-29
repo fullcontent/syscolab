@@ -116,17 +116,17 @@
               <table class="table table-hover">
                 <tbody>
                    <tr>
-                  
+                  <th>Qtde</th>
                   <th>Produto</th>
                   <th>Colaber</th>
                   
                 </tr>
-        
               
                
-              </tbody></table>
+              </tbody>
+              </table>
             </div>
-            <!-- /.box-body -->
+            
            
           </div>
 </div>
@@ -211,29 +211,26 @@
 
 
         <tbody>
-          @foreach($produtosMaisVendidosGerencia as $key => $p)
+          @foreach($produtosVendidosGerencia as $key => $p)
               
-          @foreach($p['venda'] as $v)
+          
               
-              <tr>
+            <tr>
                
-             <td>{{date('d/m/Y', strtotime($v->created_at))}}</td>
+             <td>@foreach($p['venda'] as $v) {{date('d/m/Y', strtotime($v->created_at))}} @endforeach</td>
              <td>{{$p[0]->codigo}}</td>
              <td>{{$p[0]->nome}}</td>
-              <td>{{$p[0]->colaber->marca}}</td>
+             <td>{{$p[0]->colaber->marca}}</td>
 
               
-
-              
-              
-              <td>{{$p[0]->venda[0]->valor}}</td>
+              <td>R${{$p[0]->venda[0]->valor}}</td>
               
           
           
           </tr>
 
 
-          @endforeach
+          
           
           @endforeach
         </tbody>
@@ -241,6 +238,7 @@
         
 
           </table>
+
           
           
 
