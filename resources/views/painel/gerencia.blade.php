@@ -65,7 +65,7 @@
 
             <div class="btn-group-vertical btn-block">
                 <a href="vendasFeira"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-list-alt"></i> Nova Venda</h4></button></a>
-                <a href="produtos/add"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-plus"></i> Entrada no estoque</h4></button></a>
+                <a href="estoqueFeira"><button type="button" class="btn btn-default btn-block"><h4><i class="fa fa-plus"></i> Entrada no estoque</h4></button></a>
             </div>
         </div>
     </div>
@@ -121,7 +121,14 @@
                   <th>Colaber</th>
                   
                 </tr>
-              
+                
+                @foreach($produtosMaisVendidosGerencia as $p)
+                  <tr>
+                    <td>{{$p->venda_count}}</td>
+                    <td>{{$p->nome}}</td>
+                    <td>{{$p->colaber->marca}}</td>
+                  </tr>
+                @endforeach
                
               </tbody>
               </table>
@@ -217,7 +224,14 @@
               
             <tr>
                
-             <td>@foreach($p['venda'] as $v) {{date('d/m/Y', strtotime($v->created_at))}} @endforeach</td>
+             <td>@foreach($p['venda'] as $v)
+                @if($v === end($p['venda']))
+                {{date('d/m/Y', strtotime($v->created_at))}}
+                @endif
+              
+              @endforeach
+
+             </td>
              <td>{{$p[0]->codigo}}</td>
              <td>{{$p[0]->nome}}</td>
              <td>{{$p[0]->colaber->marca}}</td>

@@ -49,6 +49,7 @@ class HomeController extends Controller
 
         $produtosBaixoEstoqueGerencia = $this->produtosBaixoEstoqueGerencia();
         $produtosVendidosGerencia = $this->produtosVendidosGerencia();
+        $produtosMaisVendidosGerencia = $this->produtosMaisVendidosGerencia();
         $vendas = $this->listaVendas();
         $totalVendasDiarioGerencia = $this->totalVendasDiarioGerencia();
         $totalVendasSemanalGerencia = $this->totalVendasSemanalGerencia();
@@ -91,6 +92,7 @@ class HomeController extends Controller
                         'produtosBaixoEstoqueGerencia'=>$produtosBaixoEstoqueGerencia,
                         'vendas'    =>  $vendas,
                         'produtosVendidosGerencia'  =>  $produtosVendidosGerencia,
+                        'produtosMaisVendidosGerencia' => $produtosMaisVendidosGerencia,
                         'totalVendasDiarioGerencia' =>  $totalVendasDiarioGerencia,
                         'totalVendasSemanalGerencia'    =>  $totalVendasSemanalGerencia,
                         'numTotalVendas'    =>  $numTotalVendas,
@@ -165,7 +167,7 @@ class HomeController extends Controller
         
         $user_id = CRUDBooster::myId();
 
-        $produtos = Produtos::with('colaber')->withCount('saidaEstoque','venda','entradaEstoque')->paginate(5);
+        $produtos = Produtos::with('colaber')->withCount('saidaEstoque','venda','entradaEstoque')->take(7)->get();
 
         $estoqueBaixo = $produtos->filter(function($item){
             return $item->estoqueFeira() <= 2;
@@ -173,6 +175,18 @@ class HomeController extends Controller
 
               
         return $estoqueBaixo;
+    }
+
+    public function produtosMaisVendidosGerencia()
+    {
+        $user_id = CRUDBooster::myId();
+        $produtos = Produtos::whereHas('venda')
+            ->withCount('venda')
+            ->orderBy('venda_count','desc')
+            ->take(7)
+            ->get();
+
+        return $produtos;
     }
 
     public function produtosVendidosGerencia()
@@ -185,12 +199,11 @@ class HomeController extends Controller
 
 
 
-
         // $ItensVenda = VendasItem::all();
 
             $ItensVenda = VendasItem::with('produto')->get();
 
-            dd($ItensVenda);
+            
 
         foreach ($ItensVenda as $key => $p) {
 
