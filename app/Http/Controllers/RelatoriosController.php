@@ -36,15 +36,30 @@ class RelatoriosController extends Controller
             30 => '30%',
             20 => '20%',
             10 => '10%',
+            40 => '40%',
+            50 => '50%'
             
         );
 
-        return view('relatorios.lista')->with(['colabers'=>$colabers,'mes'=>$meses,'porcentagem'=>$porcentagem]);
+
+        $lista = Relatorio::with('colaber')->get();
+
+
+
+        return view('relatorios.lista')
+                ->with([
+                    'colabers'=>$colabers,
+                    'mes'=>$meses,
+                    'porcentagem'=>$porcentagem,
+                    'relatorios'=>$lista
+
+                ]);
     }
 
     public function gerarRelatorio(Request $request)
     {
-    	$id = $request->input('colaber');
+    	
+        $id = $request->input('colaber');
         $mes = $request->input('mes');
         $porcentagem = $request->input('porcentagem');
 
@@ -87,9 +102,12 @@ class RelatoriosController extends Controller
 
 
         $this->salvarRelatorio($meusProdutos,$mes,$colaber,$porcentagem);
+
+
+        
+
+
      
-
-
         return view('relatorios.venda')->with(['lista'=>$meusProdutos, 'colaber'=>$colaber,'mes'=>$mes,'porcentagem'=>$porcentagem]);
     }
 
@@ -101,12 +119,12 @@ class RelatoriosController extends Controller
     	//Check if Report Exists
 
 
-    	$report = Relatorio::where([['colaber_id',$colaber->user_id]])->whereMonth('created_at',date('m'))->count();
+    	$report = Relatorio::where([['colaber_id',$colaber->user_id]])->whereMonth('created_at',$mes)->count();
 
 
     	if($report==0)
     	{
-    		$id = CRUDBooster::myId();
+    	$id = CRUDBooster::myId();
     	$user_id = $colaber->user_id;
     	$relatorio = new Relatorio;
 
@@ -130,6 +148,14 @@ class RelatoriosController extends Controller
             }
     	}
 
+        $users[] = $colaber->user_id;
+
+        CRUDBooster::sendNotification($config=[
+                'content'=>'Seu relatorio está pronto!',
+                 'to'=>CRUDBooster::adminPath('relatorio/view/'.$relatorio->id.''),
+                 'id_cms_users'=>$users]);
+
+
     	return "salvo";
 
     	}
@@ -140,14 +166,137 @@ class RelatoriosController extends Controller
     	}
 
 
-    	
-    	
+        	
 
     }
 
+    public function test($mes)
+    {
+        
+        $id = CRUDBooster::myId();
+        $report = Relatorio::where('colaber_id',$id)->first();
+        $ano = date('Y',strtotime($report->created_at));
+      
+        $porcentagem = $report->porcentagem;
+
+
+        if($report->count()>0){
+        
+        $colaber = Colaber::where('user_id',$id)->first();
+
+        $meusProdutos = Produtos::whereHas('vendasMes', function($q) use ($mes)
+        {
+            $q->whereMonth('created_at', $mes);
+        })
+                        ->where('user_id',$id)
+                        ->with('vendasMes')
+                        ->withCount('venda')
+                        ->get();
+
+                     
+        foreach ($meusProdutos as $key => $v) {
+            
+            $total = $v->venda->sum('valor');
+
+            $meusProdutos[$key]['total']=$total;
+        }
+
+
+        $mes = ltrim($mes,'0');
+        $meses = array(
+        1 =>    'Janeiro',
+                'Fevereiro',
+                'Março',
+                'Abril',
+                'Maio',
+                'Junho',
+                'Julho',
+                'Agosto',
+                'Setembro',
+                'Outubro',
+                'Novembro',
+                'Dezembro'
+            );
+
+        $mes = $meses[$mes];
+
+        return view('relatorios.relatorio')->with(['lista'=>$meusProdutos, 'colaber'=>$colaber,'mes'=>$mes,'ano'=>$ano,'porcentagem'=>$porcentagem]);
+
+        }
+
+        else{
+
+            return "nenhum relatório pra você ainda";
+        }
+
+    }
+
+
+
+    public function verRelatorio($id)
+    {
+        $relatorio = Relatorio::find($id);
+        $mes = date('m',strtotime($relatorio->created_at));
+        $colaber = Colaber::where('user_id',$relatorio->colaber_id)->first();
+        $porcentagem = $relatorio->porcentagem;
+        $id = $relatorio->colaber_id;
+
+        // dd($relatorio);
+
+
+         $meusProdutos = Produtos::whereHas('vendasMes', function($q) use ($mes)
+        {
+            $q->whereMonth('created_at', $mes);
+        })
+                        ->where('user_id',$id)
+                        ->with('vendasMes')
+                        ->withCount('venda')
+                        ->get();
+
+             
+        foreach ($meusProdutos as $key => $v) {
+            
+            $total = $v->venda->sum('valor');
+
+            $meusProdutos[$key]['total']=$total;
+        }
+
+
+        // dd($porcentagem);
+
+        $meses = array(
+        1 => 'Janeiro',
+                'Fevereiro',
+                'Março',
+                'Abril',
+                'Maio',
+                'Junho',
+                'Julho',
+                'Agosto',
+                'Setembro',
+                'Outubro',
+                'Novembro',
+                'Dezembro'
+            );
+
+        $mes = ltrim($mes,'0');
+        $mes = $meses[$mes];
+
+
+
+
+
+         return view('relatorios.venda')->with(['lista'=>$meusProdutos, 'colaber'=>$colaber,'mes'=>$mes,'porcentagem'=>$porcentagem]);
+    }
+
+
+
+    public function delete($id)
+    {
+        $relatorio = Relatorio::find($id);
+        $relatorio->delete();
+
+        return redirect()->route('relatorios');
+    }
     
-    
-
-
-
 }

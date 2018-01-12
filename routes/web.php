@@ -15,9 +15,8 @@ Route::get('/', function () {
     return redirect('admin/login');
 });
 
-Route::get('/admin/painel', 'HomeController@index');
+Route::get('/admin/painel', 'HomeController@index')->name('painel');
 
-Route::get('/admin/test','HomeController@test');
 
 Route::get('/admin/codigos/{qtde}','HomeController@novosCodigos');
 
@@ -34,18 +33,12 @@ Route::get('/admin/vendas/estornar/{id}/{venda_id}','VendasController@estornar')
 
 
 Route::post('/admin/relatorio','RelatoriosController@gerarRelatorio');
-Route::get('/admin/relatorios','RelatoriosController@index');
-
-
-
-
-
+Route::get('/admin/relatorios','RelatoriosController@index')->name('relatorios');
+Route::get('/admin/relatorio/delete/{id}','RelatoriosController@delete');
+Route::get('/admin/relatorio/view/{id}','RelatoriosController@verRelatorio');
 
 
 Route::get('/admin/ajuda','HomeController@ajuda');
-
-
-
 Route::resource('admin/estoqueCasa','EstoqueEntradaCasaController');
 Route::resource('admin/estoqueSaidaCasa','EstoqueSaidaCasaController');
 
@@ -67,9 +60,7 @@ Route::resource('admin/noticias','UltimasNoticiasController');
 Route::resource('admin/colaber','ColaberController');
 
 
-
-
-
+Route::get('admin/colabers','HomeController@listaColabers')->name('colabers');
 
 
 

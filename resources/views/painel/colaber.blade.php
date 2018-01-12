@@ -39,9 +39,86 @@
             </div>
         </div>
     </div>
+
+  
+  @if($relatorios)
+  <div class="box">
+    <div class="box-header">
+            <h3 class="box-title">Relatórios</h3>
+        </div>
       
+      <div class="box-body">
+        
+        @foreach($relatorios as $r)
+
+        <?php
+          $meses = array(
+          1 =>    'Janeiro',
+                'Fevereiro',
+                'Março',
+                'Abril',
+                'Maio',
+                'Junho',
+                'Julho',
+                'Agosto',
+                'Setembro',
+                'Outubro',
+                'Novembro',
+                'Dezembro'
+            );
+        $mes = date('m',strtotime($r->created_at));
+        $mes = ltrim($mes,'0');
+
+        
+        $mes = $meses[$mes];
+        ?>
+        <div class="col-md-6">
+        <a href="relatorio/view/{{$r->id}}">
+        <button type="button" class="btn btn-block btn-success btn-lg">{{$mes}}</button>
+        </a>
+      </div>
+      @endforeach        
+      
+        
+      
+      
+
+      </div>
+  </div>
+  @endif    
      
-          
+  <div class="box box-warning" ng-app="syscolab" ng-controller="noticiasCtrl">
+      <div class="box-body">
+        <div class="box-header">
+          <h3 class="box-title">Ultimas noticias</h3>
+        </div>
+        <div class="box-body">@{{log}}</div>
+        @foreach($ultimasNoticias as $u)
+        <div class="direct-chat-msg">
+                  <div class="direct-chat-info clearfix">
+                
+
+                    
+              <span class="direct-chat-timestamp pull-right">{{$u->created_at}}</span>
+                  </div>
+                  <!-- /.direct-chat-info -->
+                  <img class="direct-chat-img" src="{{asset('/vendor/crudbooster/avatar.jpg')}}" alt="img"><!-- /.direct-chat-img -->
+                  <div class="direct-chat-text">
+                   {{$u->mensagem}}
+                  </div>
+
+
+                  <!-- /.direct-chat-text -->
+                </div>
+                <!-- /.direct-chat-msg -->
+          @endforeach
+      </div>
+  </div>
+
+
+
+
+
     
 </div>
 

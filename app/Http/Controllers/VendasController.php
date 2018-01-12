@@ -57,7 +57,7 @@ class VendasController extends Controller
 
     public function listaVendas()
     {
-        $vendas = Vendas::with('itens')->orderBy('created_at','desc')->get();
+        $vendas = Vendas::with('itens')->orderBy('created_at','desc')->paginate(15);
 
         return $vendas;
     }

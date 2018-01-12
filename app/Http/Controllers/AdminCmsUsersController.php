@@ -31,7 +31,7 @@ class AdminCmsUsersController extends \crocodicstudio\crudbooster\controllers\CB
 		$this->form = array(); 		
 		$this->form[] = array("label"=>"Nome","name"=>"name",'required'=>true,'validation'=>'required|alpha_spaces|min:3');
 		$this->form[] = array("label"=>"Email","name"=>"email",'required'=>true,'type'=>'email','validation'=>'required|email|unique:cms_users,email,'.CRUDBooster::getCurrentId());		
-		$this->form[] = array("label"=>"Imagem","name"=>"photo","type"=>"upload","help"=>"Recommended resolution is 200x200px",'required'=>true,'validation'=>'image|max:1000');											
+		$this->form[] = array("label"=>"Imagem","name"=>"photo","type"=>"upload","help"=>"Recommended resolution is 200x200px");											
 		$this->form[] = array("label"=>"Tipo de usuario","name"=>"id_cms_privileges","type"=>"select","datatable"=>"cms_privileges,name",'required'=>true);						
 		$this->form[] = array("label"=>"Senha","name"=>"password","type"=>"password","help"=>"Please leave empty if not change");
 		# END FORM DO NOT REMOVE THIS LINE
@@ -64,4 +64,6 @@ class AdminCmsUsersController extends \crocodicstudio\crudbooster\controllers\CB
 
 	        }
 	    }
+
+	 
 }

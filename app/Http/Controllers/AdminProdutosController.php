@@ -140,9 +140,29 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 
+			$userId = CRUDBooster::myId();
+			
+
+
+
+
+			if(CRUDBooster::myPrivilegeName() != "Colabers"){
+
+				$this->form[] = ['label'=>'Colaber','name'=>'user_id','type'=>'select2','datatable'=>'cms_users,name','width'=>'col-sm-5','validation'=>'required'];
+
+			}
+			else{
+
+				$this->form[] = ['label'=>'UserID','name'=>'user_id','type'=>'hidden','width'=>'col-sm-10','value'=>$userId];
+
+			}
+
+			
+
 
 
 			$this->form[] = ['label'=>'Nome','name'=>'nome','type'=>'text','validation'=>'required|string|min:3|max:35','width'=>'col-sm-6','placeholder'=>'Utilize nomes distintos. Ex: Bolsa Jeans Reciclado P'];
+
 			$this->form[] = ['label'=>'Valor R$','name'=>'valor','type'=>'text','validation'=>'required','width'=>'col-sm-5','placeholder'=>'Digite somente números'];
 			
 			$this->form[] = ['label'=>'Categoria','name'=>'categoria_id','type'=>'select2','datatable'=>'categorias,nome','datatable_ajax'=>false,'width'=>'col-sm-5','validation'=>'required','placeholder'=>'test'];
@@ -154,12 +174,12 @@
 			$this->form[] = ['label'=>'Foto','name'=>'img','type'=>'upload','width'=>'col-sm-5'];
 			
 
-			$userId = CRUDBooster::myId();
+			
 
 			
 
 			$this->form[] = ['label'=>'Codigo','name'=>'codigo','type'=>'hidden','width'=>'col-sm-10','value'=>'000000'];
-			$this->form[] = ['label'=>'UserID','name'=>'user_id','type'=>'hidden','width'=>'col-sm-10','value'=>$userId];
+			
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
@@ -422,7 +442,7 @@
 	    public function hook_before_add(&$postdata) {        
 	        	
 	        	
-
+	        	
 
 	    }
 

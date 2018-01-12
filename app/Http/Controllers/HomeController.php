@@ -20,6 +20,8 @@ use App\Models\Estoque;
 use App\Models\UltimasNoticias;
 use App\Models\Colaber;
 
+use App\Models\Relatorio;
+
 use Input;
 
 
@@ -46,7 +48,7 @@ class HomeController extends Controller
         //Metodos de Gerencia
 
         $produtosBaixoEstoqueGerencia = $this->produtosBaixoEstoqueGerencia();
-        $produtosVendidosGerencia = $this->produtosVendidosGerencia();
+        // $produtosVendidosGerencia = $this->produtosVendidosGerencia();
         $produtosMaisVendidosGerencia = $this->produtosMaisVendidosGerencia();
         $vendas = $this->listaVendas();
         $totalVendasDiarioGerencia = $this->totalVendasDiarioGerencia();
@@ -65,6 +67,7 @@ class HomeController extends Controller
         $produtosMaisVendidos = $this->produtosMaisVendidos();
         $totalVendas = $this->totalVendas();
         $ultimasNoticias = $this->ultimasNoticias();
+        $relatorios = $this->relatorios();
 
         
 
@@ -77,6 +80,7 @@ class HomeController extends Controller
                         'produtosMaisVendidos' =>   $produtosMaisVendidos,
                         'totalVendas'   =>  $totalVendas,
                         'ultimasNoticias'   =>  $ultimasNoticias,
+                        'relatorios'    =>  $relatorios,
 
                     ]);
 
@@ -97,8 +101,6 @@ class HomeController extends Controller
                         'ticketMedioGerencia'   =>  $ticketMedioGerencia,
                         'ultimaNoticiaGerencia' => $ultimaNoticiaGerencia,
                         'estoqueFeira' => $estoqueFeira,
-
-
                     ]);
 
                 break;
@@ -189,6 +191,8 @@ class HomeController extends Controller
 
     public function produtosVendidosGerencia()
     {
+       
+
        $produtos = Produtos::whereHas('venda')
             ->with('colaber','venda')
             ->withCount('venda')
@@ -222,10 +226,6 @@ class HomeController extends Controller
         }
              
        
-
-
-
-
        return $produto;
     }
 
@@ -261,6 +261,8 @@ class HomeController extends Controller
     //FIM dos Metodos para dados da Gerencia -------------------------------------------------------
 
 
+
+
     //Metodos para dados do Colaborador 
 
 
@@ -271,6 +273,7 @@ class HomeController extends Controller
             ->whereHas('venda')
             ->withCount('venda')
             ->orderBy('venda_count','desc')
+            ->take(10)
             ->get();
 
         return $produtos;
@@ -284,6 +287,7 @@ class HomeController extends Controller
         $user_id = CRUDBooster::myId();
 
         $produtos = Produtos::where('user_id',$user_id)->withCount('saidaEstoque','venda','entradaEstoque')
+        ->take(10)
         ->get();
 
         
@@ -351,6 +355,26 @@ class HomeController extends Controller
     {
 
         return view('ajuda');
+    }
+
+    public function relatorios()
+    {
+        
+        $id = CRUDBooster::myId();
+
+        // $id = 44;
+        $report = Relatorio::where('colaber_id',$id)->get();
+
+
+        // dd($report->count());
+
+
+        if($report)
+        {
+            return $report;
+        }
+        
+
     }
 
 
@@ -457,8 +481,25 @@ class HomeController extends Controller
                
                 return $unique_code;
             }
-
+    
             
+    }
+
+    public function listaColabers()
+    {
+            
+
+
+            // $colabers = Colaber::with('user')->whereRaw('user.id_cms_privileges',2)->get();
+
+            $colabers = DB::table('colabers')
+                            ->join('cms_users','colabers.user_id','=','cms_users.id')
+                            ->where('cms_users.id_cms_privileges',2)
+                            ->get();
+
+
+            return view('colabers.lista')->with('colabers',$colabers);
+
     }
 
 

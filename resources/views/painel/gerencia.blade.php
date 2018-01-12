@@ -190,7 +190,7 @@
 
 
 
-<div class="container-fluid">
+<div class="container-fluid hidden">
 <div class="box">
     <div class="box-header">
       <h3>Produtos Vendidos</h3>

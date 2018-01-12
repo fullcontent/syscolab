@@ -32,6 +32,8 @@
 @endforeach
 </table>
 
+{{$vendas->links()}}
+
   </div>
 
 

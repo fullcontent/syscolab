@@ -141,7 +141,9 @@
   
             </table>
              <button class="btn btn-primary hidden-print" onclick="myFunction()"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir</button>
-             
+
+            
+
                  
             @else
                 <div class="callout callout-danger">
@@ -152,10 +154,28 @@
             @endif
 
             
+            
+            @if(CRUDBooster::myPrivilegeName() == 'Super Administrator')
 
-           
-            <button class="btn btn-success hidden-print" onclick="window.history.go(-1); return false;"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar</button> 
-      
+            <button class="btn btn-success hidden-print" onclick="window.location='{{ route("relatorios") }}'"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar</button> 
+            
+            @endif
+
+            @if(CRUDBooster::myPrivilegeName() == 'Colaber')
+
+            <button class="btn btn-success hidden-print" onclick="window.location='{{ route("relatorios") }}'"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar</button> 
+            
+            @endif
+
+
+            @if(CRUDBooster::myPrivilegeName() == 'Colabers')
+
+            <button class="btn btn-success hidden-print" onclick="window.location='{{ route("painel") }}'"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar</button> 
+            
+            @endif
+
+
+
     
            
 

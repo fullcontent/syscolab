@@ -46,8 +46,7 @@ class Produtos extends Model
 
     public function vendasMes()
     {
-        
-       
+             
 
         return $this->hasMany('App\Models\VendasItem','produto_id')->whereNull('estornado');
 

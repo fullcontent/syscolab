@@ -8,8 +8,10 @@ class RelatorioItem extends Model
 {
     public function relatorio()			
     {
-    	$this->belongsTo('App\Models\Relatorio');
+    	return $this->belongsTo('App\Models\Relatorio');
     }
+
+    
 
     
 }
