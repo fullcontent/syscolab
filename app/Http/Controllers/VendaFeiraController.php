@@ -68,9 +68,36 @@ class VendaFeiraController extends Controller
         $venda->desconto = Input::get('desconto');
         $venda->localVenda = $localVenda;
         $venda->comentarios = Input::get('comentarios');
-        $venda->save();
+
+        if(Input::get('dataVenda'))
+            {
+                // dd(Input::get('dataVenda'));
+                $venda->created_at = new \DateTime(Input::get('dataVenda'));
+            }
+
 
         $vendaItens = VendasTemp::where('localVenda',$localVenda)->get();
+
+
+        if($vendaItens->count() > 0)
+        {
+
+             $venda->save();
+
+
+        }
+
+        else{
+
+
+        }
+        
+
+
+       
+       
+
+        
         foreach ($vendaItens as $v){
 
             $vendaItemData = new VendasItem;
@@ -100,7 +127,12 @@ class VendaFeiraController extends Controller
         
 
 
-        return redirect('admin/vendasFeira')->with('message', 'Venda efetuada com sucesso!');
+        return redirect('admin/vendasFeira')
+            ->with([
+                'message'=>'Venda efetuada com sucesso!',
+                'message_type' => 'success'
+
+            ]);
 
     }
 

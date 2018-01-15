@@ -44,7 +44,7 @@
   
   <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Dicas úteis</h3>
+              <h3 class="box-title">Gerar relatorios</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -53,10 +53,11 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <p>O relatório é baseado nas vendas feitas dentro do mês selecionado.</p>
-              <p>Assim que gerado o relatório, o colaber receberá uma notificação e um botão para acesso ficará disponível no seu painel de controle.</p>
-              <p>Se o relatório for removido, o botão de acesso também será removido.</p>
-              <p>Caso tenha gerado um relatório com a porcentagem errada, basta removê-lo e criar novamente com a porcentagem correta.</p>
+             
+                <a href="relatorioCompleto/{{date('2017-11-01')}}/{{date('2018-01-07')}}"><button type="button" class="btn btn-block btn-default btn-lg">Relatório completo até o dia 07/01</button></a>
+
+                <a href="relatorioCompleto/{{date('2018-01-15')}}/{{date('2018-02-10')}}"><button type="button" class="btn btn-block btn-default btn-lg">Entre 15/01 até 10/02</button></a>
+  
             </div>
             <!-- /.box-body -->
           </div>

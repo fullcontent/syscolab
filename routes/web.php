@@ -37,6 +37,12 @@ Route::get('/admin/relatorios','RelatoriosController@index')->name('relatorios')
 Route::get('/admin/relatorio/delete/{id}','RelatoriosController@delete');
 Route::get('/admin/relatorio/view/{id}','RelatoriosController@verRelatorio');
 
+Route::get('/admin/relatorioVendas','RelatoriosController@relatorioVendas');
+
+Route::get('/admin/relatorioCompleto/{fromDt}/{toDt}','RelatoriosController@relatorioCompleto');
+
+
+
 
 Route::get('/admin/ajuda','HomeController@ajuda');
 Route::resource('admin/estoqueCasa','EstoqueEntradaCasaController');

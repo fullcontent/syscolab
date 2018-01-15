@@ -9,6 +9,7 @@ use App;
 use App\User;
 use CRUDBooster;
 use DB;
+use Cache;
 
 use Response;
 
@@ -446,14 +447,6 @@ class HomeController extends Controller
 
 
 
-    public function test()
-    {
-        
-          
-
-
-    }
-
     public function novosCodigos($qtde)
     {
 
@@ -502,8 +495,7 @@ class HomeController extends Controller
 
     }
 
-
-   
+    
     
   
 }

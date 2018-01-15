@@ -100,7 +100,11 @@ class VendasController extends Controller
 
 
         
-        return redirect()->route('vendas')->with('message','Venda excluida com sucesso!');       
+        return redirect()->route('vendas')
+            ->with([
+                'message'=>'Venda excluida com sucesso!',
+                'message_type' => 'success'
+            ]);       
     }
 
 
@@ -130,7 +134,12 @@ class VendasController extends Controller
                
             }
 
-            return redirect()->route('venda',['id'=>$item->venda_id])->with('message','Item estornado com sucesso!'); 
+            return redirect()->route('venda',['id'=>$item->venda_id])
+                    ->with([
+                        'message'=>'Item estornado com sucesso!',
+                        'message_type' => 'success'
+
+                    ]); 
             
 
 

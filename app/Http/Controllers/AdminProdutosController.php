@@ -78,11 +78,7 @@
 					break;
 				}
 
-					
-				
-
-
-				
+									
 				return $estoque;
 			}];
 
@@ -91,10 +87,12 @@
 			if(CRUDBooster::myPrivilegeName() != "Colabers"){
 
 				
-				$this->col[] = ["label"=>"Ultima Remessa","name"=>"descricao","callback"=>function($row){
+				$this->col[] = ["label"=>"Total na Remessa","name"=>"descricao","callback"=>function($row){
 				
 
 				$envios = EnvioItem::where('produto_id', $row->id)->orderBy('id','desc')->first();
+
+				$enviados = EnvioItem::where('produto_id',$row->id)->get();
 				
 	
 				switch ($envios->qtde) {
@@ -117,12 +115,10 @@
 					break;
 				}
 
-					
-				
+				$total = $enviados->sum('qtde');		
 
 
-				
-				return $estoque;
+				return "<span class='label label-success'>$total</span>";
 			}];
 
 

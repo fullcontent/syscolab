@@ -115,9 +115,7 @@
                     @endforeach 
                     @endforeach
                     
-                </tbody>
 
-                <tfoot>
                     <tr>
                         <td colspan="6"></td>
                     </tr>
@@ -136,8 +134,9 @@
                         <td><h5 align="right">Total</h5></td>
                         <td><h5>R$ {{number_format($lista->sum('total') - ($lista->sum('total') * $porcentagem/100),2)}}</h5></td>
                     </tr>
-                </tfoot>
-                    
+                </tbody>
+
+                
   
             </table>
              <button class="btn btn-primary hidden-print" onclick="myFunction()"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir</button>

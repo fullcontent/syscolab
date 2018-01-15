@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+    
+    
+
 
 class Vendas extends Model
 {
@@ -22,7 +25,7 @@ class Vendas extends Model
     
     public function produtos()
     {
-        return $this->hasMany('App\Models\Produtos','id');
+        return $this->hasManyThrough('App\Models\Produtos','App\Models\VendasItem','produto_id','id','venda_id');
     }
 
        

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Relatorio;
 use App\Models\RelatorioItem;
+use App\Models\Vendas;
+use App\Models\VendasItem;
 use App\Models\Colaber;
 use App\Models\Produtos;
 use CRUDBooster;
@@ -296,7 +298,45 @@ class RelatoriosController extends Controller
         $relatorio = Relatorio::find($id);
         $relatorio->delete();
 
-        return redirect()->route('relatorios');
+        return redirect()->route('relatorios')->with(['message'=>'Relatorio Excluido com sucesso','message_type'=>'success']);
+    }
+
+
+
+    public function relatorioVendas()
+    {
+        
+            $vendas = Vendas::orderBy('created_at','asc')->get();
+            $itens = VendasItem::all();
+
+
+            return view('vendas.relatorio')
+                    ->with([
+                        'lista'=>$vendas,
+                        'itens'=>$itens,
+                    ]);            
+    }
+
+
+    public function relatorioCompleto($fromDt,$toDt)
+    {
+        
+
+
+        
+        $vendas = Vendas::with('itens')
+                    // ->take(15)
+                    // ->whereDate('created_at','>=', $fromDt)
+                    // ->whereDate('created_at','<=', $toDt)
+                    ->whereBetween('created_at', [$fromDt,$toDt])
+                    ->orderBy('id','asc')
+                    ->get();
+      
+
+        
+
+         return view('relatorios.completo')->with(['vendas'=>$vendas]);
+
     }
     
 }
