@@ -21,9 +21,6 @@ Route::get('/admin/painel', 'HomeController@index')->name('painel');
 Route::get('/admin/codigos/{qtde}','HomeController@novosCodigos');
 
 
-Route::get('/admin/atualiza','UpdateController@index');
-
-
 
 Route::get('/admin/vendas','VendasController@index')->name('vendas');
 Route::get('/admin/vendas/{id}','VendasController@listaProdutos')->name('venda');
@@ -36,6 +33,11 @@ Route::post('/admin/relatorio','RelatoriosController@gerarRelatorio');
 Route::get('/admin/relatorios','RelatoriosController@index')->name('relatorios');
 Route::get('/admin/relatorio/delete/{id}','RelatoriosController@delete');
 Route::get('/admin/relatorio/view/{id}','RelatoriosController@verRelatorio');
+Route::get('/admin/relatorio/ativar/{id}','RelatoriosController@ativarRelatorio');
+Route::get('/admin/relatorio/desativar/{id}','RelatoriosController@desativarRelatorio');
+
+Route::get('/admin/relatorio/{id}','RelatoriosController@verPdf');
+
 
 Route::get('/admin/relatorioVendas','RelatoriosController@relatorioVendas');
 
@@ -45,15 +47,13 @@ Route::get('/admin/relatorioCompleto/{fromDt}/{toDt}','RelatoriosController@rela
 
 
 Route::get('/admin/ajuda','HomeController@ajuda');
+
 Route::resource('admin/estoqueCasa','EstoqueEntradaCasaController');
 Route::resource('admin/estoqueSaidaCasa','EstoqueSaidaCasaController');
 
 
 Route::resource('admin/estoqueFeira','EstoqueEntradaFeiraController');
 Route::resource('admin/estoqueSaidaFeira','EstoqueSaidaFeiraController');
-
-
-
 
 
 Route::resource('admin/vendasCasa','VendaCasaController');

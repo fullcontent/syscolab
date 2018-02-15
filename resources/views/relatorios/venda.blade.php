@@ -70,7 +70,7 @@
                 <div class="col-xs-12">
                     <h3 class="page-header">
                         {{$colaber->marca}}
-                       <span class="pull-right">{{$mes}} de 2017</span>
+                       <span class="pull-right">{{$periodo}}</span>
                     </h3>
                     
 
@@ -98,21 +98,21 @@
                 <tbody>
                     
                     @foreach($lista as $key => $l)
-                       @foreach($l->venda as $v)
+                       
                         <tr>
                             <td>
                                 
-                                    {{date('d/m/Y', strtotime($v->created_at))}}
+                                    {{date('d/m/Y', strtotime($l->created_at))}}
                                                     
                             </td>
-                            <td>{{$l->codigo}}</td>
-                            <td>{{$v->qtde}}</td>
-                            <td>{{$l->nome}}</td>
-                            <td>R$ {{$l->valor}}</td>
+                            <td>{{$l->produto[0]['codigo']}}</td>
+                            <td>{{$l->qtde}}</td>
+                            <td>{{$l->produto[0]['nome']}}</td>
+                            <td>R$ {{$l->produto[0]['valor']}}</td>
                             
                             <td>R$ {{number_format($l->valor - ($l->valor * $porcentagem/100),2)}}</td>
                         </tr>       
-                    @endforeach 
+                   
                     @endforeach
                     
 
@@ -122,17 +122,17 @@
                     <tr>
                         <td colspan="4" style=""></td>
                         <td><h5 align="right">Subtotal</h5></td>
-                        <td><h5>R$ {{number_format($lista->sum('total'),2)}}</h5></td>
+                        <td><h5>R$ {{number_format($lista->sum('valor'),2)}}</h5></td>
                     </tr>
                     <tr>
                         <td colspan="4" class=""></td>
                         <td><h5 align="right">Loja {{$porcentagem}}%</h5></td>
-                        <td><h5>R$ {{number_format(($lista->sum('total') * $porcentagem/100),2)}}</h5></td>
+                        <td><h5>R$ {{number_format(($lista->sum('valor') * $porcentagem/100),2)}}</h5></td>
                     </tr>
                     <tr>
                         <td colspan="4" class=""></td>
                         <td><h5 align="right">Total</h5></td>
-                        <td><h5>R$ {{number_format($lista->sum('total') - ($lista->sum('total') * $porcentagem/100),2)}}</h5></td>
+                        <td><h5>R$ {{number_format($lista->sum('valor') - ($lista->sum('valor') * $porcentagem/100),2)}}</h5></td>
                     </tr>
                 </tbody>
 

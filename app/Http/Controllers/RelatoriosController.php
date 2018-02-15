@@ -12,6 +12,7 @@ use App\Models\VendasItem;
 use App\Models\Colaber;
 use App\Models\Produtos;
 use CRUDBooster;
+use Carbon\Carbon;
 
 class RelatoriosController extends Controller
 {
@@ -19,20 +20,7 @@ class RelatoriosController extends Controller
     {
         
         $colabers = User::where('id_cms_privileges',2)->orderBy('name')->get();
-        $meses = array(
-        1 => 'Janeiro',
-                'Fevereiro',
-                'Março',
-                'Abril',
-                'Maio',
-                'Junho',
-                'Julho',
-                'Agosto',
-                'Setembro',
-                'Outubro',
-                'Novembro',
-                'Dezembro'
-            );
+        
         $porcentagem = array(
 
             30 => '30%',
@@ -44,14 +32,15 @@ class RelatoriosController extends Controller
         );
 
 
-        $lista = Relatorio::with('colaber')->get();
+        $lista = Relatorio::with('colaber')->take(20)->get();
 
 
+        // dd($lista);
 
         return view('relatorios.lista')
                 ->with([
                     'colabers'=>$colabers,
-                    'mes'=>$meses,
+                    
                     'porcentagem'=>$porcentagem,
                     'relatorios'=>$lista
 
@@ -62,233 +51,136 @@ class RelatoriosController extends Controller
     {
     	
         $id = $request->input('colaber');
-        $mes = $request->input('mes');
+        
+        $fromDT = Carbon::createFromFormat('m/d/Y H',$request->input('fromDT').'00')->toDateTimeString();
+        $toDT = Carbon::createFromFormat('m/d/Y H',$request->input('toDT').'00')->toDateTimeString();
+
+        
         $porcentagem = $request->input('porcentagem');
 
 
         $colaber = Colaber::where('user_id',$id)->first();
 
-        $meusProdutos = Produtos::whereHas('vendasMes', function($q) use ($mes)
+        
+        $produtos = Produtos::where('user_id',$id)->get();   
+
+
+        foreach($produtos as $p)
         {
-            $q->whereMonth('created_at', $mes);
-        })
-                        ->where('user_id',$id)
-                        ->with('vendasMes')
-                        ->withCount('venda')
-                        ->get();
-
-             
-        foreach ($meusProdutos as $key => $v) {
-            
-            $total = $v->venda->sum('valor');
-
-            $meusProdutos[$key]['total']=$total;
+            $listaProdutos[] = $p->id;
         }
 
-        $meses = array(
-        1 => 'Janeiro',
-                'Fevereiro',
-                'Março',
-                'Abril',
-                'Maio',
-                'Junho',
-                'Julho',
-                'Agosto',
-                'Setembro',
-                'Outubro',
-                'Novembro',
-                'Dezembro'
-            );
-
-        $mes = $meses[$mes];
 
 
-        $this->salvarRelatorio($meusProdutos,$mes,$colaber,$porcentagem);
+        $vendas = VendasItem::where('id','>',2109)
+                    ->whereIn('produto_id',$listaProdutos)
+                    ->whereBetween('created_at',[$fromDT,$toDT])
+                    ->with('produto')
+                    ->orderBy('created_at','asc')
+                    
+                    ->get();
 
 
-        
 
 
-     
-        return view('relatorios.venda')->with(['lista'=>$meusProdutos, 'colaber'=>$colaber,'mes'=>$mes,'porcentagem'=>$porcentagem]);
+       $periodo = date('d/m/Y',strtotime($fromDT)).' a '.date('d/m/Y',strtotime($toDT));
+
+      
+            // Check if user is equal
+
+        $this->salvarRelatorio($colaber,$porcentagem,$fromDT,$toDT);
+
+
+
+        return view('relatorios.venda')->with(['lista'=>$vendas, 'colaber'=>$colaber,'porcentagem'=>$porcentagem,'periodo'=>$periodo]);
     }
 
 
-    public function salvarRelatorio($meusProdutos,$mes,$colaber,$porcentagem)
+    public function salvarRelatorio($colaber,$porcentagem,$fromDT,$toDT)
     {	
 
 
-    	//Check if Report Exists
+        $relatorio = new Relatorio;
 
+        $relatorio->user_id = CRUDBooster::myId();
+        $relatorio->active = 0;
+        $relatorio->colaber_id = $colaber->user_id;
+        $relatorio->porcentagem = $porcentagem;
+        $relatorio->fromDT = $fromDT;
+        $relatorio->toDT = $toDT;
 
-    	$report = Relatorio::where([['colaber_id',$colaber->user_id]])->whereMonth('created_at',$mes)->count();
+        $relatorio->save();
 
-
-    	if($report==0)
-    	{
-    	$id = CRUDBooster::myId();
-    	$user_id = $colaber->user_id;
-    	$relatorio = new Relatorio;
-
-    	$relatorio->user_id = $id;
-    	$relatorio->colaber_id = $user_id;
-    	$relatorio->active = 1;
-    	$relatorio->porcentagem = $porcentagem;
-
-    	$relatorio->save();
-
-    	
-    	foreach($meusProdutos as $key => $l)
-    	{
-            foreach($l->venda as $v)
-            {
-            	$relatorioItem = new RelatorioItem;
-            	$relatorioItem->relatorio_id = $relatorio->id;
-            	$relatorioItem->venda_item_id = $v->id;
-            	$relatorioItem->save();
-
-            }
-    	}
-
-        $users[] = $colaber->user_id;
-
-        CRUDBooster::sendNotification($config=[
-                'content'=>'Seu relatorio está pronto!',
-                 'to'=>CRUDBooster::adminPath('relatorio/view/'.$relatorio->id.''),
-                 'id_cms_users'=>$users]);
-
-
-    	return "salvo";
-
-    	}
-
-    	else{
-
-    		return "nao salvou";
-    	}
-
-
-        	
+        return $relatorio;  	
 
     }
 
-    public function test($mes)
+    public function ativarRelatorio($id)
     {
-        
-        $id = CRUDBooster::myId();
-        $report = Relatorio::where('colaber_id',$id)->first();
-        $ano = date('Y',strtotime($report->created_at));
-      
-        $porcentagem = $report->porcentagem;
+        $relatorio = Relatorio::find($id);
 
+        $relatorio->active = 1;
+        $relatorio->save();
 
-        if($report->count()>0){
-        
-        $colaber = Colaber::where('user_id',$id)->first();
-
-        $meusProdutos = Produtos::whereHas('vendasMes', function($q) use ($mes)
-        {
-            $q->whereMonth('created_at', $mes);
-        })
-                        ->where('user_id',$id)
-                        ->with('vendasMes')
-                        ->withCount('venda')
-                        ->get();
-
-                     
-        foreach ($meusProdutos as $key => $v) {
-            
-            $total = $v->venda->sum('valor');
-
-            $meusProdutos[$key]['total']=$total;
-        }
-
-
-        $mes = ltrim($mes,'0');
-        $meses = array(
-        1 =>    'Janeiro',
-                'Fevereiro',
-                'Março',
-                'Abril',
-                'Maio',
-                'Junho',
-                'Julho',
-                'Agosto',
-                'Setembro',
-                'Outubro',
-                'Novembro',
-                'Dezembro'
-            );
-
-        $mes = $meses[$mes];
-
-        return view('relatorios.relatorio')->with(['lista'=>$meusProdutos, 'colaber'=>$colaber,'mes'=>$mes,'ano'=>$ano,'porcentagem'=>$porcentagem]);
-
-        }
-
-        else{
-
-            return "nenhum relatório pra você ainda";
-        }
+        return redirect()->route('relatorios')->with(['message'=>'Agora o colaber pode visualizar esse relatório!','message_type'=>'success']);
 
     }
 
+     public function desativarRelatorio($id)
+    {
+        $relatorio = Relatorio::find($id);
 
+        $relatorio->active = 0;
+        $relatorio->save();
 
+        return redirect()->route('relatorios')->with(['message'=>'O Colaber não tem mais acesso a esse relatório','message_type'=>'success']);
+
+    }
+
+   
     public function verRelatorio($id)
     {
         $relatorio = Relatorio::find($id);
-        $mes = date('m',strtotime($relatorio->created_at));
-        $colaber = Colaber::where('user_id',$relatorio->colaber_id)->first();
+   
+        $colaber = Colaber::find($relatorio->colaber_id);
+
         $porcentagem = $relatorio->porcentagem;
-        $id = $relatorio->colaber_id;
+        
 
-        // dd($relatorio);
+        $fromDT = $relatorio->fromDT;
+        $toDT = $relatorio->toDT;
 
 
-         $meusProdutos = Produtos::whereHas('vendasMes', function($q) use ($mes)
+        $produtos = Produtos::where('user_id',$colaber->user_id)->get();   
+
+
+        foreach($produtos as $p)
         {
-            $q->whereMonth('created_at', $mes);
-        })
-                        ->where('user_id',$id)
-                        ->with('vendasMes')
-                        ->withCount('venda')
-                        ->get();
-
-             
-        foreach ($meusProdutos as $key => $v) {
-            
-            $total = $v->venda->sum('valor');
-
-            $meusProdutos[$key]['total']=$total;
+            $listaProdutos[] = $p->id;
         }
 
 
-        // dd($porcentagem);
 
-        $meses = array(
-        1 => 'Janeiro',
-                'Fevereiro',
-                'Março',
-                'Abril',
-                'Maio',
-                'Junho',
-                'Julho',
-                'Agosto',
-                'Setembro',
-                'Outubro',
-                'Novembro',
-                'Dezembro'
-            );
+        $vendas = VendasItem::where('id','>',2109)
+                    ->whereIn('produto_id',$listaProdutos)
+                    ->whereBetween('created_at',[$fromDT,$toDT])
+                    ->with('produto')
+                    ->orderBy('created_at','asc')
+                    
+                    ->get();
 
-        $mes = ltrim($mes,'0');
-        $mes = $meses[$mes];
+
+
+
+       $periodo = date('d/m/Y',strtotime($fromDT)).' a '.date('d/m/Y',strtotime($toDT));
 
 
 
 
 
-         return view('relatorios.venda')->with(['lista'=>$meusProdutos, 'colaber'=>$colaber,'mes'=>$mes,'porcentagem'=>$porcentagem]);
+
+       
+          return view('relatorios.venda')->with(['lista'=>$vendas, 'colaber'=>$colaber,'porcentagem'=>$porcentagem,'periodo'=>$periodo]);
     }
 
 
@@ -322,12 +214,11 @@ class RelatoriosController extends Controller
     {
         
 
-
-        
         $vendas = Vendas::with('itens')
                     // ->take(15)
                     // ->whereDate('created_at','>=', $fromDt)
                     // ->whereDate('created_at','<=', $toDt)
+                    ->where('id','>',1975)
                     ->whereBetween('created_at', [$fromDt,$toDt])
                     ->orderBy('id','asc')
                     ->get();
@@ -337,6 +228,18 @@ class RelatoriosController extends Controller
 
          return view('relatorios.completo')->with(['vendas'=>$vendas]);
 
+    }
+
+    
+
+
+    public function verPdf($id)
+    {
+
+            $file = \Storage::disk('public')->get('relatorios/'.$id.'.pdf');
+
+
+            return response($file)->withHeaders(['Content-Type'=>'application/pdf']);
     }
     
 }

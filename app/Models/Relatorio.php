@@ -13,7 +13,7 @@ class Relatorio extends Model
 
     public function colaber()
     {
-    	return $this->belongsTo('App\User','colaber_id');
+    	return $this->belongsTo('App\Models\Colaber','colaber_id','user_id');
     }
 
    

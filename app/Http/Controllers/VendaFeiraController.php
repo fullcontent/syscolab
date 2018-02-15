@@ -108,6 +108,8 @@ class VendaFeiraController extends Controller
             $vendaItemData->qtde = $v->qtde;
             $vendaItemData->total_venda = $v->total;
             $vendaItemData->localVenda = $localVenda;
+            $vendaItemData->created_at = $venda->created_at;
+
 
             $vendaItemData->save();
 

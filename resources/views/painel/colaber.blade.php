@@ -5,7 +5,7 @@
 {!! Html::script('js/ultimasNoticias.js', array('type' => 'text/javascript')) !!}
 
 <div class="container-fluid">
-	
+  
 <div class="row">
         
         
@@ -39,53 +39,53 @@
             </div>
         </div>
     </div>
+  
+
 
   
-  @if($relatorios)
+  
   <div class="box">
     <div class="box-header">
             <h3 class="box-title">Relatórios</h3>
         </div>
       
       <div class="box-body">
-        
-        @foreach($relatorios as $r)
-
-        <?php
-          $meses = array(
-          1 =>    'Janeiro',
-                'Fevereiro',
-                'Março',
-                'Abril',
-                'Maio',
-                'Junho',
-                'Julho',
-                'Agosto',
-                'Setembro',
-                'Outubro',
-                'Novembro',
-                'Dezembro'
-            );
-        $mes = date('m',strtotime($r->created_at));
-        $mes = ltrim($mes,'0');
-
-        
-        $mes = $meses[$mes];
-        ?>
-        <div class="col-md-6">
-        <a href="relatorio/view/{{$r->id}}">
-        <button type="button" class="btn btn-block btn-success btn-lg">{{$mes}}</button>
+                
+        <div class="col-md-12">
+        <a href="{{url('/admin/relatorio/'.CRUDBooster::myId().'')}}">
+        <button type="button" class="btn btn-block btn-success btn-lg">Até 07/01/2018</button>
         </a>
+        <br>
+        
       </div>
-      @endforeach        
-      
+            
+      @foreach($relatorios as $r)
+          
+
+        <div class="col-md-12">
+        <form action="relatorio" role="form" method="post">
+           <input type="hidden" name="fromDT" value="{{date('m/d/Y', strtotime($r->fromDT))}}">
+           <input type="hidden" name="toDT" value="{{date('m/d/Y', strtotime($r->toDT))}}">
+           <input type="hidden" name="colaber" value="{{$r->colaber_id}}">
+           <input type="hidden" name="porcentagem" value="{{$r->porcentagem}}">
+
+
+           <button type="submit" class="btn btn-block btn-success btn-lg">{{date('d/m/Y', strtotime($r->fromDT))}} à {{date('m/d/Y', strtotime($r->toDT))}}</button>
+
+        </form>
+       
+        
+        <br>
+        
+      </div>
+        @endforeach
         
       
       
 
       </div>
   </div>
-  @endif    
+     
      
   <div class="box box-warning" ng-app="syscolab" ng-controller="noticiasCtrl">
       <div class="box-body">
@@ -148,8 +148,8 @@
             <div class="box-body">
               <table class="table">
                 <tbody>
-				
-				      @foreach($produtosMaisVendidos as $p)
+        
+              @foreach($produtosMaisVendidos as $p)
                 
                 <tr>
                   <td>{{$p->venda_count}}x</td>
@@ -166,7 +166,7 @@
               
             </div>
           </div>
-			
+      
 
 
           <div class="box">
@@ -178,15 +178,15 @@
             <div class="box-body">
               <table class="table">
                 <tbody>
-                	<tr>
+                  <tr>
                   <th style="width: 10px">#</th>
                   <th>Produto</th>
                   <th>Qtde</th>
                   
                 </tr>
-				
-	
-				        @foreach($produtosBaixoEstoque as $p)
+        
+  
+                @foreach($produtosBaixoEstoque as $p)
                 <tr>
                   <td>{{$p->id}}</td>
                   <td>{{$p->nome}}</td>

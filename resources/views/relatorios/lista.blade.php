@@ -21,12 +21,11 @@
     </select>
   </div>
   <div class="form-group">
-    <label for="colaberList">Selecione o Mês</label>
-    <select class="form-control" id="mes" name="mes">
-      @foreach($mes as $key => $m)
-      <option value="{{$key}}" @if($key == date('m')) selected @endif)>{{$m}}</option>
-      @endforeach
-    </select>
+    <label for="colaberList">Selecione o Periodo</label>
+    <input type="text" id="fromDT" name="fromDT">
+    ate
+    <input type="text" id="toDT" name="toDT">
+
   </div>
   <div class="form-group">
     <label for="colaberList">Selecione a porcentagem</label>
@@ -54,7 +53,7 @@
             <!-- /.box-header -->
             <div class="box-body">
              
-                <a href="relatorioCompleto/{{date('2017-11-01')}}/{{date('2018-01-07')}}"><button type="button" class="btn btn-block btn-default btn-lg">Relatório completo até o dia 07/01</button></a>
+                <a href="#"><button type="button" class="btn btn-block btn-default btn-lg">Relatório completo até o dia 07/01</button></a>
 
                 <a href="relatorioCompleto/{{date('2018-01-15')}}/{{date('2018-02-10')}}"><button type="button" class="btn btn-block btn-default btn-lg">Entre 15/01 até 10/02</button></a>
   
@@ -80,19 +79,36 @@
                 <tbody><tr>
                   
                   <th>Colaber</th>
-                  <th>Mês</th>
+                  <th>Periodo</th>
                   <th>Porcentagem</th>
+                  <th>Disponível</th>
                   <th>Ações</th>
                 </tr>
               @foreach($relatorios as $r)
                 <tr>
                  
-                  <td>{{$r->colaber->name}}</td>
-                  <td>{{date('m',strtotime($r->created_at))}}</td>
+                  <td>{{$r->colaber->marca}}</td>
+                  <td>{{date('d/m/Y',strtotime($r->fromDT)).' a '.date('d/m/Y',strtotime($r->toDT))}}</td>
                   <td>{{$r->porcentagem}}%</td>
                   <td>
-                  <a class="btn btn-xs btn-primary btn-detail" title="Ver Relatorio" href="relatorio/view/{{$r->id}}"><i class="fa fa-eye"></i></a>
-                  <a class="btn btn-xs btn-warning btn-delete" title="Excluir" href="relatorio/delete/{{$r->id}}" onclick="return confirm('Tem certeza que deseja excluir o relatorio?')"><i class="fa fa-trash"></i></a>
+                    @if($r->active == 1)
+                    <a href="relatorio/desativar/{{$r->id}}"><button type="button" class="btn btn-flat btn-success btn-xs">Disponível</button></a>
+                    @endif
+                    @if($r->active == 0)
+                    <a href="relatorio/ativar/{{$r->id}}"><button type="button" class="btn btn-flat btn-warning btn-xs" title="Clique aqui para disponibilizar esse relatório para {{$r->colaber->marca}}">Diponibilizar</button></a>
+                    @endif
+                  </td>
+                  <td>
+                    <form action="relatorio" role="form" method="post">
+                     <input type="hidden" name="fromDT" value="{{date('m/d/Y', strtotime($r->fromDT))}}">
+                     <input type="hidden" name="toDT" value="{{date('m/d/Y', strtotime($r->toDT))}}">
+                     <input type="hidden" name="colaber" value="{{$r->colaber_id}}">
+                     <input type="hidden" name="porcentagem" value="{{$r->porcentagem}}">
+
+                      <button type="submit" class="btn btn-xs btn-primary btn-detail"><i class="fa fa-eye"></i></button>
+                      <a class="btn btn-xs btn-danger btn-delete" title="Excluir" href="relatorio/delete/{{$r->id}}" onclick="return confirm('Tem certeza que deseja excluir o relatorio?')"><i class="fa fa-trash"></i></a>
+                    </form>
+                  
                   </td>
                 </tr>
               @endforeach
@@ -108,3 +124,38 @@
 </div>
 
 @endsection
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    var dateFormat = "dd-mm-yy",
+      from = $( "#fromDT" )
+        .datepicker({
+          defaultDate: "+1w",
+          changeMonth: true,
+          numberOfMonths: 3
+        })
+        .on( "change", function() {
+          to.datepicker( "option", "minDate", getDate( this ) );
+        }),
+      to = $( "#toDT" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 3
+      })
+      .on( "change", function() {
+        from.datepicker( "option", "maxDate", getDate( this ) );
+      });
+ 
+    function getDate( element ) {
+      var date;
+      try {
+        date = $.datepicker.parseDate( dateFormat, element.value );
+      } catch( error ) {
+        date = null;
+      }
+ 
+      return date;
+    }
+  } );
+  </script>

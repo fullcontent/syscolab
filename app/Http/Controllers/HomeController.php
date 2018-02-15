@@ -363,11 +363,14 @@ class HomeController extends Controller
         
         $id = CRUDBooster::myId();
 
+       
+
         // $id = 44;
-        $report = Relatorio::where('colaber_id',$id)->get();
-
-
+        $report = Relatorio::where('colaber_id',$id)
+                ->where('active',1)
+                ->get();
         // dd($report->count());
+
 
 
         if($report)
