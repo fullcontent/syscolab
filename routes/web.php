@@ -23,6 +23,15 @@ Route::get('/admin/codigos/{qtde}','HomeController@novosCodigos');
 
 
 Route::get('/admin/vendas','VendasController@index')->name('vendas');
+
+
+
+Route::get('/admin/vendas/feira','VendasController@listaVendasFeira')->name('vendasFeira');
+Route::get('/admin/vendas/casa','VendasController@listaVendasCasa')->name('vendasCasa');
+
+
+
+
 Route::get('/admin/vendas/{id}','VendasController@listaProdutos')->name('venda');
 Route::get('/admin/vendas/delete/{id}','VendasController@delete');
 Route::get('/admin/vendas/estornar/{id}/{venda_id}','VendasController@estornar');
@@ -67,6 +76,12 @@ Route::resource('admin/colaber','ColaberController');
 
 
 Route::get('admin/colabers','HomeController@listaColabers')->name('colabers');
+
+
+
+Route::get('admin/produtos2', 'ProdutosController@index')->name('listaProdutos');
+
+
 
 
 

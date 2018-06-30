@@ -160,6 +160,14 @@
                                         </div>
                                     </div>
 
+                                     <div class="form-group">
+                                        <label for="employee" class="col-sm-4 control-label">Data da Venda</label>
+                                        <div class="col-sm-8">
+                                             <input type="text" id="datepicker" name="dataVenda">
+                                             <span>* Somente para venda retroativa</span> 
+                                        </div>
+                                    </div>
+
                                     <div>&nbsp;</div>
                                     
                                     <div>&nbsp;</div>
@@ -176,6 +184,16 @@
                             {!! Form::close() !!}
 
 </div>
+
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+
+     // $("#datepicker").datepicker("setDate",new Date());   
+  } );
+  </script>
 
 
 @endsection

@@ -101,6 +101,8 @@ class Produtos extends Model
         return $this->hasMany('App\Models\Estoque','produto_id')->where('operacao',2);
     }
 
+    
+
     public function VendasCasa()
     {       
         return $this->hasMany('App\Models\VendasItem','produto_id')->where('localVenda',1);

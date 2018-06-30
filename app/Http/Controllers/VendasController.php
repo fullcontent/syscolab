@@ -26,8 +26,6 @@ class VendasController extends Controller
 
 
         $vendas = $this->listaVendas();
-   
-     
         return view('vendas.listaVendas')->with(['vendas'=>$vendas]);
        
     }
@@ -57,10 +55,45 @@ class VendasController extends Controller
 
     public function listaVendas()
     {
+
+
+        
         $vendas = Vendas::with('itens')->orderBy('created_at','desc')->paginate(15);
+
+
+        // dd($vendas);
 
         return $vendas;
     }
+
+
+    public function listaVendasCasa()
+    {
+
+
+        
+        $vendas = Vendas::with('itens')->where('localVenda',1)->orderBy('created_at','desc')->paginate(15);
+
+
+        // dd($vendas);
+
+         return view('vendas.listaVendas')->with(['vendas'=>$vendas]);
+    }
+
+    public function listaVendasFeira()
+    {
+
+
+        
+        $vendas = Vendas::with('itens')->where('localVenda',2)->orderBy('created_at','desc')->paginate(15);
+
+
+        // dd($vendas);
+
+         return view('vendas.listaVendas')->with(['vendas'=>$vendas]);
+    }
+
+
 
     public function delete($id='')
     {
