@@ -14,6 +14,11 @@ class EnvioItem extends Model
 
    }
 
-   
+
+   public function envio()
+   {
+
+   	return $this->belongsTo('App\Models\Envio','envio_id');
+   }   
    
 }

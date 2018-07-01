@@ -30,12 +30,103 @@
               <td>{{$p->nome}}</td>
               <td>{{$p->valor}}</td>
               <td>{{$p->colaber->marca}}</td>
+  
+        <?php 
+
+          $count = $p->entrada_estoque_feira_count - $p->saida_estoque_feira_count-$p->vendas_feira_count;
+
+          switch ($count) {
+          case 0:
+            $estoque = "label-warning";
+            break;
+          
+          case $count < 0:
+            $estoque = "bg-purple color-palette";
+          break;
+
+          case $count < 2:
+            $estoque = "label-primary";
+          break;
+
+          default:
+            $estoque = "label-success";
+          break;
+        };
+    ?>
+
+
+              <td><span class='label {{$estoque}}'>{{$count}}</span></td>
+              
+     
               <td>
-             {{$p->entrada_estoque_casa_count - $p->saida_estoque_casa_count}}
+                      <?php
+
+                        $envio = App\Models\EnvioItem::whereHas('envio' , function($query){
+
+                        $query->where('tipoEnvio', 'Feira');
+                          })->where('produto_id',$p->id)->orderBy('id','desc')->first();
+
+                      
+
+                        $enviados = App\Models\EnvioItem::whereHas('envio' , function($query){
+
+                        $query->where('tipoEnvio', 'Feira');
+                          })->where('produto_id',$p->id)->orderBy('id','desc')->get();
+
+
+                          $total = $enviados->sum('qtde');   
+
+                      ?>
+
+              <span class='label label-success'>{{$total}}</span>
               </td>
-              <td></td>
-              <td>{{$p->entrada_estoque_casa_count - $p->saida_estoque_casa_count}}</td>
-              <td></td>
+
+              <?php 
+
+          $count = $p->entrada_estoque_casa_count - $p->saida_estoque_casa_count - $p->vendas_casa_count;
+
+          switch ($count) {
+          case 0:
+            $estoque = "label-warning";
+            break;
+          
+          case $count < 0:
+            $estoque = "bg-purple color-palette";
+          break;
+
+          case $count < 2:
+            $estoque = "label-primary";
+          break;
+
+          default:
+            $estoque = "label-success";
+          break;
+        };
+    ?>
+               <td><span class='label {{$estoque}}'>{{$count}}</span></td>
+              <td>
+                      <?php
+
+                        $envio = App\Models\EnvioItem::whereHas('envio' , function($query){
+
+                        $query->where('tipoEnvio', 'Loja');
+                          })->where('produto_id',$p->id)->orderBy('id','desc')->first();
+
+                      
+
+                        $enviados = App\Models\EnvioItem::whereHas('envio' , function($query){
+
+                        $query->where('tipoEnvio', 'Loja');
+                          })->where('produto_id',$p->id)->orderBy('id','desc')->get();
+
+
+                          $total = $enviados->sum('qtde');   
+
+                      ?>
+
+              
+              <span class='label label-success'>{{$total}}</span>
+              </td> 
             </tr>      
 @endforeach
 

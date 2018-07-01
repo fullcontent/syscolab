@@ -25,6 +25,7 @@ class Produtos extends Model
     	return $this->hasMany('App\Models\EnvioItem','produto_id');
     }
 
+  
     public function entradaEstoque()
     
     {

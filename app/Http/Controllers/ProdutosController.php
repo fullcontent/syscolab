@@ -21,10 +21,19 @@ class ProdutosController extends Controller
 	{
 
 
-		$produtos = Produtos::withCount('EntradaEstoqueCasa','EntradaEstoqueFeira','SaidaEstoqueCasa','SaidaEstoqueFeira')->take(20)->get();
+		$produtos = Produtos::withCount('EntradaEstoqueCasa','EntradaEstoqueFeira','SaidaEstoqueCasa','SaidaEstoqueFeira','VendasCasa','VendasFeira')->get();
+		
 
+		$produtos2 = Produtos::with('envios')->where('codigo','0009988')->first();
+	
+
+		$envio = EnvioItem::whereHas('envio' , function($query){
+
+			$query->where('tipoEnvio', 'Feira');
+		})->where('produto_id',$produtos2->id)->get();		
 
 		
+
 
 
 
