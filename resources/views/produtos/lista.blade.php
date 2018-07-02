@@ -38,6 +38,7 @@
           switch ($count) {
           case 0:
             $estoque = "label-warning";
+            $count = "S/Estoque";
             break;
           
           case $count < 0:
@@ -88,6 +89,7 @@
           switch ($count) {
           case 0:
             $estoque = "label-warning";
+            $count = "S/Estoque";
             break;
           
           case $count < 0:

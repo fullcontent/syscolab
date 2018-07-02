@@ -12,29 +12,38 @@ namespace App\Http\Controllers;
     use App;
     use App\Models\Estoque;
    use App\Models\EnvioItem;
+   use Cache;
 
 
 class ProdutosController extends Controller
 {
 
+
 	public function index()
 	{
 
 
-		$produtos = Produtos::withCount('EntradaEstoqueCasa','EntradaEstoqueFeira','SaidaEstoqueCasa','SaidaEstoqueFeira','VendasCasa','VendasFeira')->get();
 		
 
-		$produtos2 = Produtos::with('envios')->where('codigo','0009988')->first();
-	
+		if(!Cache::has('produtos')){
 
-		$envio = EnvioItem::whereHas('envio' , function($query){
+			
+			$produtos = Produtos::withCount('EntradaEstoqueCasa','EntradaEstoqueFeira','SaidaEstoqueCasa','SaidaEstoqueFeira','VendasCasa','VendasFeira')->get();
 
-			$query->where('tipoEnvio', 'Feira');
-		})->where('produto_id',$produtos2->id)->get();		
+		Cache::put('produtos', $produtos, 1);
+			
+
+
+		}
+
+		else{
+
+			$produtos = Cache::get('produtos');
+
+		}
+
 
 		
-
-
 
 
 		return view('produtos.lista')->with('produtos',$produtos);
