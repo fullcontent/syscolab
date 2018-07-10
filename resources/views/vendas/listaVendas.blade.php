@@ -24,8 +24,10 @@
   <td>{{date('d/m/Y', strtotime($p->created_at))}}</td>
   <td>R${{$p->valorVenda}}</td>
   <td>{{$p->tipoPagamento}}</td>
-  <td><a href="vendas/{{$p->id}}"><button class="btn btn-primary">Detalhar</button></a>
-    <a href="vendas/delete/{{$p->id}}" onclick="return confirm('Tem certeza que deseja excluir a venda?')"><button class="btn btn-danger" data-toggle="confirmation">Excluir</button></a>
+  <td>
+       <a href="{{route('venda', ['id'=>$p->id])}}"><button class="btn btn-primary">Detalhar</button></a>
+
+    <a href="{{route('delete.venda', ['id'=>$p->id])}}" onclick="return confirm('Tem certeza que deseja excluir a venda?')"><button class="btn btn-danger" data-toggle="confirmation">Excluir</button></a>
 </td>
 </tr>
 

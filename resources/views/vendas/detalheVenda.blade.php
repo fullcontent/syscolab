@@ -71,7 +71,10 @@
 					<td>{{$p->colaber->marca}}</td>
 					<td>R$ {{$l->valor}}</td>
 					<td>@unless($l->estornado) 
-							<a href="../vendas/estornar/{{$l->id}}/{{$venda->id}}" onclick="return confirm('Tem certeza que estornar o item?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove"></i></button></a>
+
+							<a href="{{route('estornar.venda', ['id'=>$l->id,'venda_id'=>$venda->id])}}" onclick="return confirm('Tem certeza que estornar o item?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove"></i></button></a>
+
+							
 					@endunless					
 					</td>
 				</tr>
@@ -84,9 +87,21 @@
 </div>
 <hr>
 <div class="row">
-	
-<a href="../vendas"><button type="button" class="btn btn-success"><i class="fa fa-arrow-left"></i> Voltar para Listagem</button></a>
-<a href="../vendas/delete/{{$venda->id}}" onclick="return confirm('Tem certeza que deseja excluir a venda?')"><button type="button" class="btn btn-danger pull-right"><i class="fa fa-remove"></i> Excluir Venda</button></a>
+
+@if($venda->localVenda == 1)
+
+<a href="{{route('vendasCasa')}}"><button type="button" class="btn btn-success"><i class="fa fa-arrow-left"></i> Voltar para Listagem</button></a>
+
+@endif
+
+@if($venda->localVenda == 2)
+
+<a href="{{route('vendasFeira')}}"><button type="button" class="btn btn-success"><i class="fa fa-arrow-left"></i> Voltar para Listagem</button></a>
+
+@endif
+
+<a href="{{route('delete.venda', ['id'=>$venda->id])}}" onclick="return confirm('Tem certeza que deseja excluir a venda?')"><button type="button" class="btn btn-danger pull-right"><i class="fa fa-remove"></i> Excluir Venda</button></a>
+
 </div>
 
 

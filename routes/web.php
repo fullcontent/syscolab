@@ -33,8 +33,8 @@ Route::get('/admin/vendas/casa','VendasController@listaVendasCasa')->name('venda
 
 
 Route::get('/admin/vendas/{id}','VendasController@listaProdutos')->name('venda');
-Route::get('/admin/vendas/delete/{id}','VendasController@delete');
-Route::get('/admin/vendas/estornar/{id}/{venda_id}','VendasController@estornar');
+Route::get('/admin/vendas/delete/{id}','VendasController@delete')->name('delete.venda');
+Route::get('/admin/vendas/estornar/{id}/{venda_id}','VendasController@estornar')->name('estornar.venda');
 
 
 
