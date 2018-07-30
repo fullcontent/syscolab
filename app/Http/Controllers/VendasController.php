@@ -72,7 +72,7 @@ class VendasController extends Controller
 
 
         
-        $vendas = Vendas::with('itens')->where('localVenda',1)->orderBy('created_at','desc')->paginate(15);
+        $vendas = Vendas::with('itens')->where('localVenda',1)->orderBy('id','desc')->paginate(15);
 
 
         // dd($vendas);
@@ -133,6 +133,8 @@ class VendasController extends Controller
 
 
         
+            
+
         return redirect()->route('vendas')
             ->with([
                 'message'=>'Venda excluida com sucesso!',

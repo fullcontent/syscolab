@@ -13,6 +13,7 @@
     <th>Data</th>
     <th>Valor</th>
     <th>Pagamento</th>
+    <th>Local</th>
     <th width="200"></th>
     
     
@@ -24,6 +25,7 @@
   <td>{{date('d/m/Y', strtotime($p->created_at))}}</td>
   <td>R${{$p->valorVenda}}</td>
   <td>{{$p->tipoPagamento}}</td>
+  <td>{{$p->localVenda}}</td>
   <td>
        <a href="{{route('venda', ['id'=>$p->id])}}"><button class="btn btn-primary">Detalhar</button></a>
 

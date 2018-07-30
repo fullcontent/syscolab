@@ -50,7 +50,6 @@ class VendaCasaController extends Controller
     {
         
 
-
         $userID = CRUDBooster::myId(); // Pegar id do usuario
         $localVenda = Input::get('localVenda');
 
@@ -58,17 +57,47 @@ class VendaCasaController extends Controller
         $venda = new Vendas;
         $venda->user_id = $userID; //Inserir id do usuario logado
         $venda->tipoPagamento = Input::get('tipoPagamento');
+
         $venda->valorVenda = Input::get('valorVenda');
         $venda->valorRecebidoDinheiro = Input::get('valorRecebidoDinheiro');
         $venda->valorRecebidoDebito = Input::get('valorRecebidoDebito');
         $venda->valorRecebidoCredito = Input::get('valorRecebidoCredito');
         $venda->parcelasCredito = Input::get('parcelasCredito');
+
+
         $venda->desconto = Input::get('desconto');
         $venda->localVenda = $localVenda;
         $venda->comentarios = Input::get('comentarios');
-        $venda->save();
+
+        if(Input::get('dataVenda'))
+            {
+                // dd(Input::get('dataVenda'));
+                $venda->created_at = new \DateTime(Input::get('dataVenda'));
+            }
+
 
         $vendaItens = VendasTemp::where('localVenda',$localVenda)->get();
+
+
+        if($vendaItens->count() > 0)
+        {
+
+             $venda->save();
+
+
+        }
+
+        else{
+
+
+        }
+        
+
+
+       
+       
+
+        
         foreach ($vendaItens as $v){
 
             $vendaItemData = new VendasItem;
@@ -79,6 +108,8 @@ class VendaCasaController extends Controller
             $vendaItemData->qtde = $v->qtde;
             $vendaItemData->total_venda = $v->total;
             $vendaItemData->localVenda = $localVenda;
+            $vendaItemData->created_at = $venda->created_at;
+
 
             $vendaItemData->save();
 
@@ -91,14 +122,19 @@ class VendaCasaController extends Controller
                 $estoque->user_id = $userID;
                 $estoque->qty = -($v->qtde);
                 $estoque->operacao = 6;
-                $estoque->comentarios = 'Venda na Loja #'.$venda->id;
+                $estoque->comentarios = 'Venda na Casa #'.$venda->id;
                 $estoque->save();
         }
 
         
 
 
-    return redirect('admin/vendasCasa')->with('message', 'Venda efetuada com sucesso!');
+        return redirect('admin/vendasCasa')
+            ->with([
+                'message'=>'Venda efetuada com sucesso!',
+                'message_type' => 'success'
+
+            ]);
 
     }
 
