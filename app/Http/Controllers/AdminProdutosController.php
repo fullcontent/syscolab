@@ -26,7 +26,17 @@
 			$this->button_action_style = "button_icon";
 			$this->button_add = true;
 			$this->button_edit = true;
-			$this->button_delete = true;
+
+
+			if(CRUDBooster::myPrivilegeName() != "Colabers"){
+
+				$this->button_delete = true;
+			}
+			else{
+				$this->button_delete = false;
+			}
+			
+
 			$this->button_detail = true;
 			$this->button_show = false;
 			$this->button_filter = true;
