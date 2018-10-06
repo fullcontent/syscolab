@@ -91,24 +91,23 @@ class VendaCasaController extends Controller
 
 
         }
-        
-
-
-       
-       
-
-        
+                
         foreach ($vendaItens as $v){
 
             $vendaItemData = new VendasItem;
 
             $vendaItemData->venda_id = $venda->id;
             $vendaItemData->produto_id = $v->produto_id;
+
+
+            $this->sendNotificationToColaber($vendaItemData->produto_id);
+
             $vendaItemData->valor = $v->valor;
             $vendaItemData->qtde = $v->qtde;
             $vendaItemData->total_venda = $v->total;
             $vendaItemData->localVenda = $localVenda;
             $vendaItemData->created_at = $venda->created_at;
+
 
 
             $vendaItemData->save();
@@ -181,5 +180,19 @@ class VendaCasaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function sendNotificationToColaber($produto_id)
+    {
+        
+
+        $produto = Produtos::with('colaber')->where('id',$produto_id)->first();
+        
+        $notification = CRUDBooster::sendNotification($config=[
+                'content'=>'1x '.$produto->nome.' foi vendido!',
+                 'to'=> 'admin/painel',
+                 'id_cms_users'=>[$produto->colaber->user_id]]);
+
     }
 }

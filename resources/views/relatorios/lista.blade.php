@@ -43,7 +43,7 @@
   
   <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Gerar relatorios</h3>
+              <h3 class="box-title">Relatórios completos</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -52,10 +52,19 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-             
-                <a href="#"><button type="button" class="btn btn-block btn-default btn-lg">Relatório completo até o dia 07/01</button></a>
 
-                <a href="relatorioCompleto/{{date('2018-01-15')}}/{{date('2018-02-10')}}"><button type="button" class="btn btn-block btn-default btn-lg">Entre 15/01 até 10/02</button></a>
+             <form role="form" method="post" action="{{route('relatorioCompleto')}}">
+                
+                <div class="form-group">
+    <label for="colaberList">Selecione o Periodo</label>
+    <input type="text" name="daterange" id="relatorioCompleto" value="01/01/2018 - 01/15/2018" />
+
+  </div>
+
+                <button type="submit" class="btn btn-primary mb-2">Visualizar</button>
+
+             </form>
+               
   
             </div>
             <!-- /.box-body -->
@@ -99,7 +108,9 @@
                     @endif
                   </td>
                   <td>
-                    <form action="relatorio" role="form" method="post">
+                    <form action="{{route('verRelatorio')}}" role="form" method="post">
+
+                    <input type="hidden" name="id" value="{{$r->id}}">
                      <input type="hidden" name="fromDT" value="{{date('m/d/Y', strtotime($r->fromDT))}}">
                      <input type="hidden" name="toDT" value="{{date('m/d/Y', strtotime($r->toDT))}}">
                      <input type="hidden" name="colaber" value="{{$r->colaber_id}}">
@@ -114,6 +125,8 @@
               @endforeach
                 
               </tbody></table>
+              
+            {{$relatorios->links()}}
             </div>
             <!-- /.box-body -->
           </div>
@@ -123,39 +136,11 @@
 
 </div>
 
+
 @endsection
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-  $( function() {
-    var dateFormat = "dd-mm-yy",
-      from = $( "#fromDT" )
-        .datepicker({
-          defaultDate: "+1w",
-          changeMonth: true,
-          numberOfMonths: 3
-        })
-        .on( "change", function() {
-          to.datepicker( "option", "minDate", getDate( this ) );
-        }),
-      to = $( "#toDT" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 3
-      })
-      .on( "change", function() {
-        from.datepicker( "option", "maxDate", getDate( this ) );
-      });
- 
-    function getDate( element ) {
-      var date;
-      try {
-        date = $.datepicker.parseDate( dateFormat, element.value );
-      } catch( error ) {
-        date = null;
-      }
- 
-      return date;
-    }
-  } );
-  </script>
+
+
+
+
+
+

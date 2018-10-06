@@ -19,11 +19,6 @@
 <div class="col-md-6">
   
 
-<div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-warning"></i> Importante!</h4>
-                Estamos enfrentando dificuldades com acesso a internet no local da feira e, por isso, a atualização do sistema não funcionará em tempo real. Faremos o possível para atualizar a cada 3 dias.
-</div>
 
     <div class="box">
         <div class="box-header">
@@ -44,26 +39,20 @@
 
   
   
-  <div class="box">
+  <div class="box" id="relatorios">
     <div class="box-header">
             <h3 class="box-title">Relatórios</h3>
         </div>
       
       <div class="box-body">
                 
-        <div class="col-md-12">
-        <a href="{{url('/admin/relatorio/'.CRUDBooster::myId().'')}}">
-        <button type="button" class="btn btn-block btn-success btn-lg">Até 07/01/2018</button>
-        </a>
-        <br>
-        
-      </div>
+       
             
       @foreach($relatorios as $r)
           
 
         <div class="col-md-12">
-        <form action="relatorio" role="form" method="post">
+        <form action="{{route('verRelatorio')}}" role="form" method="post">
            <input type="hidden" name="fromDT" value="{{date('m/d/Y', strtotime($r->fromDT))}}">
            <input type="hidden" name="toDT" value="{{date('m/d/Y', strtotime($r->toDT))}}">
            <input type="hidden" name="colaber" value="{{$r->colaber_id}}">
@@ -79,6 +68,14 @@
         
       </div>
         @endforeach
+
+         <div class="col-md-12">
+        <a href="{{url('/admin/relatorio/'.CRUDBooster::myId().'')}}">
+        <button type="button" class="btn btn-block btn-success btn-lg">Até 07/01/2018</button>
+        </a>
+        <br>
+        
+      </div>
         
       
       

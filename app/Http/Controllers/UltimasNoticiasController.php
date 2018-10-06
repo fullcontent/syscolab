@@ -57,6 +57,8 @@ class UltimasNoticiasController extends Controller
 
        $noticia->save();
 
+       
+
        return $noticia;
 
 

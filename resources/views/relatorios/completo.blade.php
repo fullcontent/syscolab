@@ -54,15 +54,23 @@
     <div class="page-header">
        <h1>Relatorio</h1> 
     </div>
-
+    
+    <h4><b>Período:</b> {{$periodo}}</h4>
     <h4><b>Total de vendas:</b> {{$vendas->count()}}</h4>
     <h4><b>Valor total:</b> R$ {{number_format($vendas->sum('valorVenda'),2)}}</h4>
 
+
       <button class="btn btn-primary hidden-print" onclick="myFunction()"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir relatório</button>
+        
+        <button class="btn btn-warning hidden-print" onclick="show()"><span class="glyphicon glyphicon-view" aria-hidden="true"></span> Visualizar</button>
+
+       
+
       <button class="btn btn-success hidden-print" onclick="window.history.go(-1); return false;"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar</button> 
   
 
 </div>
+
 
 
 
@@ -76,9 +84,11 @@
                 </div>
 
                 <div class="col-xs-5">
-                   <h3 class="page-header">
+                   <h2 class="page-header">
                        Relatorio de Vendas
-                    </h3>
+                    </h2>
+
+
                 </div>
                 
                 
@@ -88,7 +98,8 @@
               
                 <div class="col-xs-12">
                     
-                    
+                     <h4>Periodo: {{$periodo}}</h4>
+                     <h4>Total: R$ {{number_format($vendas->sum('valorVenda'),2)}}</h4>
 
 
                 </div>
@@ -128,8 +139,23 @@
 
 					</tbody>
 
-                </table>	
-				
+                <tfoot>
+                    
+                   
+              
+                
+
+                </tfoot>
+
+                </table>
+                
+                <div class="col-xs-12">
+                    
+                     <h4>Periodo: {{$periodo}}</h4>
+                     <h4>Total: R$ {{number_format($vendas->sum('valorVenda'),2)}}</h4>
+
+                </div>
+
 				
 
 
@@ -156,6 +182,11 @@
             function hide()
             {
             	$("#tabela").addClass("hidden");
+            }
+
+            function show()
+            {
+                $("#tabela").removeClass("hidden");
             }
         </script>
 

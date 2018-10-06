@@ -55,6 +55,12 @@
 
 		$(function() {
 			$('.datatables-simple').DataTable();
+			$('#fromDT').datepicker();
+			$('#toDT').datepicker();
+			$('#relatorioCompleto').daterangepicker();
+
+
+			
 		})
 	</script>
 	<script src="{{asset('vendor/crudbooster/assets/js/main.js').'?r='.time()}}"></script>	

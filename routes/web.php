@@ -41,7 +41,9 @@ Route::get('/admin/vendas/estornar/{id}/{venda_id}','VendasController@estornar')
 Route::post('/admin/relatorio','RelatoriosController@gerarRelatorio');
 Route::get('/admin/relatorios','RelatoriosController@index')->name('relatorios');
 Route::get('/admin/relatorio/delete/{id}','RelatoriosController@delete');
-Route::get('/admin/relatorio/view/{id}','RelatoriosController@verRelatorio');
+
+Route::post('/admin/relatorio/view/','RelatoriosController@verRelatorio')->name('verRelatorio');
+
 Route::get('/admin/relatorio/ativar/{id}','RelatoriosController@ativarRelatorio');
 Route::get('/admin/relatorio/desativar/{id}','RelatoriosController@desativarRelatorio');
 
@@ -50,9 +52,10 @@ Route::get('/admin/relatorio/{id}','RelatoriosController@verPdf');
 
 Route::get('/admin/relatorioVendas','RelatoriosController@relatorioVendas');
 
-Route::get('/admin/relatorioCompleto/{fromDt}/{toDt}','RelatoriosController@relatorioCompleto');
 
 
+
+Route::post('/admin/relatorioCompleto','RelatoriosController@relatorioCompleto')->name('relatorioCompleto');
 
 
 Route::get('/admin/ajuda','HomeController@ajuda');
@@ -83,6 +86,11 @@ Route::get('admin/produtos2', 'ProdutosController@index')->name('listaProdutos')
 
 
 
+
+
+// TEstes
+
+// Route::get('admin/notificationTest/{produto_id}', 'VendaCasaController@sendNotificationToColaber');
 
 
 

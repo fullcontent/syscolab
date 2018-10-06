@@ -11,11 +11,7 @@
 
 <p>Aqui você vai ficar sabendo de tudo que acontecer com seus produtos!</p>
 
-<div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-warning"></i> Importante!</h4>
-                Estamos enfrentando dificuldades com acesso a internet no local da feira e, por isso, a atualização do sistema não funcionará em tempo real. Faremos o possível para atualizar a cada 3 dias.
-</div>
+
 <div class="box">
         <div class="box-header">
             <h3 class="box-title">Primeiros Passos</h3>

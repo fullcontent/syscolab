@@ -367,6 +367,7 @@ class HomeController extends Controller
 
         // $id = 44;
         $report = Relatorio::where('colaber_id',$id)
+                ->orderBy('created_at','desc')
                 ->where('active',1)
                 ->get();
         // dd($report->count());

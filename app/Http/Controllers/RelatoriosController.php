@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 use App\User;
 use App\Models\Relatorio;
 use App\Models\RelatorioItem;
@@ -32,7 +33,7 @@ class RelatoriosController extends Controller
         );
 
 
-        $lista = Relatorio::with('colaber')->take(20)->get();
+        $lista = Relatorio::with('colaber')->orderBy('created_at','desc')->paginate(20);
 
 
         // dd($lista);
@@ -122,6 +123,17 @@ class RelatoriosController extends Controller
         $relatorio->active = 1;
         $relatorio->save();
 
+
+        $periodo = date('d/m/Y',strtotime($relatorio->fromDT)).' a '.date('d/m/Y',strtotime($relatorio->toDT));
+
+
+        $notification = CRUDBooster::sendNotification($config=[
+                'content'=>'Seu relatório de '.$periodo.' está disponível',
+                 'to'=> 'admin/painel#relatorios',
+                 'id_cms_users'=>[$relatorio->colaber_id]]);
+
+        
+
         return redirect()->route('relatorios')->with(['message'=>'Agora o colaber pode visualizar esse relatório!','message_type'=>'success']);
 
     }
@@ -138,20 +150,28 @@ class RelatoriosController extends Controller
     }
 
    
-    public function verRelatorio($id)
+    public function verRelatorio(Request $request)
     {
-        $relatorio = Relatorio::find($id);
-   
-        $colaber = Colaber::find($relatorio->colaber_id);
-
-        $porcentagem = $relatorio->porcentagem;
         
 
-        $fromDT = $relatorio->fromDT;
-        $toDT = $relatorio->toDT;
+        $id = $request->input('colaber');
 
 
-        $produtos = Produtos::where('user_id',$colaber->user_id)->get();   
+        // dd($request->all());
+        
+        $fromDT = Carbon::createFromFormat('m/d/Y H',$request->input('fromDT').'00')->toDateTimeString();
+        $toDT = Carbon::createFromFormat('m/d/Y H',$request->input('toDT').'00')->toDateTimeString();
+
+
+
+        
+        $porcentagem = $request->input('porcentagem');
+
+
+        $colaber = Colaber::where('user_id',$id)->first();
+
+        
+        $produtos = Produtos::where('user_id',$id)->get();   
 
 
         foreach($produtos as $p)
@@ -174,13 +194,14 @@ class RelatoriosController extends Controller
 
        $periodo = date('d/m/Y',strtotime($fromDT)).' a '.date('d/m/Y',strtotime($toDT));
 
+      
+            // Check if user is equal
+
+        // $this->salvarRelatorio($colaber,$porcentagem,$fromDT,$toDT);
 
 
 
-
-
-       
-          return view('relatorios.venda')->with(['lista'=>$vendas, 'colaber'=>$colaber,'porcentagem'=>$porcentagem,'periodo'=>$periodo]);
+        return view('relatorios.venda')->with(['lista'=>$vendas, 'colaber'=>$colaber,'porcentagem'=>$porcentagem,'periodo'=>$periodo]);
     }
 
 
@@ -210,23 +231,47 @@ class RelatoriosController extends Controller
     }
 
 
-    public function relatorioCompleto($fromDt,$toDt)
+    public function relatorioCompleto(Request $request)
+    
     {
         
+        
+        $daterange = explode(' - ', $request->input('daterange'));
+
+
+        $fromDT = $daterange[0];
+        $toDT = $daterange[1];
+
+       
+
+
+        $fromDT = Carbon::createFromFormat('m/d/Y H',$fromDT.'00')->toDateTimeString();
+        $toDT = Carbon::createFromFormat('m/d/Y H',$toDT.'00')->toDateTimeString();
+
+
+
+
+
+
+        // dd($fromDT);
 
         $vendas = Vendas::with('itens')
                     // ->take(15)
                     // ->whereDate('created_at','>=', $fromDt)
                     // ->whereDate('created_at','<=', $toDt)
                     ->where('id','>',1975)
-                    ->whereBetween('created_at', [$fromDt,$toDt])
-                    ->orderBy('id','asc')
+                    ->whereBetween('created_at', [$fromDT,$toDT])
+                    ->orderBy('created_at','asc')
                     ->get();
       
+      // dd($vendas);
+
+
+        $periodo = date('d/m/Y',strtotime($fromDT)).' a '.date('d/m/Y',strtotime($toDT));            
 
         
 
-         return view('relatorios.completo')->with(['vendas'=>$vendas]);
+         return view('relatorios.completo')->with(['vendas'=>$vendas,'periodo'=>$periodo]);
 
     }
 
@@ -241,5 +286,8 @@ class RelatoriosController extends Controller
 
             return response($file)->withHeaders(['Content-Type'=>'application/pdf']);
     }
-    
+
+
+
+   
 }
